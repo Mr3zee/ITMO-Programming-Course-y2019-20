@@ -1,5 +1,7 @@
 *.cmd
 *.iml
+*.class
+*.ini
 **/.idea/**
 **/out/**
 **/base/**
