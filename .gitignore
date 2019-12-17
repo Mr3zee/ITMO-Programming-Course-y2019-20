@@ -1,5 +1,5 @@
-**/.cmd
-**/.iml
+*.cmd
+*.iml
 **/.idea/**
 **/out/**
 **/base/**
