@@ -3,17 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="cbf917cf-45fb-42f9-b587-ea43c2f1dcfb" name="Default Changelist" comment=".gitignore changed to right version">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../KeyPromoterXSettings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_windows/laf.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_windows/path.macros.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../baseRefactoring.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../codestyles/Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../colors.scheme.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../colors/_@user_Material Darker.icls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../debugger.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ide-features-trainer.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ide.general.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../material_theme.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +37,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../HW_10/TheGame" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../HW_10" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Color Scheme Font" />
   </component>
   <component name="RecentsManager">
@@ -98,7 +87,7 @@
       <workItem from="1576608259115" duration="7000" />
       <workItem from="1576608278986" duration="228000" />
       <workItem from="1576620513794" duration="1946000" />
-      <workItem from="1576622521191" duration="1069000" />
+      <workItem from="1576622521191" duration="1225000" />
     </task>
     <task id="LOCAL-00001" summary=".gitignore changed to right version">
       <created>1576620805782</created>
@@ -150,10 +139,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="583" y="26" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1576623591514" />
-    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1576623608967">
+    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1576623642830">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1576623608967" />
+    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1576623642830" />
     <state x="614" y="208" key="SettingsEditor" timestamp="1576623481507">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
