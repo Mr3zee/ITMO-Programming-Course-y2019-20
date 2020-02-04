@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Expressions expression = new Add(
+        CommonExpression expression = new Add(
                 new Subtract(
                         new Multiply(
                                 new Variable("x"),

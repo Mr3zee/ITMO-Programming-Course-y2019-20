@@ -2,7 +2,7 @@ package expression;
 
 import java.util.Objects;
 
-public class Const implements Expressions {
+public class Const implements CommonExpression {
     private final Number value;
 
     public Const(final Number value) {
@@ -40,5 +40,15 @@ public class Const implements Expressions {
     @Override
     public int hashCode() {
         return Objects.hash(value);
+    }
+
+    @Override
+    public int getPriority() {
+        return 30;
+    }
+
+    @Override
+    public boolean dependsOnOrder() {
+        return false;
     }
 }

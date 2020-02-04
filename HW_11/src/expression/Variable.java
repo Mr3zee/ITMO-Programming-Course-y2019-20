@@ -2,7 +2,7 @@ package expression;
 
 import java.util.Objects;
 
-public class Variable implements Expressions {
+public class Variable implements CommonExpression {
     private final String name;
 
     public Variable(final String name) {
@@ -43,5 +43,15 @@ public class Variable implements Expressions {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    @Override
+    public int getPriority() {
+        return 30;
+    }
+
+    @Override
+    public boolean dependsOnOrder() {
+        return false;
     }
 }

@@ -1,7 +1,7 @@
 package expression;
 
 public class Multiply extends BinaryOperations {
-    public Multiply(Expressions firstExp, Expressions secondExp) {
+    public Multiply(CommonExpression firstExp, CommonExpression secondExp) {
         super(firstExp, secondExp);
     }
 
@@ -23,5 +23,15 @@ public class Multiply extends BinaryOperations {
     @Override
     protected int primary() {
         return 1747;
+    }
+
+    @Override
+    public int getPriority() {
+        return 20;
+    }
+
+    @Override
+    public boolean dependsOnOrder() {
+        return false;
     }
 }
