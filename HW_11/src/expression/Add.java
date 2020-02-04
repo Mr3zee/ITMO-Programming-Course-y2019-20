@@ -2,7 +2,7 @@ package expression;
 
 public class Add extends BinaryOperations {
 
-    public Add(Expressions firstExp, Expressions secondExp) {
+    public Add(CommonExpression firstExp, CommonExpression secondExp) {
         super(firstExp, secondExp);
     }
 
@@ -24,5 +24,15 @@ public class Add extends BinaryOperations {
     @Override
     protected int primary() {
         return 3557;
+    }
+
+    @Override
+    public int getPriority() {
+        return 10;
+    }
+
+    @Override
+    public boolean dependsOnOrder() {
+        return false;
     }
 }

@@ -2,11 +2,11 @@ package expression;
 
 import java.util.Objects;
 
-public abstract class BinaryOperations implements Expressions {
-    private Expressions firstExp;
-    private Expressions secondExp;
+public abstract class BinaryOperations implements CommonExpression {
+    private CommonExpression firstExp;
+    private CommonExpression secondExp;
 
-    public BinaryOperations(Expressions firstExp, Expressions secondExp) {
+    public BinaryOperations(CommonExpression firstExp, CommonExpression secondExp) {
         this.firstExp = firstExp;
         this.secondExp = secondExp;
     }
@@ -33,6 +33,16 @@ public abstract class BinaryOperations implements Expressions {
     @Override
     public String toString() {
         return "(" + firstExp + getOperand() + secondExp + ")";
+    }
+
+    public String toMiniString() {
+        boolean firstHigherPriority = this.getPriority() > firstExp.getPriority();
+        boolean secondHigherPriority = this.getPriority() > secondExp.getPriority() ||
+                (this.getPriority() == secondExp.getPriority() && (this.dependsOnOrder() || secondExp.dependsOnOrder()));
+        //(secondHigherPriority ? ")" : "")
+        return (firstHigherPriority ? "(" : "") + firstExp.toMiniString() + (firstHigherPriority ? ")" : "")
+                + getOperand() +
+                (secondHigherPriority ? "(" : "") + secondExp.toMiniString() + (secondHigherPriority ? ")" : "");
     }
 
     protected abstract String getOperand();
