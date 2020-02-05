@@ -1,5 +1,7 @@
 package expression.parser;
 
+import expression.exception.*;
+
 public class ExpressionSource implements Source {
     private int pos;
     private final String expression;
@@ -19,7 +21,7 @@ public class ExpressionSource implements Source {
     }
 
     @Override
-    public ExpressionException error(String massage) {
-        return new ExpressionException(pos + ": " + massage);
+    public ExpressionException error(String message) {
+        return new ExpressionException(pos + ": " + message);
     }
 }

@@ -1,5 +1,7 @@
 package expression.parser;
 
+import expression.exception.*;
+
 public class BaseParser {
     protected ExpressionSource source;
     protected char currentLex;
