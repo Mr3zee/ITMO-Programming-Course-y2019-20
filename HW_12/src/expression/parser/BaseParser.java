@@ -2,23 +2,31 @@ package expression.parser;
 
 public class BaseParser {
     protected ExpressionSource source;
-    protected char current;
+    protected char currentLex;
 
     protected void nextChar() {
-        current = source.hasNext() ? source.next() : '\0';
+        currentLex = source.hasNext() ? source.next() : '\0';
     }
 
     protected boolean compare(char expected) {
-        if (current == expected) {
+        if (currentLex == expected) {
             nextChar();
             return true;
         }
         return false;
     }
 
+    protected boolean compare(String expected) {
+        int pos = 0;
+        while (pos < expected.length() && compare(expected.charAt(pos++))){
+            //skip
+        }
+        return pos == expected.length();
+    }
+
     protected void expect(char expected) {
-        if (expected != current) {
-            throw error("Expected \"" + expected + "\", found \"" + current + "\"");
+        if (expected != currentLex) {
+            throw error("Expected \"" + expected + "\", found \"" + currentLex + "\"");
         }
         nextChar();
     }

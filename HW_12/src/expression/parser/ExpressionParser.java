@@ -2,138 +2,119 @@ package expression.parser;
 
 import expression.*;
 
-import java.util.Map;
+import java.util.Set;
 
 public class ExpressionParser extends BaseParser implements Parser {
-    private final Map<Character, Priority> OPERATIONS = Map.of(
-            '+', Priority.ADD,
-            '-', Priority.SUB,
-            '*', Priority.MUL,
-            '/', Priority.DIV,
-            ')', Priority.PAR,
-            '(', Priority.PAR,
-            '\0', Priority.END,
-            '<', Priority.SHIFT,
-            '>', Priority.SHIFT);
+    private final Set<Character> OPERATIONS = Set.of ('+', '-', '*', '/', '(', ')', '<', '>');
 
     @Override
-    public CommonExpression parse(String data) {
-        source = new ExpressionSource(data);
+    public CommonExpression parse(String expression) {
+        source = new ExpressionSource(expression);
         nextChar();
-        return parseNext(Priority.END);
+        return expressionParse();
     }
 
-    private CommonExpression parseNext(Priority priority) {
-        CommonExpression exp = parseElement(priority);
-        while (nextHasGreaterPriority(priority)) {
-            exp = parseOperations(exp);
-        }
-        return exp;
-    }
-
-    private CommonExpression parseElement(Priority priority) {
+    private CommonExpression expressionParse() {
+        CommonExpression result = shiftsParse();
         skipWhitespaces();
-        if (compare('(')) {
-            CommonExpression exp = parseNext(Priority.PAR);
-            expect(')');
-            return exp;
-        } else if (isConst()) {
-            return ifTakeNext(new Const(nextConst(false)), priority);
-        } else if (isString()) {
-            return parseString(priority);
-        } else if (compare('-')) {
-            return parseUnaryMinus();
-        }
-        throw error("Invalid Expression Symbol");
-    }
-
-    private CommonExpression parseString(Priority priority) {
-        String name = next();
-        if (name.equals("abs")) {
-            return new Abs(parseElement(Priority.ABS));
-        }
-        if (name.equals("square")) {
-            return new Square(parseElement(Priority.SQUARE));
-        }
-        return ifTakeNext(new Variable(name), priority);
-    }
-
-    private CommonExpression ifTakeNext(CommonExpression exp, Priority priority) {
-        return nextHasGreaterPriority(priority) ? parseOperations(exp) : exp;
-    }
-
-    private boolean nextHasGreaterPriority(Priority priority) {
-        skipWhitespaces();
-        Priority nextPriority = OPERATIONS.getOrDefault(current, null);
-        if (nextPriority != null) {
-            return priority.getPriority() < nextPriority.getPriority();
-        }
-        throw error("Invalid Operation symbol: " + current);
-    }
-
-    private CommonExpression parseUnaryMinus() {
-        skipWhitespaces();
-        int count = 1;
-        while (compare('-')) {
-            count++;
+        while (isShiftOperation()) {
+            if (compare("<<")) {
+                result = new LeftShift(result, shiftsParse());
+            } else if (compare(">>")) {
+                result = new RightShift(result, shiftsParse());
+            }
             skipWhitespaces();
         }
-        if (count % 2 == 0) {
-            return parseElement(Priority.MINUS);
-        }
-        if (isConst()) {
-            return new Const(nextConst(true));
-        }
-        return new UnaryMinus(parseElement(Priority.MINUS));
+        return result;
     }
 
-    private CommonExpression parseOperations(CommonExpression first) {
+
+    private CommonExpression shiftsParse() {
+        CommonExpression result = additiveParse();
         skipWhitespaces();
-        if (compare('+')) {
-            return new Add(first, parseNext(Priority.ADD));
-        } else if (compare('-')){
-            return new Subtract(first, parseNext(Priority.SUB));
-        } else if (compare('*')) {
-            return new Multiply(first, parseNext(Priority.MUL));
-        } else if (compare('/')) {
-            return new Divide(first, parseNext(Priority.DIV));
-        } else if (compare('<')) {
-            expect('<');
-            return new LeftShift(first, parseNext(Priority.SHIFT));
-        } else if (compare('>')) {
-            expect('>');
-            return new RightShift(first, parseNext(Priority.SHIFT));
+        while (isAdditiveOperation()) {
+            if (compare('+')) {
+                result = new Add(result, additiveParse());
+            } else if (compare('-')) {
+                result = new Subtract(result, additiveParse());
+            }
+            skipWhitespaces();
         }
-        throw error("Invalid Operation symbol: " + current);
+        return result;
     }
 
-    private String next() {
+    private CommonExpression additiveParse() {
+        CommonExpression result = multiplicativeParse();
         skipWhitespaces();
-        StringBuilder next = new StringBuilder();
-        while (!(Character.isWhitespace(current) || OPERATIONS.containsKey(current))) {
-            next.append(current);
+        while (isMultiplicativeOperation()) {
+            if (compare('*')) {
+                result = new Multiply(result, multiplicativeParse());
+            } else if (compare('/')) {
+                result = new Divide(result, multiplicativeParse());
+            }
+            skipWhitespaces();
+        }
+        return result;
+    }
+
+    private CommonExpression multiplicativeParse() {
+        skipWhitespaces();
+        if (compare('(')) {
+            CommonExpression result = expressionParse();
+            expect(')');
+            return result;
+        } else if (compare("abs")) {
+            return new Abs(multiplicativeParse());
+        } else if (compare("square")) {
+            return new Square(multiplicativeParse());
+        } else if (isVariable()) {
+            return new Variable(nextWord());
+        } else if (isNumber()) {
+            return parseNumber(nextWord());
+        } else if (compare('-')) {
+            if (isNumber()) {
+                return parseNumber("-" + nextWord());
+            }
+            return new UnaryMinus(multiplicativeParse());
+        }
+        throw error("Invalid lexeme");
+    }
+
+    private CommonExpression parseNumber(String number) {
+        try {
+            int num = Integer.parseInt(number);
+            return new Const(num);
+        } catch (NumberFormatException e) {
+            throw error("Invalid number format");
+        }
+    }
+
+    private String nextWord() {
+        StringBuilder word = new StringBuilder();
+        while (!Character.isWhitespace(currentLex) && currentLex != '\0' && !OPERATIONS.contains(currentLex)) {
+            word.append(currentLex);
             nextChar();
         }
-        return next.toString();
+        return word.toString();
     }
 
-    private int nextConst(final boolean negative) {
-        try {
-            return Integer.parseInt((negative ? "-" : "") + next());
-        } catch (NumberFormatException e) {
-            throw error("Invalid Const");
-        }
+    private boolean isNumber() {
+        return '0' <= currentLex && currentLex <= '9';
     }
 
-    private boolean isConst() {
-        return between('0', '9');
+    private boolean isVariable() {
+        return currentLex == 'x' || currentLex == 'y' || currentLex == 'z';
     }
 
-    private boolean isString() {
-        return between('a', 'z') || between('A', 'Z');
+    private boolean isAdditiveOperation() {
+        return currentLex == '+' || currentLex == '-';
     }
 
-    private boolean between(char ch1, char ch2) {
-        return ch1 <= current && current <= ch2;
+    private boolean isMultiplicativeOperation() {
+        return currentLex == '*' || currentLex == '/';
+    }
+
+    private boolean isShiftOperation() {
+        return currentLex == '<' || currentLex == '>';
     }
 }
