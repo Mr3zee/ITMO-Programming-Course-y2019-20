@@ -1,15 +1,13 @@
 package expression.exception;
 
-import expression.CommonExpression;
-
 public class DivisionByZeroException extends ExpressionException {
-    public DivisionByZeroException(CommonExpression expression) {
+    public DivisionByZeroException(String expression) {
         super(expression);
     }
 
     @Override
     public String getMessage() {
-        return "DivisionByZeroException in " + getExpression() + "\n";
+        return "DivisionByZeroException in " + getMessage() + "\n";
     }
 }
 

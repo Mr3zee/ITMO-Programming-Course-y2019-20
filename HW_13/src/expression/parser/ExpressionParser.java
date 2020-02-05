@@ -22,6 +22,8 @@ public class ExpressionParser extends BaseParser implements Parser {
                 result = new LeftShift(result, shiftsParse());
             } else if (compare(">>")) {
                 result = new RightShift(result, shiftsParse());
+            } else {
+                throw error("Invalid Lexeme 2");
             }
             skipWhitespaces();
         }
@@ -77,7 +79,7 @@ public class ExpressionParser extends BaseParser implements Parser {
             }
             return new UnaryMinus(multiplicativeParse());
         }
-        throw error("Invalid lexeme");
+        throw error("Invalid lexeme 1");
     }
 
     private CommonExpression parseNumber(String number) {
