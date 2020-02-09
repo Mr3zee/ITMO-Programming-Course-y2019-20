@@ -24,4 +24,14 @@ public class Divide extends BinaryOperations {
     protected int primary() {
         return 1213;
     }
+
+    @Override
+    public int getPriority() {
+        return 20;
+    }
+
+    @Override
+    public boolean dependsOnOrder() {
+        return true;
+    }
 }

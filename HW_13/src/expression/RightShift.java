@@ -24,4 +24,14 @@ public class RightShift extends BinaryOperations {
     protected int primary() {
         return 3389;
     }
+
+    @Override
+    public int getPriority() {
+        return 0;
+    }
+
+    @Override
+    public boolean dependsOnOrder() {
+        return false;
+    }
 }

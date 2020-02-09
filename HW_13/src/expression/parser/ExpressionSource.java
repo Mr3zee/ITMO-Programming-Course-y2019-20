@@ -1,6 +1,6 @@
 package expression.parser;
 
-import expression.exception.*;
+import expression.exceptions.expExceptions.*;
 
 public class ExpressionSource implements Source {
     private int pos;
@@ -16,6 +16,12 @@ public class ExpressionSource implements Source {
     }
 
     @Override
+    public char end() {
+        pos++;
+        return '\0';
+    }
+
+    @Override
     public boolean hasNext() {
         return pos < expression.length();
     }
@@ -23,5 +29,13 @@ public class ExpressionSource implements Source {
     @Override
     public ExpressionException error(String message) {
         return new ExpressionException(pos + ": " + message);
+    }
+
+    public int getPosition() {
+        return pos;
+    }
+
+    public String getExpression() {
+        return expression;
     }
 }

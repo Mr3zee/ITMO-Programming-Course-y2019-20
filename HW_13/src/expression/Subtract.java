@@ -1,5 +1,7 @@
 package expression;
 
+import javax.swing.plaf.TreeUI;
+
 public class Subtract extends BinaryOperations {
 
     public Subtract(CommonExpression firstExp, CommonExpression secondExp) {
@@ -24,5 +26,15 @@ public class Subtract extends BinaryOperations {
     @Override
     protected int primary() {
         return 2777;
+    }
+
+    @Override
+    public int getPriority() {
+        return 10;
+    }
+
+    @Override
+    public boolean dependsOnOrder() {
+        return true;
     }
 }

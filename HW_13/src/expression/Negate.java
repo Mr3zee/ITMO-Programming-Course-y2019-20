@@ -1,28 +1,29 @@
 package expression;
 
-public class Square extends UnaryOperations {
-    public Square(CommonExpression expression) {
+public class Negate extends UnaryOperations {
+
+    public Negate(CommonExpression expression) {
         super(expression);
     }
 
     @Override
-    protected int toCalculate(int x) {
-        return x * x;
+    protected int toCalculate(int arg) {
+        return -1 * arg;
     }
 
     @Override
-    protected double toCalculate(double x) {
-        return x * x;
+    protected double toCalculate(double arg) {
+        return -1.0 * arg;
     }
 
     @Override
     protected String getOperand() {
-        return "square ";
+        return "-";
     }
 
     @Override
     protected int primary() {
-        return 1427;
+        return 2027;
     }
 
     @Override
