@@ -1,13 +1,14 @@
 package expression.parser;
 
-import expression.exception.*;
+import java.util.Map;
+import java.util.Set;
 
 public class BaseParser {
     protected ExpressionSource source;
-    protected char currentLex;
+    private char currentLex;
 
     protected void nextChar() {
-        currentLex = source.hasNext() ? source.next() : '\0';
+        currentLex = source.hasNext() ? source.next() : source.end();
     }
 
     protected boolean compare(char expected) {
@@ -18,19 +19,65 @@ public class BaseParser {
         return false;
     }
 
-    protected boolean compare(String expected) {
-        int pos = 0;
-        while (pos < expected.length() && compare(expected.charAt(pos++))){
-            //skip
+    protected FoundNextInfo getNext(final Map<Character, String> WORDS, final Set<Character> LEXEMES) {
+        String next;
+        next = takeWord(WORDS.get(currentLex));
+        if (next == null) {
+            next = nextWord(LEXEMES);
         }
-        return pos == expected.length();
+        return new FoundNextInfo(next, source.getPosition() - next.length() - 1, source.getExpression());
     }
 
-    protected void expect(char expected) {
-        if (expected != currentLex) {
-            throw error("Expected \"" + expected + "\", found \"" + currentLex + "\"");
+    protected String takeWord(String expect) {
+        if (expect == null) {
+            return null;
         }
-        nextChar();
+        StringBuilder word = new StringBuilder();
+        int i = 0;
+        while (i < expect.length() && currentLex == expect.charAt(i++)) {
+            word.append(getCurrentLex());
+            nextChar();
+        }
+        return word.toString();
+    }
+
+    protected String nextWord(final Set<Character> LEXEMES) {
+        StringBuilder word = new StringBuilder();
+        char first = currentLex;
+        while (!Character.isWhitespace(currentLex) && currentLex != '\0' && (!LEXEMES.contains(currentLex) || currentLex == first)) {
+            word.append(currentLex);
+            nextChar();
+        }
+        return word.toString();
+    }
+
+    protected String takeNumber() {
+        StringBuilder num = new StringBuilder();
+        while (Character.isDigit(currentLex)) {
+            num.append(currentLex);
+            nextChar();
+        }
+        return num.toString();
+    }
+
+    protected boolean testWith(char test, char ... ch) {
+        boolean res = false;
+        for (char c : ch) {
+            res |= test == c;
+        }
+        return res;
+    }
+
+    protected boolean test(char ... ch) {
+        return testWith(currentLex, ch);
+    }
+
+    protected boolean isDigit() {
+        return Character.isDigit(currentLex);
+    }
+
+    public char getCurrentLex() {
+        return currentLex;
     }
 
     protected void skipWhitespaces() {
@@ -39,8 +86,8 @@ public class BaseParser {
         }
     }
 
-    protected ExpressionException error(String message) {
-        throw source.error(message);
+    protected boolean hasNext() {
+        return source.hasNext() || currentLex != '\0';
     }
 
 }

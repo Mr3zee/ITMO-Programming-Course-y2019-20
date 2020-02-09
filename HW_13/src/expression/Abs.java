@@ -24,4 +24,14 @@ public class Abs extends UnaryOperations {
     protected int primary() {
         return 1607;
     }
+
+    @Override
+    public int getPriority() {
+        return 30;
+    }
+
+    @Override
+    public boolean dependsOnOrder() {
+        return false;
+    }
 }

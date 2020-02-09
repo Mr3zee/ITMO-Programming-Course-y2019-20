@@ -24,4 +24,14 @@ public class LeftShift extends BinaryOperations {
     protected int primary() {
         return 2083;
     }
+
+    @Override
+    public int getPriority() {
+        return 0;
+    }
+
+    @Override
+    public boolean dependsOnOrder() {
+        return false;
+    }
 }

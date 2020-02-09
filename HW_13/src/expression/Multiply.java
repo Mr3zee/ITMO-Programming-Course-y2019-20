@@ -24,4 +24,14 @@ public class Multiply extends BinaryOperations {
     protected int primary() {
         return 1747;
     }
+
+    @Override
+    public int getPriority() {
+        return 20;
+    }
+
+    @Override
+    public boolean dependsOnOrder() {
+        return false;
+    }
 }

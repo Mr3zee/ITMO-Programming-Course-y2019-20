@@ -33,6 +33,11 @@ public abstract class UnaryOperations implements CommonExpression {
         return "(" + getOperand() + expression + ")";
     }
 
+    @Override
+    public String toMiniString() {
+        return getOperand() + expression;
+    }
+
     protected abstract String getOperand();
 
     @Override

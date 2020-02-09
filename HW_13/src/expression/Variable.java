@@ -41,4 +41,14 @@ public class Variable implements CommonExpression {
     public int hashCode() {
         return Objects.hash(name);
     }
+
+    @Override
+    public int getPriority() {
+        return 30;
+    }
+
+    @Override
+    public boolean dependsOnOrder() {
+        return false;
+    }
 }

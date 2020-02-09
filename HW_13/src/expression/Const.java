@@ -41,4 +41,14 @@ public class Const implements CommonExpression {
     public int hashCode() {
         return Objects.hash(value);
     }
+
+    @Override
+    public int getPriority() {
+        return 30;
+    }
+
+    @Override
+    public boolean dependsOnOrder() {
+        return false;
+    }
 }

@@ -25,4 +25,14 @@ public class Add extends BinaryOperations {
     protected int primary() {
         return 3557;
     }
+
+    @Override
+    public int getPriority() {
+        return 10;
+    }
+
+    @Override
+    public boolean dependsOnOrder() {
+        return false;
+    }
 }
