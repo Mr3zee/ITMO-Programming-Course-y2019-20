@@ -1,0 +1,20 @@
+<keymap version="1" name="Windows copy" parent="$default">
+  <action id="CloseProject">
+    <keyboard-shortcut first-keystroke="ctrl caps_lock" />
+  </action>
+  <action id="GuiDesigner.CreateListener" />
+  <action id="MethodHierarchy.OverrideMethodAction" />
+  <action id="NewClass">
+    <keyboard-shortcut first-keystroke="shift ctrl comma" />
+  </action>
+  <action id="NewDir">
+    <keyboard-shortcut first-keystroke="ctrl alt comma" />
+  </action>
+  <action id="OpenFile">
+    <keyboard-shortcut first-keystroke="ctrl o" />
+  </action>
+  <action id="OverrideMethods" />
+  <action id="ShowSettings">
+    <keyboard-shortcut first-keystroke="ctrl alt slash" />
+  </action>
+</keymap>
