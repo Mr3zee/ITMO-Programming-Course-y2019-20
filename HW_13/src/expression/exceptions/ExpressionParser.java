@@ -13,7 +13,8 @@ public class ExpressionParser extends BaseParser implements Parser {
 
     public ExpressionParser() {
         super(Set.of ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'x', 'y', 'z', '+', '-', '*', '/', '(', ')', '<', '>', '\0'),
-                Map.of('a', "abs", 's', "square", '<', "<<", '>', ">>"));
+                Map.of('a', "abs", 's', "square", '<', "<<", '>', ">>",
+                        'p', "pow2", 'l', "log2"));
     }
 
     @Override
@@ -101,13 +102,13 @@ public class ExpressionParser extends BaseParser implements Parser {
             }
             throw new NoParenthesisPEException("closing", getNext());
         } else if (test('a')) {
-            compareLexeme("abs");
-            lastLexeme = Lexeme.ABS;
-            return new CheckedAbs(multiplicativeParse());
+            return new CheckedAbs(wordOpsHandler("abs", Lexeme.ABS));
         } else if (test('s')) {
-            compareLexeme("square");
-            lastLexeme = Lexeme.SQR;
-            return new CheckedSquare(multiplicativeParse());
+            return new CheckedSquare(wordOpsHandler("square", Lexeme.SQR));
+        } else if (test('p')) {
+            return new CheckedPow2(wordOpsHandler("pow2", Lexeme.POW2));
+        } else if (test('l')) {
+            return new CheckedLog2(wordOpsHandler("log2", Lexeme.LOG2));
         } else if (test('x', 'y', 'z')) {
             char c = getCurrentLex();
             lastLexeme = c == 'x' ? Lexeme.X : c == 'y' ? Lexeme.Y : Lexeme.Z;
@@ -126,6 +127,15 @@ public class ExpressionParser extends BaseParser implements Parser {
             return new CheckedNegate(multiplicativeParse());
         }
         throw missingLexemeHandler();
+    }
+
+    private CommonExpression wordOpsHandler(String expected, Lexeme lexeme) {
+        compareLexeme(expected);
+        if (Character.isWhitespace(getCurrentLex()) || test('-', '(', '\0')) {
+            lastLexeme = lexeme;
+            return multiplicativeParse();
+        }
+        throw new MissingWhitespacePEException(lexeme.getName(), getNext());
     }
 
     private void compareLexeme(final String expect) {
