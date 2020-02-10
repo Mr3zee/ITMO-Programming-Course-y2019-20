@@ -14,7 +14,7 @@ public class ExpressionParser extends BaseParser implements Parser {
     public ExpressionParser() {
         super(Set.of ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'x', 'y', 'z', '+', '-', '*', '/', '(', ')', '<', '>', '\0'),
                 Map.of('a', "abs", 's', "square", '<', "<<", '>', ">>",
-                        'p', "pow2", 'l', "log2"));
+                        'p', "pow2", 'l', "log2", '*', "**", '/', "//"));
     }
 
     @Override
@@ -92,6 +92,29 @@ public class ExpressionParser extends BaseParser implements Parser {
     }
 
     private CommonExpression multiplicativeParse() throws ParsingExpressionException {
+        CommonExpression result = powAndLogParse();
+        skipWhitespaces();
+        while (test('*', '/')) {
+            char cur = getCurrentLex();
+            nextChar();
+            if (test(cur)) {
+                if (compare('*')) {
+                    lastLexeme = Lexeme.POW;
+                    result = new CheckedPower(result, powAndLogParse());
+                } else if (compare('/')) {
+                    lastLexeme = Lexeme.LOG;
+                    result = new CheckedLogarithm(result, powAndLogParse());
+                }
+                skipWhitespaces();
+            } else {
+                getBack();
+                break;
+            }
+        }
+        return result;
+    }
+
+    private CommonExpression powAndLogParse() throws ParsingExpressionException {
         skipWhitespaces();
         if (compare('(')) {
             lastLexeme = Lexeme.OPAR;
@@ -124,7 +147,7 @@ public class ExpressionParser extends BaseParser implements Parser {
                 return parseNumber("-" + takeNumber());
             }
             lastLexeme = Lexeme.MINUS;
-            return new CheckedNegate(multiplicativeParse());
+            return new CheckedNegate(powAndLogParse());
         }
         throw missingLexemeHandler();
     }
@@ -133,7 +156,7 @@ public class ExpressionParser extends BaseParser implements Parser {
         compareLexeme(expected);
         if (Character.isWhitespace(getCurrentLex()) || test('-', '(', '\0')) {
             lastLexeme = lexeme;
-            return multiplicativeParse();
+            return powAndLogParse();
         }
         throw new MissingWhitespacePEException(lexeme.getName(), getNext());
     }

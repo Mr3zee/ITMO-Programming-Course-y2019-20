@@ -32,6 +32,6 @@ public class Power extends BinaryOperations {
 
     @Override
     public boolean dependsOnOrder() {
-        return true;
+        return false;
     }
 }

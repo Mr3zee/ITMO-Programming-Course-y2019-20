@@ -32,6 +32,6 @@ public class Logarithm extends BinaryOperations {
 
     @Override
     public boolean dependsOnOrder() {
-        return true;
+        return false;
     }
 }

@@ -11,7 +11,7 @@ public class CheckedLogarithm extends Logarithm {
 
     @Override
     protected int toCalculate(int firstArg, int secondArg) {
-        if (firstArg <= 1 || secondArg <= 0) {
+        if (secondArg <= 1 || firstArg <= 0) {
             throw new InvalidFunctionParametersEEException("Logarithm", firstArg, secondArg);
         }
         return super.toCalculate(firstArg, secondArg);
