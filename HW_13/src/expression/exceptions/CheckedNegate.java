@@ -15,6 +15,6 @@ public class CheckedNegate extends Negate {
         if (arg == Integer.MIN_VALUE) {
             throw new OverflowEEException("Negate", arg);
         }
-        return -arg;
+        return super.toCalculate(arg);
     }
 }

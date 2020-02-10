@@ -19,6 +19,6 @@ public class CheckedAdd extends Add {
         if (firstArg < 0 && Integer.MIN_VALUE - firstArg > secondArg) {
             throw new UnderflowEEException("Add", firstArg, secondArg);
         }
-        return firstArg + secondArg;
+        return super.toCalculate(firstArg, secondArg);
     }
 }

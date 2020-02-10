@@ -1,29 +1,31 @@
-package expression;
+package expression.parser;
 
-public class Negate extends UnaryOperations {
+import expression.CommonExpression;
+import expression.UnaryOperations;
 
-    public Negate(CommonExpression expression) {
+public class Pow2 extends UnaryOperations {
+    public Pow2(CommonExpression expression) {
         super(expression);
     }
 
     @Override
     protected int toCalculate(int arg) {
-        return -arg;
+        return (int) Math.pow(2, arg);
     }
 
     @Override
     protected double toCalculate(double arg) {
-        return -arg;
+        return Math.pow(2, arg);
     }
 
     @Override
     protected String getOperand() {
-        return "-";
+        return "pow2 ";
     }
 
     @Override
     protected int primary() {
-        return 2027;
+        return 4079;
     }
 
     @Override

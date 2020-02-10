@@ -15,6 +15,6 @@ public class CheckedAbs extends Abs {
         if (x == Integer.MIN_VALUE) {
             throw new OverflowEEException("Abs", x);
         }
-        return x >= 0 ? x : -x;
+        return super.toCalculate(x);
     }
 }

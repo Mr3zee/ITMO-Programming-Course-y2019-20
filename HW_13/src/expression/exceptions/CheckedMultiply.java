@@ -21,6 +21,6 @@ public class CheckedMultiply extends Multiply {
             (firstArg != -1 && firstArg < 0 && secondArg > 0 && (Integer.MIN_VALUE / firstArg) < secondArg)) {
             throw new UnderflowEEException("Multiply", firstArg, secondArg);
         }
-        return firstArg * secondArg;
+        return super.toCalculate(firstArg, secondArg);
     }
 }

@@ -1,8 +1,10 @@
 package expression.parser;
 
 public enum Lexeme {
-    START("Start of the expression"), NUM("Number"), VAR("Variable"),
-    OP("Operator"), OPAR("Opening parenthesis"), CPAR("Closing parenthesis");
+    PLUS("Add"), MINUS("Subtract"), MULT("Multiply"), DIV("Divide"),
+    LSHIFT("Left shift"), RSHIFT("Right shift"), ABS("Abs"), SQR("Square"),
+    INVALID("Invalid lexeme"), X("Variable x"), Y("Variable y"), Z("Variable z"),
+    OPAR("Opening parenthesis"), CPAR("Closing parenthesis"), NUM("Number"), START("Start of the expression");
 
     private final String name;
 

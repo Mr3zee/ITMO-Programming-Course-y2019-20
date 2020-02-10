@@ -19,6 +19,6 @@ public class CheckedSubtract extends Subtract {
         if (firstArg < 0 && firstArg - Integer.MIN_VALUE < secondArg) {
             throw new UnderflowEEException("Subtract", firstArg, secondArg);
         }
-        return firstArg - secondArg;
+        return super.toCalculate(firstArg, secondArg);
     }
 }
