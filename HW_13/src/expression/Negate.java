@@ -8,12 +8,12 @@ public class Negate extends UnaryOperations {
 
     @Override
     protected int toCalculate(int arg) {
-        return -1 * arg;
+        return -arg;
     }
 
     @Override
     protected double toCalculate(double arg) {
-        return -1.0 * arg;
+        return -arg;
     }
 
     @Override

@@ -19,6 +19,6 @@ public class CheckedDivide extends Divide {
         if (firstArg == Integer.MIN_VALUE && secondArg == -1) {
             throw new OverflowEEException("Divide", firstArg, secondArg);
         }
-        return firstArg / secondArg;
+        return super.toCalculate(firstArg, secondArg);
     }
 }

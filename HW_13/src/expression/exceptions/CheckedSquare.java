@@ -15,6 +15,6 @@ public class CheckedSquare extends Square {
         if ((x == Integer.MIN_VALUE) || (x > 0 && Integer.MAX_VALUE / x < x) || (x < 0 && Integer.MAX_VALUE / x > x)) {
             throw new OverflowEEException("Square", x);
         }
-        return x * x;
+        return super.toCalculate(x);
     }
 }
