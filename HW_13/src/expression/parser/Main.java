@@ -6,7 +6,7 @@ import expression.exceptions.expExceptions.*;
 
 public class Main {
     public static void main(String[] args) {
-        String expression = "abs-square3";
+        String expression = "1 + ";
         try {
             TripleExpression tripleExpression = new ExpressionParser().parse(expression);
             System.out.println(tripleExpression.toMiniString());

@@ -73,8 +73,8 @@ public class ExceptionsTest {
         invalidParse("(1 + 2) xyz", 8, exceptionName);
         invalidParse("(1 + 2)xyz", 7, exceptionName);
         invalidParse("xyz (1 + 2)", 1, exceptionName);
-        invalidParse("x(1 + 2)", 1, exceptionName);
-        invalidParse("x (1 + 2)", 2, exceptionName);
+        invalidParse("y(1 + 2)", 1, exceptionName);
+        invalidParse("z (1 + 2)", 2, exceptionName);
     }
 
     @Test
