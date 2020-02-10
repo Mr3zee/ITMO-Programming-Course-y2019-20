@@ -6,13 +6,17 @@ import expression.exceptions.expExceptions.*;
 
 public class Main {
     public static void main(String[] args) {
-        String expression = "(((z) * (x))) - (((378182610) * (x)) */ (((y) / (-773879020))))";
-        try {
-            TripleExpression tripleExpression = new ExpressionParser().parse(expression);
-            System.out.println(tripleExpression.toMiniString());
-            System.out.println(tripleExpression.evaluate(0, 1, 2));
-        } catch (ExpressionException e) {
-            System.out.println(e.getMessage());
-        }
+//        String expression = "(((z) * (x))) - (((378182610) * (x)) */ (((y) / (-773879020))))";
+//        try {
+//            TripleExpression tripleExpression = new ExpressionParser().parse(expression);
+//            System.out.println(tripleExpression.toMiniString());
+//            System.out.println(tripleExpression.evaluate(0, 1, 2));
+//        } catch (ExpressionException e) {
+//            System.out.println(e.getMessage());
+//        }
+        CommonExpression expression = new Digits(new Const(-12345.6));
+        System.out.println(expression.toMiniString());
+        System.out.println(expression.evaluate(0));
+        System.out.println(expression.evaluate(0.0));
     }
 }
