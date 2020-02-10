@@ -1,5 +1,9 @@
 <application>
   <component name="GeneralSettings">
+    <option name="confirmExit" value="false" />
+    <option name="confirmOpenNewProject2" value="0" />
+    <option name="defaultProjectDirectory" value="C:\Users\809542\Desktop\y2019-20" />
+    <option name="reopenLastProject" value="false" />
     <option name="showTipsOnStartup" value="false" />
   </component>
   <component name="Registry">
