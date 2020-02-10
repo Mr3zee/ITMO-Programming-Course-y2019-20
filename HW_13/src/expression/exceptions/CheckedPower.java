@@ -20,17 +20,17 @@ public class CheckedPower extends Power {
             return 0;
         }
         int ans = 1;
+        boolean neg = firstArg < 0;
+        firstArg = Math.abs(firstArg);
         for (int i = 0; i < secondArg; i++) {
-            if ((ans > 0 && firstArg > 0 && (Integer.MAX_VALUE / ans) < firstArg) ||
-                    (ans < 0 && firstArg < 0 && (Integer.MAX_VALUE / ans) > firstArg)) {
-                throw new OverflowEEException("Power", firstArg, secondArg);
-            }
-            if ((ans > 0 && firstArg < 0 && (Integer.MIN_VALUE / ans) > firstArg) ||
-                    (ans != -1 && ans < 0 && firstArg > 0 && (Integer.MIN_VALUE / ans) < firstArg)) {
-                throw new UnderflowEEException("Power", firstArg, secondArg);
+            if ((Integer.MAX_VALUE / ans) < firstArg) {
+                if (secondArg % 2 == 0 || !neg) {
+                    throw new OverflowEEException("Power", firstArg, secondArg);
+                }
+                throw new UnderflowEEException("Power", -firstArg, secondArg);
             }
             ans *= firstArg;
         }
-        return ans;
+        return secondArg % 2 == 0 || !neg ? ans: -ans;
     }
 }
