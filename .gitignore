@@ -1,8 +1,5 @@
-*.cmd
-*.iml
 *.class
 *.ini
 *.txt
 *.jar
-**/out/**
 **/base/**
