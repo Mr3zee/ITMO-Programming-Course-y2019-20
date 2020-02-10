@@ -17,7 +17,7 @@ public class Divide extends BinaryOperations {
 
     @Override
     protected String getOperand() {
-        return " / ";
+        return "/";
     }
 
     @Override

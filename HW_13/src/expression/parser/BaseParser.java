@@ -109,4 +109,9 @@ public class BaseParser {
         return WORDS.containsValue(c);
     }
 
+    protected void getBack() {
+        source.getBack();
+        nextChar();
+    }
+
 }

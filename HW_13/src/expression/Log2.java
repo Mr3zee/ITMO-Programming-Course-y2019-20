@@ -27,7 +27,7 @@ public class Log2 extends UnaryOperations {
 
     @Override
     public int getPriority() {
-        return 30;
+        return 40;
     }
 
     @Override

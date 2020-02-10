@@ -1,29 +1,30 @@
 package expression;
 
-public class Negate extends UnaryOperations {
-
-    public Negate(CommonExpression expression) {
+public class Reverse extends UnaryOperations {
+    public Reverse(CommonExpression expression) {
         super(expression);
     }
 
     @Override
     protected int toCalculate(int arg) {
-        return -arg;
+        boolean i = arg < 0;
+        return Integer.parseInt((i ? "-" : "") + new StringBuilder().append(Math.abs(arg)).reverse().toString());
     }
 
     @Override
     protected double toCalculate(double arg) {
-        return -arg;
+        boolean i = arg < 0;
+        return Double.parseDouble((i ? "-" : "") + new StringBuilder().append(Math.abs(arg)).reverse().toString());
     }
 
     @Override
     protected String getOperand() {
-        return "-";
+        return "reverse ";
     }
 
     @Override
     protected int primary() {
-        return 2027;
+        return 7027;
     }
 
     @Override

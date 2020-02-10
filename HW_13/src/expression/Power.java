@@ -1,33 +1,33 @@
 package expression;
 
-public class Multiply extends BinaryOperations {
-    public Multiply(CommonExpression firstExp, CommonExpression secondExp) {
+public class Power extends BinaryOperations {
+    public Power(CommonExpression firstExp, CommonExpression secondExp) {
         super(firstExp, secondExp);
     }
 
     @Override
     protected int toCalculate(int firstArg, int secondArg) {
-        return firstArg * secondArg;
+        return (int) Math.pow(firstArg, secondArg);
     }
 
     @Override
     protected double toCalculate(double firstArg, double secondArg) {
-        return firstArg * secondArg;
+        return Math.pow(firstArg, secondArg);
     }
 
     @Override
     protected String getOperand() {
-        return "*";
+        return "**";
     }
 
     @Override
     protected int primary() {
-        return 1747;
+        return 6827;
     }
 
     @Override
     public int getPriority() {
-        return 20;
+        return 30;
     }
 
     @Override

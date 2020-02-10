@@ -13,7 +13,9 @@ public class ExpressionParser extends BaseParser implements Parser {
 
     public ExpressionParser() {
         super(Set.of ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'x', 'y', 'z', '+', '-', '*', '/', '(', ')', '<', '>', '\0'),
-                Map.of('a', "abs", 's', "square", '<', "<<", '>', ">>"));
+                Map.of('a', "abs", 's', "square", '<', "<<", '>', ">>",
+                        'p', "pow2", 'l', "log2", '*', "**", '/', "//",
+                        'r', "reverse", 'd', "digits"));
     }
 
     @Override
@@ -91,6 +93,29 @@ public class ExpressionParser extends BaseParser implements Parser {
     }
 
     private CommonExpression multiplicativeParse() throws ParsingExpressionException {
+        CommonExpression result = powAndLogParse();
+        skipWhitespaces();
+        while (test('*', '/')) {
+            char cur = getCurrentLex();
+            nextChar();
+            if (test(cur)) {
+                if (compare('*')) {
+                    lastLexeme = Lexeme.POW;
+                    result = new CheckedPower(result, powAndLogParse());
+                } else if (compare('/')) {
+                    lastLexeme = Lexeme.LOG;
+                    result = new CheckedLogarithm(result, powAndLogParse());
+                }
+                skipWhitespaces();
+            } else {
+                getBack();
+                break;
+            }
+        }
+        return result;
+    }
+
+    private CommonExpression powAndLogParse() throws ParsingExpressionException {
         skipWhitespaces();
         if (compare('(')) {
             lastLexeme = Lexeme.OPAR;
@@ -101,13 +126,17 @@ public class ExpressionParser extends BaseParser implements Parser {
             }
             throw new NoParenthesisPEException("closing", getNext());
         } else if (test('a')) {
-            compareLexeme("abs");
-            lastLexeme = Lexeme.ABS;
-            return new CheckedAbs(multiplicativeParse());
+            return new CheckedAbs(wordOpsHandler("abs", Lexeme.ABS));
         } else if (test('s')) {
-            compareLexeme("square");
-            lastLexeme = Lexeme.SQR;
-            return new CheckedSquare(multiplicativeParse());
+            return new CheckedSquare(wordOpsHandler("square", Lexeme.SQR));
+        } else if (test('p')) {
+            return new CheckedPow2(wordOpsHandler("pow2", Lexeme.POW2));
+        } else if (test('l')) {
+            return new CheckedLog2(wordOpsHandler("log2", Lexeme.LOG2));
+        } else if (test('d')) {
+            return new Digits(wordOpsHandler("digits", Lexeme.DIG));
+        } else if (test('r')) {
+            return new CheckedReverse(wordOpsHandler("reverse", Lexeme.REV));
         } else if (test('x', 'y', 'z')) {
             char c = getCurrentLex();
             lastLexeme = c == 'x' ? Lexeme.X : c == 'y' ? Lexeme.Y : Lexeme.Z;
@@ -123,9 +152,18 @@ public class ExpressionParser extends BaseParser implements Parser {
                 return parseNumber("-" + takeNumber());
             }
             lastLexeme = Lexeme.MINUS;
-            return new CheckedNegate(multiplicativeParse());
+            return new CheckedNegate(powAndLogParse());
         }
         throw missingLexemeHandler();
+    }
+
+    private CommonExpression wordOpsHandler(String expected, Lexeme lexeme) {
+        compareLexeme(expected);
+        if (Character.isWhitespace(getCurrentLex()) || test('-', '(', '\0')) {
+            lastLexeme = lexeme;
+            return powAndLogParse();
+        }
+        throw new MissingWhitespacePEException(lexeme.getName(), getNext());
     }
 
     private void compareLexeme(final String expect) {

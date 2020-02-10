@@ -32,7 +32,7 @@ public abstract class BinaryOperations implements CommonExpression {
 
     @Override
     public String toString() {
-        return "(" + firstExp + getOperand() + secondExp + ")";
+        return "(" + firstExp + ' ' + getOperand() + ' ' + secondExp + ")";
     }
 
     @Override
@@ -41,7 +41,7 @@ public abstract class BinaryOperations implements CommonExpression {
         boolean secondHigherPriority = this.getPriority() > secondExp.getPriority() ||
                 (this.getPriority() == secondExp.getPriority() && (this.dependsOnOrder() || secondExp.dependsOnOrder()));
         return (firstHigherPriority ? "(" : "") + firstExp.toMiniString() + (firstHigherPriority ? ")" : "")
-                + getOperand() +
+                + ' ' + getOperand() + ' ' +
                 (secondHigherPriority ? "(" : "") + secondExp.toMiniString() + (secondHigherPriority ? ")" : "");
     }
 

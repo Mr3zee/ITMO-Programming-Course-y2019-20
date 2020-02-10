@@ -38,4 +38,8 @@ public class ExpressionSource implements Source {
     public String getExpression() {
         return expression;
     }
+
+    public void getBack() {
+        pos -= 2;
+    }
 }

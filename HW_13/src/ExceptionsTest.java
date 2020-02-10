@@ -64,9 +64,6 @@ public class ExceptionsTest {
         invalidParse("square abs", 10, exceptionName);
         invalidParse("1 abs 2", 2, exceptionName);
         invalidParse("1abs 2", 1, exceptionName);
-        invalidParse("absabs", 6, exceptionName);
-        invalidParse("squaresquare", 12, exceptionName);
-        invalidParse("squareabs", 9, exceptionName);
         invalidParse("(1 + 2) (3 + 4)", 8, exceptionName);
         invalidParse("(1 + 2)(3 + 4)", 7, exceptionName);
         invalidParse("(1 + 2)(", 7, exceptionName);
@@ -113,7 +110,6 @@ public class ExceptionsTest {
         invalidParse("1 >< 2", 2, exceptionName);
         invalidParse("1 ><", 2, exceptionName);
         invalidParse("a", 0, exceptionName);
-        invalidParse("absa", 3, exceptionName);
         invalidParse("s", 0, exceptionName);
         invalidParse("sqare", 0, exceptionName);
     }
@@ -169,6 +165,16 @@ public class ExceptionsTest {
         String exceptionName = "Underflow";
         invalidEvaluate("x - y", Integer.MIN_VALUE, Integer.MAX_VALUE, 0, exceptionName);
         invalidEvaluate("x * y", Integer.MIN_VALUE, Integer.MAX_VALUE, 0, exceptionName);
+    }
+
+    @Test
+    public void MWPEE() {
+        System.out.println("MissingWhitespacePEException");
+        String exceptionName = "Whitespace";
+        invalidParse("absa", 3, exceptionName);
+        invalidParse("absabs", 3, exceptionName);
+        invalidParse("squaresquare", 6, exceptionName);
+        invalidParse("squareabs", 6, exceptionName);
     }
 
     private void validParse(final String input, final String valid) {

@@ -20,7 +20,7 @@ public class Subtract extends BinaryOperations {
 
     @Override
     protected String getOperand() {
-        return " - ";
+        return "-";
     }
 
     @Override
