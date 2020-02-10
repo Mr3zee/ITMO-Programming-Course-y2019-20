@@ -95,4 +95,18 @@ public class BaseParser {
         return source.hasNext() || currentLex != '\0';
     }
 
+    protected boolean find(char c) {
+        return LEXEMES.contains(c);
+    }
+
+    protected boolean find(String c) {
+        if (c.length() == 0) {
+            return true;
+        }
+        if (c.length() == 1) {
+            return find(c.charAt(0));
+        }
+        return WORDS.containsValue(c);
+    }
+
 }

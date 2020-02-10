@@ -6,7 +6,7 @@ import expression.exceptions.expExceptions.*;
 
 public class Main {
     public static void main(String[] args) {
-        String expression = "1 + ";
+        String expression = "1a";
         try {
             TripleExpression tripleExpression = new ExpressionParser().parse(expression);
             System.out.println(tripleExpression.toMiniString());

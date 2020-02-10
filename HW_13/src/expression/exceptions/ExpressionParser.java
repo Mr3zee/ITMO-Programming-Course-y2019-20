@@ -13,7 +13,7 @@ public class ExpressionParser extends BaseParser implements Parser {
 
     public ExpressionParser() {
         super(Set.of ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'x', 'y', 'z', '+', '-', '*', '/', '(', ')', '<', '>', '\0'),
-                Map.of('a', "abs", 's', "square"));
+                Map.of('a', "abs", 's', "square", '<', "<<", '>', ">>"));
     }
 
     @Override
@@ -151,11 +151,8 @@ public class ExpressionParser extends BaseParser implements Parser {
     }
 
     private ParsingExpressionException missingLexemeHandler() {
-        if (isDigit()) {
-            throw new MissingLexemePEException(lastLexeme.getName(), getNext());
-        }
         FoundNextInfo next = getNext();
-        if (next.getNext().length() == 0 || LexemeConverter.find(next.getNext())) {
+        if (find(next.getNext())) {
             return new MissingLexemePEException(lastLexeme.getName(), next);
         }
         return new IllegalSymbolPEException(next);
