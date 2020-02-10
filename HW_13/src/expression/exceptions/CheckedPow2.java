@@ -3,7 +3,7 @@ package expression.exceptions;
 import expression.CommonExpression;
 import expression.exceptions.expExceptions.InvalidFunctionParameterEEException;
 import expression.exceptions.expExceptions.OverflowEEException;
-import expression.parser.Pow2;
+import expression.Pow2;
 
 public class CheckedPow2 extends Pow2 {
     public CheckedPow2(CommonExpression expression) {

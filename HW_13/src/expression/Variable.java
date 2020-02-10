@@ -44,7 +44,7 @@ public class Variable implements CommonExpression {
 
     @Override
     public int getPriority() {
-        return 30;
+        return 40;
     }
 
     @Override

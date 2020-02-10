@@ -27,7 +27,7 @@ public class Abs extends UnaryOperations {
 
     @Override
     public int getPriority() {
-        return 30;
+        return 40;
     }
 
     @Override

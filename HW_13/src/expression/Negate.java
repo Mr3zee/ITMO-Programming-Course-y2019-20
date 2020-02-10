@@ -28,7 +28,7 @@ public class Negate extends UnaryOperations {
 
     @Override
     public int getPriority() {
-        return 30;
+        return 40;
     }
 
     @Override

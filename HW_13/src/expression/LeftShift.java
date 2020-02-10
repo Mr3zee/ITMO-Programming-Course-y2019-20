@@ -17,7 +17,7 @@ public class LeftShift extends BinaryOperations {
 
     @Override
     protected String getOperand() {
-        return " << ";
+        return "<<";
     }
 
     @Override

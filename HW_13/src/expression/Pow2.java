@@ -1,7 +1,4 @@
-package expression.parser;
-
-import expression.CommonExpression;
-import expression.UnaryOperations;
+package expression;
 
 public class Pow2 extends UnaryOperations {
     public Pow2(CommonExpression expression) {
@@ -30,7 +27,7 @@ public class Pow2 extends UnaryOperations {
 
     @Override
     public int getPriority() {
-        return 30;
+        return 40;
     }
 
     @Override
