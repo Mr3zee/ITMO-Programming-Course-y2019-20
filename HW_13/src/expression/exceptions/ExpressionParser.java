@@ -14,7 +14,8 @@ public class ExpressionParser extends BaseParser implements Parser {
     public ExpressionParser() {
         super(Set.of ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'x', 'y', 'z', '+', '-', '*', '/', '(', ')', '<', '>', '\0'),
                 Map.of('a', "abs", 's', "square", '<', "<<", '>', ">>",
-                        'p', "pow2", 'l', "log2", '*', "**", '/', "//"));
+                        'p', "pow2", 'l', "log2", '*', "**", '/', "//",
+                        'r', "reverse", 'd', "digits"));
     }
 
     @Override
@@ -132,6 +133,10 @@ public class ExpressionParser extends BaseParser implements Parser {
             return new CheckedPow2(wordOpsHandler("pow2", Lexeme.POW2));
         } else if (test('l')) {
             return new CheckedLog2(wordOpsHandler("log2", Lexeme.LOG2));
+        } else if (test('d')) {
+            return new Digits(wordOpsHandler("digits", Lexeme.DIG));
+        } else if (test('r')) {
+            return new CheckedReverse(wordOpsHandler("reverse", Lexeme.REV));
         } else if (test('x', 'y', 'z')) {
             char c = getCurrentLex();
             lastLexeme = c == 'x' ? Lexeme.X : c == 'y' ? Lexeme.Y : Lexeme.Z;

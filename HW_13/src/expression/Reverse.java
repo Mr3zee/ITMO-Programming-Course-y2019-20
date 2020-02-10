@@ -7,14 +7,14 @@ public class Reverse extends UnaryOperations {
 
     @Override
     protected int toCalculate(int arg) {
-        int i = arg < 0 ? -1 :1;
-        return i * Integer.parseInt(new StringBuilder().append(Math.abs(arg)).reverse().toString());
+        boolean i = arg < 0;
+        return Integer.parseInt((i ? "-" : "") + new StringBuilder().append(Math.abs(arg)).reverse().toString());
     }
 
     @Override
     protected double toCalculate(double arg) {
-        int i = arg < 0 ? -1 :1;
-        return i * Double.parseDouble(new StringBuilder().append(Math.abs(arg)).reverse().toString());
+        boolean i = arg < 0;
+        return Double.parseDouble((i ? "-" : "") + new StringBuilder().append(Math.abs(arg)).reverse().toString());
     }
 
     @Override
