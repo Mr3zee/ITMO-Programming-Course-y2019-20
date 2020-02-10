@@ -14,7 +14,7 @@ public class Main {
 //        } catch (ExpressionException e) {
 //            System.out.println(e.getMessage());
 //        }
-        CommonExpression expression = new Digits(new Const(-12345.6));
+        CommonExpression expression = new Reverse(new Const(-10));
         System.out.println(expression.toMiniString());
         System.out.println(expression.evaluate(0));
         System.out.println(expression.evaluate(0.0));
