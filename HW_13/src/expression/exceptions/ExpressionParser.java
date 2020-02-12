@@ -39,11 +39,11 @@ public class ExpressionParser extends BaseParser implements Parser {
         while (true) {
             if (test('<', '>')) {
                 if (test('<')) {
-                    compareLexeme("<<");
+                    checkLexeme("<<");
                     lastLexeme = Lexeme.LSHIFT;
                     result = new LeftShift(result, shiftsParse());
                 } else if (test('>')) {
-                    compareLexeme(">>");
+                    checkLexeme(">>");
                     lastLexeme = Lexeme.RSHIFT;
                     result = new RightShift(result, shiftsParse());
                 }
@@ -87,7 +87,7 @@ public class ExpressionParser extends BaseParser implements Parser {
     }
 
     private CommonExpression multiplicativeParse() throws ParsingExpressionException {
-        CommonExpression result = powAndLogParse();
+        CommonExpression result = lowLevelParse();
         skipWhitespaces();
         while (test('*', '/')) {
             char cur = getCurrentLex();
@@ -95,10 +95,10 @@ public class ExpressionParser extends BaseParser implements Parser {
             if (test(cur)) {
                 if (compare('*')) {
                     lastLexeme = Lexeme.POW;
-                    result = new CheckedPower(result, powAndLogParse());
+                    result = new CheckedPower(result, lowLevelParse());
                 } else if (compare('/')) {
                     lastLexeme = Lexeme.LOG;
-                    result = new CheckedLogarithm(result, powAndLogParse());
+                    result = new CheckedLogarithm(result, lowLevelParse());
                 }
                 skipWhitespaces();
             } else {
@@ -109,7 +109,7 @@ public class ExpressionParser extends BaseParser implements Parser {
         return result;
     }
 
-    private CommonExpression powAndLogParse() throws ParsingExpressionException {
+    private CommonExpression lowLevelParse() throws ParsingExpressionException {
         skipWhitespaces();
         if (compare('(')) {
             lastLexeme = Lexeme.OPAR;
@@ -146,26 +146,25 @@ public class ExpressionParser extends BaseParser implements Parser {
                 return parseNumber("-" + takeNumber());
             }
             lastLexeme = Lexeme.MINUS;
-            return new CheckedNegate(powAndLogParse());
+            return new CheckedNegate(lowLevelParse());
         }
         throw missingLexemeHandler();
     }
 
     private CommonExpression wordOpsHandler(String expected, Lexeme lexeme) {
-        compareLexeme(expected);
+        checkLexeme(expected);
         if (Character.isWhitespace(getCurrentLex()) || test('-', '(', '\0')) {
             lastLexeme = lexeme;
-            return powAndLogParse();
+            return lowLevelParse();
         }
         throw new MissingWhitespacePEException(lexeme.getName(), getNext());
     }
 
-    private void compareLexeme(final String expect) {
+    private void checkLexeme(final String expect) {
         int position = source.getPosition() - 1;
         String res = takeWord(expect);
         if (!res.equals(expect)) {
-            char c = getCurrentLex();
-            throw new InvalidOperatorFormPEException(expect, new FoundNextInfo(res + (c != '\0'? c : ""), position, source.getExpression()));
+            throw new InvalidOperatorFormPEException(expect, new FoundNextInfo(res + getCurrentLex(), position, source.getExpression()));
         }
     }
 
