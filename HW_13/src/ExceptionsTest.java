@@ -72,6 +72,10 @@ public class ExceptionsTest {
         invalidParse("xyz (1 + 2)", 1, exceptionName);
         invalidParse("y(1 + 2)", 1, exceptionName);
         invalidParse("z (1 + 2)", 2, exceptionName);
+        invalidParse("()", 1, exceptionName);
+        invalidParse("(())", 2, exceptionName);
+        invalidParse("x +++ y", 3, exceptionName);
+        invalidParse("x +<<< y", 3, exceptionName);
     }
 
     @Test
@@ -226,7 +230,7 @@ public class ExceptionsTest {
     private int getPosition(final String message) {
         StringBuilder pos = new StringBuilder();
         int i = message.length() - 2;
-        while (message.charAt(i--) != '\"'){}
+        while (message.charAt(i--) != '\"') {}
         i -= 4;
         while (!Character.isWhitespace(message.charAt(i))) {
             pos.append(message.charAt(i--));
@@ -236,9 +240,9 @@ public class ExceptionsTest {
 
     private String getName(final String message) {
         int i = 0;
-        while (!Character.isWhitespace(message.charAt(i++))){}
+        while (!Character.isWhitespace(message.charAt(i++))) {}
         int j = i;
-        while (!Character.isWhitespace(message.charAt(i++))){}
+        while (!Character.isWhitespace(message.charAt(i++))) {}
         return message.substring(j, i - 1);
     }
 }
