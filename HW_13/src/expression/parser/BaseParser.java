@@ -48,11 +48,10 @@ public class BaseParser {
 
     protected String nextWord() {
         StringBuilder word = new StringBuilder();
-        char first = currentLex;
-        while (!Character.isWhitespace(currentLex) && currentLex != '\0' && (!LEXEMES.contains(currentLex) || currentLex == first)) {
+        do {
             word.append(currentLex);
             nextChar();
-        }
+        } while (!Character.isWhitespace(currentLex) && currentLex != '\0' && (!LEXEMES.contains(currentLex)));
         return word.toString();
     }
 
@@ -86,8 +85,8 @@ public class BaseParser {
     }
 
     protected void skipWhitespaces() {
-        while (compare(' ') || compare('\n') || compare('\r') || compare('\t')) {
-            //skip
+        while (test(' ', '\n', '\r', '\t')) {
+            nextChar();
         }
     }
 

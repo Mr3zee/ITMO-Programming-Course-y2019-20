@@ -36,7 +36,6 @@ public class ExpressionParser extends BaseParser implements Parser {
 
     private CommonExpression expressionParse() throws ParsingExpressionException {
         CommonExpression result = shiftsParse();
-        skipWhitespaces();
         while (true) {
             if (test('<', '>')) {
                 if (test('<')) {
@@ -54,7 +53,6 @@ public class ExpressionParser extends BaseParser implements Parser {
                 }
                 break;
             }
-            skipWhitespaces();
         }
         return result;
     }
@@ -62,7 +60,6 @@ public class ExpressionParser extends BaseParser implements Parser {
 
     private CommonExpression shiftsParse() throws ParsingExpressionException {
         CommonExpression result = additiveParse();
-        skipWhitespaces();
         while (test('+', '-')) {
             if (compare('+')) {
                 lastLexeme = Lexeme.PLUS;
@@ -71,14 +68,12 @@ public class ExpressionParser extends BaseParser implements Parser {
                 lastLexeme = Lexeme.MINUS;
                 result = new CheckedSubtract(result, additiveParse());
             }
-            skipWhitespaces();
         }
         return result;
     }
 
     private CommonExpression additiveParse() throws ParsingExpressionException {
         CommonExpression result = multiplicativeParse();
-        skipWhitespaces();
         while (test('*', '/')) {
             if (compare('*')) {
                 lastLexeme = Lexeme.MULT;
@@ -87,7 +82,6 @@ public class ExpressionParser extends BaseParser implements Parser {
                 lastLexeme = Lexeme.DIV;
                 result = new CheckedDivide(result, multiplicativeParse());
             }
-            skipWhitespaces();
         }
         return result;
     }

@@ -6,7 +6,7 @@ import expression.exceptions.expExceptions.*;
 
 public class Main {
     public static void main(String[] args) {
-        String expression = "x";
+        String expression = "1 +++ 2";
         try {
             TripleExpression tripleExpression = new ExpressionParser().parse(expression);
             System.out.println(tripleExpression.toMiniString());
@@ -15,6 +15,4 @@ public class Main {
             System.out.println(e.getMessage());
         }
     }
-    //1228203722
-    //2147483647
 }
