@@ -1,0 +1,6 @@
+<application>
+  <component name="DokiDokiThemeConfig">
+    <option name="processedLegacyStartup" value="true" />
+    <option name="version" value="6.2.0" />
+  </component>
+</application>
