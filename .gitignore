@@ -1,5 +1,8 @@
+*.iml
 *.class
 *.ini
 *.txt
 *.jar
+**/.idea/**
+**/out/**
 **/base/**
