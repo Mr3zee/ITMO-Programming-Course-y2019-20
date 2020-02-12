@@ -1,0 +1,5 @@
+javac GameComponents\BoardConfiguration.java
+javac GameComponents\CheckConfiguration.java
+javac GameComponents\Checker.java
+javac GameComponents\Move.java
+javac GameComponents\MoveScore.java
