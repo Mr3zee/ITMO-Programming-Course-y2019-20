@@ -276,6 +276,7 @@ public class ExceptionsTest {
         invalidParse("pow2z", 4, exceptionName);
         invalidParse("pow2+", 4, exceptionName);
         invalidParse("pow2abs2", 4, exceptionName);
+        invalidParse("pow2square 2", 4, exceptionName);
     }
 
     @Test
