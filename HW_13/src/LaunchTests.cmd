@@ -1,2 +1,2 @@
-javac expression/parser/ParserReverseDigitsTest.java
-java -ea expression.parser.ParserReverseDigitsTest
+javac expression/exceptions/ExceptionsPowLogTest.java
+java -ea expression.exceptions.ExceptionsPowLogTest

@@ -35,6 +35,6 @@ public class CheckedPower extends Power {
             s >>= 1;
             f *= f;
         }
-        return ans;
+        return neg ? -ans : ans;
     }
 }
