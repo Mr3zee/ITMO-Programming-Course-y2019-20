@@ -2,10 +2,10 @@ package expression.exceptions.EExceptions;
 
 public class InvalidFunctionParametersEEException extends EvaluatingExpressionException {
     public InvalidFunctionParametersEEException(String name, int arg) {
-        super("Parameter in function \"" + name + "\" is invalid; Parameter: (" + arg + ")");
+        super("Parameter(s) in function \"" + name + "\" is(are) invalid; Parameter(s): (" + arg + ")");
     }
 
     public InvalidFunctionParametersEEException(String name, int arg1, int arg2) {
-        super("Parameters in function \"" + name + "\" are invalid; Parameter: (" + arg1 + ", " + arg2 + ")");
+        super("Parameter(s) in function \"" + name + "\" is(are) invalid; Parameter(s): (" + arg1 + ", " + arg2 + ")");
     }
 }
