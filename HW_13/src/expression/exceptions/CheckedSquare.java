@@ -2,8 +2,8 @@ package expression.exceptions;
 
 import expression.CommonExpression;
 import expression.Square;
-import expression.exceptions.expExceptions.EvaluatingExpressionException;
-import expression.exceptions.expExceptions.OverflowEEException;
+import expression.exceptions.EExceptions.EvaluatingExpressionException;
+import expression.exceptions.EExceptions.OverflowEEException;
 
 public class CheckedSquare extends Square {
     public CheckedSquare(CommonExpression expression) {

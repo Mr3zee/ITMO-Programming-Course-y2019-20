@@ -7,7 +7,12 @@ public class Log2 extends UnaryOperations {
 
     @Override
     protected int toCalculate(int arg) {
-        return (int) (Math.log(arg) / Math.log(2));
+        int ans = 0;
+        while (arg != 0) {
+            arg >>= 1;
+            ans++;
+        }
+        return ans - 1;
     }
 
     @Override

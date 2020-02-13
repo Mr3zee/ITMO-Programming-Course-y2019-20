@@ -2,9 +2,9 @@ package expression.exceptions;
 
 import expression.CommonExpression;
 import expression.Divide;
-import expression.exceptions.expExceptions.DivisionByZeroEException;
-import expression.exceptions.expExceptions.EvaluatingExpressionException;
-import expression.exceptions.expExceptions.OverflowEEException;
+import expression.exceptions.EExceptions.DivisionByZeroEException;
+import expression.exceptions.EExceptions.EvaluatingExpressionException;
+import expression.exceptions.EExceptions.OverflowEEException;
 
 public class CheckedDivide extends Divide {
     public CheckedDivide(CommonExpression firstExp, CommonExpression secondExp) {

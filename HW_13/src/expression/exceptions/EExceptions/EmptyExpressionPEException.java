@@ -1,4 +1,4 @@
-package expression.exceptions.expExceptions;
+package expression.exceptions.EExceptions;
 
 public class EmptyExpressionPEException extends ParsingExpressionException {
     public EmptyExpressionPEException() {

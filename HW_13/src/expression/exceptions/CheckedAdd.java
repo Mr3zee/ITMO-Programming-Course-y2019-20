@@ -2,9 +2,9 @@ package expression.exceptions;
 
 import expression.Add;
 import expression.CommonExpression;
-import expression.exceptions.expExceptions.EvaluatingExpressionException;
-import expression.exceptions.expExceptions.OverflowEEException;
-import expression.exceptions.expExceptions.UnderflowEEException;
+import expression.exceptions.EExceptions.EvaluatingExpressionException;
+import expression.exceptions.EExceptions.OverflowEEException;
+import expression.exceptions.EExceptions.UnderflowEEException;
 
 public class CheckedAdd extends Add {
     public CheckedAdd(CommonExpression firstExp, CommonExpression secondExp) {

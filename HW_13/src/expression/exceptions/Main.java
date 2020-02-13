@@ -1,16 +1,15 @@
-package expression.parser;
+package expression.exceptions;
 
 import expression.*;
-import expression.exceptions.ExpressionParser;
-import expression.exceptions.expExceptions.*;
+import expression.exceptions.EExceptions.*;
 
 public class Main {
     public static void main(String[] args) {
-        String expression = "1 +++ 2";
+        String expression = "1 << 2 + 3 * 4 ** 5";
         try {
             TripleExpression tripleExpression = new ExpressionParser().parse(expression);
             System.out.println(tripleExpression.toMiniString());
-            System.out.println(tripleExpression.evaluate(Integer.MAX_VALUE, 1, 2));
+            System.out.println(tripleExpression.evaluate(1024, 3, 2));
         } catch (ExpressionException e) {
             System.out.println(e.getMessage());
         }

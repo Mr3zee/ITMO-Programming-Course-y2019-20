@@ -1,4 +1,4 @@
-package expression.exceptions.expExceptions;
+package expression.exceptions.EExceptions;
 
 public class DivisionByZeroEException extends EvaluatingExpressionException {
     public DivisionByZeroEException(final int arg) {

@@ -7,7 +7,7 @@ public class Pow2 extends UnaryOperations {
 
     @Override
     protected int toCalculate(int arg) {
-        return (int) Math.pow(2, arg);
+        return 1 << arg;
     }
 
     @Override

@@ -2,7 +2,8 @@ package expression.exceptions;
 
 import expression.CommonExpression;
 import expression.Logarithm;
-import expression.exceptions.expExceptions.InvalidFunctionParametersEEException;
+import expression.exceptions.EExceptions.EvaluatingExpressionException;
+import expression.exceptions.EExceptions.InvalidFunctionParametersEEException;
 
 public class CheckedLogarithm extends Logarithm {
     public CheckedLogarithm(CommonExpression firstExp, CommonExpression secondExp) {
@@ -10,7 +11,7 @@ public class CheckedLogarithm extends Logarithm {
     }
 
     @Override
-    protected int toCalculate(int firstArg, int secondArg) {
+    protected int toCalculate(int firstArg, int secondArg) throws EvaluatingExpressionException {
         if (secondArg <= 1 || firstArg <= 0) {
             throw new InvalidFunctionParametersEEException("Logarithm", firstArg, secondArg);
         }
