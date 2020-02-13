@@ -23,7 +23,7 @@ public class CheckedPower extends Power {
         boolean neg = firstArg < 0 && secondArg % 2 == 1;
         int s = secondArg, f = firstArg < 0 ? -firstArg : firstArg;
         while (s != 0) {
-            if ((Integer.MAX_VALUE / ans) < f || (Integer.MAX_VALUE / f) < f || (f == Integer.MIN_VALUE && s != 1)) {
+            if ((Integer.MAX_VALUE / ans) < f || (((Integer.MAX_VALUE / f) < f || f == Integer.MIN_VALUE) && s != 1)) {
                 if (neg) {
                     throw new UnderflowEEException("Power", firstArg, secondArg);
                 }
