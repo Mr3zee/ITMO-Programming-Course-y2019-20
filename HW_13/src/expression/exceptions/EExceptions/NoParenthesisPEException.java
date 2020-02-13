@@ -1,4 +1,4 @@
-package expression.exceptions.expExceptions;
+package expression.exceptions.EExceptions;
 
 import expression.parser.FoundNextInfo;
 

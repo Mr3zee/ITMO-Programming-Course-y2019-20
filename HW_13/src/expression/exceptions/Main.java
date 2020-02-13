@@ -1,12 +1,11 @@
-package expression.parser;
+package expression.exceptions;
 
 import expression.*;
-import expression.exceptions.ExpressionParser;
-import expression.exceptions.expExceptions.*;
+import expression.exceptions.EExceptions.*;
 
 public class Main {
     public static void main(String[] args) {
-        String expression = "1 +++ 2";
+        String expression = "27 // 3";
         try {
             TripleExpression tripleExpression = new ExpressionParser().parse(expression);
             System.out.println(tripleExpression.toMiniString());

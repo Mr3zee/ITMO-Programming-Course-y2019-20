@@ -1,7 +1,7 @@
 package expression.exceptions;
 
 import expression.*;
-import expression.exceptions.expExceptions.*;
+import expression.exceptions.EExceptions.*;
 import expression.parser.*;
 
 import java.util.Map;

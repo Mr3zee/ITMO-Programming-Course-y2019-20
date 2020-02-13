@@ -1,4 +1,4 @@
-package expression.exceptions.expExceptions;
+package expression.exceptions.EExceptions;
 
 public class InvalidFunctionParametersEEException extends EvaluatingExpressionException {
     public InvalidFunctionParametersEEException(String name, int arg) {

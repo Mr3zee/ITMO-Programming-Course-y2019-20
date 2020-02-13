@@ -1,6 +1,6 @@
 import expression.CommonExpression;
 import expression.exceptions.ExpressionParser;
-import expression.exceptions.expExceptions.*;
+import expression.exceptions.EExceptions.*;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

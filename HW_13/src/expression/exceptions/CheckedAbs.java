@@ -2,8 +2,8 @@ package expression.exceptions;
 
 import expression.Abs;
 import expression.CommonExpression;
-import expression.exceptions.expExceptions.EvaluatingExpressionException;
-import expression.exceptions.expExceptions.OverflowEEException;
+import expression.exceptions.EExceptions.EvaluatingExpressionException;
+import expression.exceptions.EExceptions.OverflowEEException;
 
 public class CheckedAbs extends Abs {
     public CheckedAbs(CommonExpression expression) {

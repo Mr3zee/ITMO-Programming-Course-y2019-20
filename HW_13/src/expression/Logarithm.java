@@ -7,7 +7,12 @@ public class Logarithm extends BinaryOperations {
 
     @Override
     protected int toCalculate(int firstArg, int secondArg) {
-        return (int) (Math.log(firstArg) / Math.log(secondArg));
+        int ans = 0;
+        while (firstArg != 0) {
+            firstArg /= secondArg;
+            ans++;
+        }
+        return ans - 1;
     }
 
     @Override

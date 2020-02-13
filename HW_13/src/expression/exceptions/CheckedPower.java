@@ -1,10 +1,7 @@
 package expression.exceptions;
 
-import expression.CommonExpression;
-import expression.Power;
-import expression.exceptions.expExceptions.InvalidFunctionParametersEEException;
-import expression.exceptions.expExceptions.OverflowEEException;
-import expression.exceptions.expExceptions.UnderflowEEException;
+import expression.*;
+import expression.exceptions.EExceptions.*;
 
 public class CheckedPower extends Power {
     public CheckedPower(CommonExpression firstExp, CommonExpression secondExp) {
@@ -12,25 +9,32 @@ public class CheckedPower extends Power {
     }
 
     @Override
-    protected int toCalculate(int firstArg, int secondArg) {
+    public int toCalculate(int firstArg, int secondArg) throws EvaluatingExpressionException {
         if (secondArg < 0 || (firstArg == 0 && secondArg == 0)) {
             throw new InvalidFunctionParametersEEException("Power", firstArg, secondArg);
         }
         if (firstArg == 0) {
             return 0;
         }
-        int ans = 1;
-        boolean neg = firstArg < 0;
-        firstArg = Math.abs(firstArg);
-        for (int i = 0; i < secondArg; i++) {
-            if ((Integer.MAX_VALUE / ans) < firstArg) {
-                if (secondArg % 2 == 0 || !neg) {
-                    throw new OverflowEEException("Power", firstArg, secondArg);
-                }
-                throw new UnderflowEEException("Power", -firstArg, secondArg);
-            }
-            ans *= firstArg;
+        if (firstArg == -2 && secondArg == 31) {
+            return Integer.MIN_VALUE;
         }
-        return secondArg % 2 == 0 || !neg ? ans: -ans;
+        int ans = 1;
+        boolean neg = firstArg < 0 && secondArg % 2 == 1;
+        int s = secondArg, f = firstArg;
+        while (s != 0) {
+            if ((Integer.MAX_VALUE / ans) < f) {
+                if (neg) {
+                    throw new UnderflowEEException("Power", firstArg, secondArg);
+                }
+                throw new OverflowEEException("Power", firstArg, secondArg);
+            }
+            if (s % 2 == 1) {
+                ans *= f;
+            }
+            s >>= 1;
+            f *= f;
+        }
+        return ans;
     }
 }

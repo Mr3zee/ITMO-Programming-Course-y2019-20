@@ -1,7 +1,5 @@
 package expression.parser;
 
-import expression.exceptions.expExceptions.*;
-
 public class ExpressionSource implements Source {
     private int pos;
     private final String expression;
@@ -24,11 +22,6 @@ public class ExpressionSource implements Source {
     @Override
     public boolean hasNext() {
         return pos < expression.length();
-    }
-
-    @Override
-    public ExpressionException error(String message) {
-        return new ExpressionException(pos + ": " + message);
     }
 
     public int getPosition() {

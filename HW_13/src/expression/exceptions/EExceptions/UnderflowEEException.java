@@ -1,4 +1,4 @@
-package expression.exceptions.expExceptions;
+package expression.exceptions.EExceptions;
 
 public class UnderflowEEException extends EvaluatingExpressionException {
     public UnderflowEEException(final String operation, final int first, final int second) {

@@ -2,9 +2,9 @@ package expression.exceptions;
 
 import expression.CommonExpression;
 import expression.Subtract;
-import expression.exceptions.expExceptions.EvaluatingExpressionException;
-import expression.exceptions.expExceptions.OverflowEEException;
-import expression.exceptions.expExceptions.UnderflowEEException;
+import expression.exceptions.EExceptions.EvaluatingExpressionException;
+import expression.exceptions.EExceptions.OverflowEEException;
+import expression.exceptions.EExceptions.UnderflowEEException;
 
 public class CheckedSubtract extends Subtract {
     public CheckedSubtract(CommonExpression firstExp, CommonExpression secondExp) {
