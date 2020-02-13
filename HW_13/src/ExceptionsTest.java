@@ -204,6 +204,8 @@ public class ExceptionsTest {
         invalidEvaluate("-2147483648 / x + y", -2, Integer.MAX_VALUE, 0, exceptionName);
         invalidEvaluate("abs x", Integer.MIN_VALUE, Integer.MAX_VALUE, 0, exceptionName);
         invalidEvaluate("square x", Integer.MIN_VALUE, Integer.MAX_VALUE, 0, exceptionName);
+        invalidEvaluate("square x", Integer.MAX_VALUE / 2 + 1, Integer.MAX_VALUE, 0, exceptionName);
+        invalidEvaluate("reverse x", Integer.MAX_VALUE / 2 + 1, Integer.MAX_VALUE, 0, exceptionName);
         invalidEvaluate("- x", Integer.MIN_VALUE, Integer.MAX_VALUE, 0, exceptionName);
         invalidEvaluate("x - y", Integer.MAX_VALUE, Integer.MIN_VALUE, 0, exceptionName);
         invalidEvaluate("2 ** 31", 0, 0, 0, exceptionName);
@@ -230,6 +232,7 @@ public class ExceptionsTest {
         String exceptionName = "Underflow";
         invalidEvaluate("x - y", Integer.MIN_VALUE, Integer.MAX_VALUE, 0, exceptionName);
         invalidEvaluate("x * y", Integer.MIN_VALUE, Integer.MAX_VALUE, 0, exceptionName);
+        invalidEvaluate("reverse x", -(Integer.MAX_VALUE / 2), 0, 0, exceptionName);
         invalidEvaluate("-3 ** 31", 0, 0, 0, exceptionName);
         invalidEvaluate("-22 ** 33", 0, 0, 0, exceptionName);
         invalidEvaluate("-222 ** 33", 0, 0, 0, exceptionName);
