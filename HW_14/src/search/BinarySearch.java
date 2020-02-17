@@ -1,6 +1,7 @@
 package search;
 
 public class BinarySearch {
+    // Pre: args[0] = value, arr[1] >= arr[2] >= ... >= arr[n - 1]
     public static void main(String[] args) {
         int value = Integer.parseInt(args[0]);
         int[] arr = new int[args.length - 1];
@@ -10,4 +11,5 @@ public class BinarySearch {
         SearchEngine engine = new SearchEngine();
         System.out.println(engine.searchIter(value, arr));
     }
+    // Post:
 }
