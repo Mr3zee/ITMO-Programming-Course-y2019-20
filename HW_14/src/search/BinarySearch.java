@@ -9,7 +9,7 @@ public class BinarySearch {
             arr[i - 1] = Integer.parseInt(args[i]);
         }
         SearchEngine engine = new SearchEngine();
-        System.out.println(engine.searchIter(value, arr));
+        System.out.println(engine.searchRecur(value, arr));
     }
     // Post:
 }
