@@ -14,6 +14,7 @@ public class ArrayQueue {
     }
 
     public void enqueue(Object obj) {
+        assert obj != null;
         if (size() + 1 == queue.length) {
             increaseCapacity();
         } else if (end == queue.length) {
