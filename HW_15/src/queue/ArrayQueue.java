@@ -14,7 +14,7 @@ public class ArrayQueue {
     }
 
     public void enqueue(Object obj) {
-        if ((end == queue.length && start == 0) || (end + 1 == start)) {
+        if (size() + 1 == queue.length) {
             increaseCapacity();
         } else if (end == queue.length) {
             end = 0;

@@ -8,7 +8,7 @@ public class ArrayQueueADT {
     private Object[] queue = new Object[10];
 
     public static void enqueue(ArrayQueueADT queueADT, Object obj) {
-        if ((queueADT.end == queueADT.queue.length && queueADT.start == 0) || (queueADT.end + 1 == queueADT.start)) {
+        if (size(queueADT) + 1 == queueADT.queue.length) {
             increaseCapacity(queueADT);
         } else if (queueADT.end == queueADT.queue.length) {
             queueADT.end = 0;
