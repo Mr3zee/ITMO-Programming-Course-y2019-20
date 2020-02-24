@@ -1,2 +1,2 @@
-javac search\BinarySearch.java
-java -jar BinarySearchTest.jar
+javac search\BinarySearchSpan.java
+java -jar BinarySearchSpanTest.jar
