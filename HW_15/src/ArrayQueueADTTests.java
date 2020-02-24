@@ -1,5 +1,6 @@
 import org.junit.Assert;
 import queue.ArrayQueueADT;
+import queue.ArrayQueueModule;
 
 import static queue.ArrayQueueADT.*;
 
@@ -95,6 +96,17 @@ public class ArrayQueueADTTests extends AbstractTest {
         validEnqueue("hello", queueADT);
         validEnqueue(value2(), queueADT);
         validEnqueue(value1(), queueADT);
+
+        clear(queueADT);
+        enqueue(queueADT, 1);
+        for (int i = 0; i < 3; i++) {
+            enqueue(queueADT, 1);
+            dequeue(queueADT);
+        }
+        for (int i = 0; i < 8; i++) {
+            enqueue(queueADT, 2);
+        }
+        validEnqueue("hello", queueADT);
     }
 
     @Override

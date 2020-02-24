@@ -26,7 +26,7 @@ public class ArrayQueue {
         if (end < start) {
             Object[] newQueue = new Object[queue.length * 2];
             System.arraycopy(queue, start, newQueue, 0, queue.length - start);
-            System.arraycopy(queue, 0, newQueue, queue.length - start + 1, end);
+            System.arraycopy(queue, 0, newQueue, queue.length - start, end);
             start = 0;
             end = queue.length - 1;
             queue = newQueue;
@@ -46,6 +46,9 @@ public class ArrayQueue {
         queue[start++] = null;
         if (start == queue.length) {
             start = 0;
+        }
+        if (end == queue.length) {
+            end = 0;
         }
         return result;
     }

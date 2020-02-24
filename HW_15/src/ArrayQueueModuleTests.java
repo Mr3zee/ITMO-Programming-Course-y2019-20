@@ -87,6 +87,23 @@ public class ArrayQueueModuleTests extends AbstractTest {
         validEnqueue("hello");
         validEnqueue(value2());
         validEnqueue(value1());
+        ArrayQueueModule.clear();
+        for (int i = 0; i < 10; i++) {
+            ArrayQueueModule.enqueue(1);
+            ArrayQueueModule.dequeue();
+        }
+        validEnqueue(1);
+
+        ArrayQueueModule.clear();
+        ArrayQueueModule.enqueue(1);
+        for (int i = 0; i < 3; i++) {
+            ArrayQueueModule.enqueue(1);
+            ArrayQueueModule.dequeue();
+        }
+        for (int i = 0; i < 8; i++) {
+            ArrayQueueModule.enqueue(2);
+        }
+        validEnqueue("hello");
     }
 
     @Override

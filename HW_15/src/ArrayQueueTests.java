@@ -2,7 +2,8 @@ import org.junit.Assert;
 import queue.ArrayQueue;
 import queue.ArrayQueueADT;
 
-import static queue.ArrayQueueADT.makeString;
+import static queue.ArrayQueueADT.*;
+import static queue.ArrayQueueADT.enqueue;
 
 public class ArrayQueueTests extends AbstractTest {
     ArrayQueue queue;
@@ -96,6 +97,17 @@ public class ArrayQueueTests extends AbstractTest {
         validEnqueue("hello", queue);
         validEnqueue(value2(), queue);
         validEnqueue(value1(), queue);
+
+        queue.clear();
+        queue.enqueue(1);
+        for (int i = 0; i < 3; i++) {
+            queue.enqueue(1);
+            queue.dequeue();
+        }
+        for (int i = 0; i < 8; i++) {
+            queue.enqueue(2);
+        }
+        validEnqueue("hello", queue);
     }
 
     @Override

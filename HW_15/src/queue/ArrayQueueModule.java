@@ -8,19 +8,22 @@ public class ArrayQueueModule {
     private static Object[] queue = new Object[10];
 
     public static void enqueue(Object obj) {
-        if ((end == queue.length && start == 0) || (end + 1 == start)) {
+        assert obj != null;
+//        System.out.println(obj.toString() + ' ' + start + ' ' + end);
+        if (size() + 1 == queue.length) {
             increaseCapacity();
         } else if (end == queue.length) {
             end = 0;
         }
         queue[end++] = obj;
+//        System.out.println(start + " " + end);
     }
 
     private static void increaseCapacity() {
         if (end < start) {
             Object[] newQueue = new Object[queue.length * 2];
             System.arraycopy(queue, start, newQueue, 0, queue.length - start);
-            System.arraycopy(queue, 0, newQueue, queue.length - start + 1, end);
+            System.arraycopy(queue, 0, newQueue, queue.length - start, end);
             start = 0;
             end = queue.length - 1;
             queue = newQueue;
@@ -31,6 +34,7 @@ public class ArrayQueueModule {
 
     public static Object element() {
         assert size() > 0;
+//        System.out.println(makeString() + ' ' + start + ' ' + end);
         return queue[start];
     }
 
@@ -40,6 +44,9 @@ public class ArrayQueueModule {
         queue[start++] = null;
         if (start == queue.length) {
             start = 0;
+        }
+        if (end == queue.length) {
+            end = 0;
         }
         return result;
     }
@@ -71,7 +78,7 @@ public class ArrayQueueModule {
                 for (int i = start + 1; i < queue.length; i++) {
                     string.append("; ").append(queue[i]);
                 }
-                for (int i = 0; i < end + 1; i++) {
+                for (int i = 0; i < end; i++) {
                     string.append("; ").append(queue[i]);
                 }
             } else {
