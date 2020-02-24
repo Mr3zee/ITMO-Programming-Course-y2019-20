@@ -87,6 +87,23 @@ public class ArrayQueueModuleTests extends AbstractTest {
         validEnqueue("hello");
         validEnqueue(value2());
         validEnqueue(value1());
+        ArrayQueueModule.clear();
+        for (int i = 0; i < 10; i++) {
+            ArrayQueueModule.enqueue(1);
+            ArrayQueueModule.dequeue();
+        }
+        validEnqueue(1);
+
+        ArrayQueueModule.clear();
+        ArrayQueueModule.enqueue(1);
+        for (int i = 0; i < 3; i++) {
+            ArrayQueueModule.enqueue(1);
+            ArrayQueueModule.dequeue();
+        }
+        for (int i = 0; i < 8; i++) {
+            ArrayQueueModule.enqueue(2);
+        }
+        validEnqueue("hello");
     }
 
     @Override
@@ -138,38 +155,37 @@ public class ArrayQueueModuleTests extends AbstractTest {
 
     private void validIsEmpty(boolean expected) {
         Assert.assertEquals(expected, ArrayQueueModule.isEmpty());
-        System.out.println("Queue " + getQueue() + " is " + (expected ? "" : "not ") + "empty");
+        System.out.println(isEmptyMessage(expected, getQueue()));
     }
 
     private void validSize(int expected) {
         Assert.assertEquals(expected, ArrayQueueModule.size());
-        System.out.println("Queue " + getQueue() + " has size of " + Colors.paintPurple(String.valueOf(expected)));
+        System.out.println(sizeMessage(expected, getQueue()));
     }
 
     private void validEnqueue(Object element) {
         ArrayQueueModule.enqueue(element);
         Assert.assertEquals(element, ArrayQueueModule.lastElement());
-        System.out.println("Queue " + getQueue() + " has new last element - " + Colors.paintPurple(element.toString()));
+        System.out.println(enqueueMessage(element, getQueue()));
     }
 
     private void validElement(Object expected) {
         Assert.assertEquals(expected, ArrayQueueModule.element());
-        System.out.println("Queue " + getQueue() + " has " + Colors.paintPurple(expected.toString()) + " as first element");
+        System.out.println(elementMessage(expected, getQueue()));
     }
 
     private void validClear() {
         ArrayQueueModule.clear();
         Assert.assertTrue(ArrayQueueModule.isEmpty());
-        System.out.println("Queue cleared");
+        System.out.println(clearMessage());
     }
 
     private void validDequeue(Object expected) {
-        Object removed = ArrayQueueModule.dequeue();
-        Assert.assertEquals(expected, removed);
-        System.out.println("Object " + Colors.paintPurple(removed.toString()) + " has been removed from queue " + getQueue());
+        Assert.assertEquals(expected, ArrayQueueModule.dequeue());
+        System.out.println(dequeueMessage(expected, getQueue()));
     }
 
     private String getQueue() {
-        return Colors.paintPurple(ArrayQueueModule.makeString());
+        return messageColor(ArrayQueueModule.makeString());
     }
 }

@@ -8,7 +8,8 @@ public class ArrayQueueADT {
     private Object[] queue = new Object[10];
 
     public static void enqueue(ArrayQueueADT queueADT, Object obj) {
-        if ((queueADT.end == queueADT.queue.length && queueADT.start == 0) || (queueADT.end + 1 == queueADT.start)) {
+        assert obj != null;
+        if (size(queueADT) + 1 == queueADT.queue.length) {
             increaseCapacity(queueADT);
         } else if (queueADT.end == queueADT.queue.length) {
             queueADT.end = 0;
@@ -20,7 +21,7 @@ public class ArrayQueueADT {
         if (queueADT.end < queueADT.start) {
             Object[] newQueue = new Object[queueADT.queue.length * 2];
             System.arraycopy(queueADT.queue, queueADT.start, newQueue, 0, queueADT.queue.length - queueADT.start);
-            System.arraycopy(queueADT.queue, 0, newQueue, queueADT.queue.length - queueADT.start + 1, queueADT.end);
+            System.arraycopy(queueADT.queue, 0, newQueue, queueADT.queue.length - queueADT.start, queueADT.end);
             queueADT.start = 0;
             queueADT.end = queueADT.queue.length - 1;
             queueADT.queue = newQueue;
@@ -40,6 +41,9 @@ public class ArrayQueueADT {
         queueADT.queue[queueADT.start++] = null;
         if (queueADT.start == queueADT.queue.length) {
             queueADT.start = 0;
+        }
+        if (queueADT.end == queueADT.queue.length) {
+            queueADT.end = 0;
         }
         return result;
     }

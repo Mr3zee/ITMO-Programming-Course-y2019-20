@@ -2,24 +2,28 @@ package queue;
 
 import java.util.Arrays;
 
-public class ArrayQueueModule {
-    private static int start = 0;
-    private static int end = 0;
-    private static Object[] queue = new Object[10];
+public class ArrayQueue {
+    private int start;
+    private int end;
+    private Object[] queue;
 
-    public static void enqueue(Object obj) {
+    public ArrayQueue() {
+        this.start = 0;
+        this.end = 0;
+        this.queue = new Object[10];
+    }
+
+    public void enqueue(Object obj) {
         assert obj != null;
-//        System.out.println(obj.toString() + ' ' + start + ' ' + end);
         if (size() + 1 == queue.length) {
             increaseCapacity();
         } else if (end == queue.length) {
             end = 0;
         }
         queue[end++] = obj;
-//        System.out.println(start + " " + end);
     }
 
-    private static void increaseCapacity() {
+    private void increaseCapacity() {
         if (end < start) {
             Object[] newQueue = new Object[queue.length * 2];
             System.arraycopy(queue, start, newQueue, 0, queue.length - start);
@@ -32,13 +36,12 @@ public class ArrayQueueModule {
         }
     }
 
-    public static Object element() {
+    public Object element() {
         assert size() > 0;
-//        System.out.println(makeString() + ' ' + start + ' ' + end);
         return queue[start];
     }
 
-    public static Object dequeue() {
+    public Object dequeue() {
         assert start != end;
         Object result = queue[start];
         queue[start++] = null;
@@ -51,26 +54,27 @@ public class ArrayQueueModule {
         return result;
     }
 
-    public static int size() {
+    public int size() {
         return end < start ? (queue.length - start + end) : (end - start);
     }
 
-    public static boolean isEmpty() {
+    public boolean isEmpty() {
         return start == end;
     }
 
-    public static void clear() {
+    public void clear() {
         queue = new Object[10];
         start = 0;
         end = 0;
     }
 
-    public static Object lastElement() {
+    public Object lastElement() {
         assert !isEmpty();
         return queue[end - 1];
     }
 
-    public static String makeString() {
+    @Override
+    public String toString() {
         StringBuilder string = new StringBuilder("[ ");
         if (!isEmpty()) {
             string.append(queue[start]);
@@ -78,7 +82,7 @@ public class ArrayQueueModule {
                 for (int i = start + 1; i < queue.length; i++) {
                     string.append("; ").append(queue[i]);
                 }
-                for (int i = 0; i < end; i++) {
+                for (int i = 0; i < end + 1; i++) {
                     string.append("; ").append(queue[i]);
                 }
             } else {
