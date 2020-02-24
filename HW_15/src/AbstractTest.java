@@ -3,6 +3,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.*;
+
 public abstract class AbstractTest {
 
     @Before
@@ -38,4 +40,33 @@ public abstract class AbstractTest {
 
     @Test
     public abstract void dequeueTest();
+
+    @Test
+    public abstract void doubleQueueTest();
+
+    protected Object value1() {
+        Queue<Set<Deque<Integer>>> queue = new ArrayDeque<>();
+        Deque<Integer> deque = new ArrayDeque<>();
+        Set<Deque<Integer>> set = new HashSet<>();
+        for (int i = 0; i < 100; i++) {
+            deque.add(i);
+        }
+        for (int i = 0; i < 500; i++) {
+            set.add(deque);
+        }
+        for (int i = 0; i < 23; i++) {
+            queue.add(set);
+        }
+        return queue;
+    }
+
+    protected Object value2() {
+        return new StringBuilder().append('1');
+    }
+
+    protected Object value3() {
+        ArrayList<Map<Integer, Set<Double>>> arrayList = new ArrayList<>();
+        arrayList.add(Map.of(1, Set.of(1.0, 1.1)));
+        return arrayList;
+    }
 }

@@ -1,9 +1,5 @@
 import org.junit.Assert;
-import org.junit.Test;
 import queue.ArrayQueueModule;
-
-import java.lang.reflect.Array;
-import java.util.*;
 
 public class ArrayQueueModuleTests extends AbstractTest {
 
@@ -18,7 +14,6 @@ public class ArrayQueueModuleTests extends AbstractTest {
     }
 
     @Override
-    @Test
     public void isEmptyTest() {
         validIsEmpty(true);
         ArrayQueueModule.enqueue(1);
@@ -76,15 +71,8 @@ public class ArrayQueueModuleTests extends AbstractTest {
         validElement(true);
         ArrayQueueModule.dequeue();
 
-        StringBuilder a = new StringBuilder().append("123");
-        ArrayQueueModule.enqueue(a);
-        validElement(a);
-        ArrayQueueModule.dequeue();
-
-        ArrayList<Map<Integer, Set<Double>>> arrayList = new ArrayList<>();
-        arrayList.add(Map.of(1, Set.of(1.0, 1.1)));
-        ArrayQueueModule.enqueue(arrayList);
-        validElement(arrayList);
+        ArrayQueueModule.enqueue(value3());
+        validElement(value3());
     }
 
     @Override
@@ -97,21 +85,8 @@ public class ArrayQueueModuleTests extends AbstractTest {
         validEnqueue(false);
         ArrayQueueModule.clear();
         validEnqueue("hello");
-        StringBuilder stringBuilder = new StringBuilder().append('1');
-        validEnqueue(stringBuilder);
-        Queue<Set<Deque<Integer>>> queue = new ArrayDeque<>();
-        Deque<Integer> deque = new ArrayDeque<>();
-        Set<Deque<Integer>> set = new HashSet<>();
-        for (int i = 0; i < 100; i++) {
-            deque.add(i);
-        }
-        for (int i = 0; i < 500; i++) {
-            set.add(deque);
-        }
-        for (int i = 0; i < 23; i++) {
-            queue.add(set);
-        }
-        validEnqueue(queue);
+        validEnqueue(value2());
+        validEnqueue(value1());
     }
 
     @Override
@@ -120,7 +95,6 @@ public class ArrayQueueModuleTests extends AbstractTest {
         for (int i = 0; i < 100000; i++) {
             ArrayQueueModule.enqueue(i);
         }
-        ArrayQueueModule.clear();
         validClear();
         ArrayQueueModule.enqueue(1);
         ArrayQueueModule.enqueue(2);
@@ -146,6 +120,8 @@ public class ArrayQueueModuleTests extends AbstractTest {
         ArrayQueueModule.enqueue(true);
         ArrayQueueModule.enqueue("126");
         ArrayQueueModule.enqueue("hello");
+        ArrayQueueModule.enqueue(value1());
+        ArrayQueueModule.enqueue(value2());
         validDequeue("123");
         validDequeue("124");
         validDequeue(false);
@@ -153,6 +129,11 @@ public class ArrayQueueModuleTests extends AbstractTest {
         validDequeue(true);
         validDequeue("126");
         validDequeue("hello");
+    }
+
+    @Override
+    public void doubleQueueTest() {
+        System.out.println("DoubleQueueTest is not supported");
     }
 
     private void validIsEmpty(boolean expected) {
