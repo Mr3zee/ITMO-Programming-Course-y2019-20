@@ -26,10 +26,7 @@ public class ArrayQueue {
         if (size() + 1 == queue.length) {
             increaseCapacity();
         } else if (start == 0) {
-            start = queue.length;
-            if (end == 0) {
-                end = queue.length;
-            }
+            changeMarks(queue.length, end == 0 ? queue.length : end);
         }
         start = start == 0 ? queue.length : start;
         queue[--start] = obj;
@@ -40,8 +37,7 @@ public class ArrayQueue {
         int firstPart = Math.min(start + size(), queue.length) - start;
         System.arraycopy(queue, start, newQueue, 0, firstPart);
         System.arraycopy(queue, 0, newQueue, firstPart, size() - firstPart);
-        end = queue.length - 1;
-        start = 0;
+        changeMarks(0, queue.length - 1);
         queue = newQueue;
     }
 
@@ -60,10 +56,7 @@ public class ArrayQueue {
         Object result = queue[start];
         queue[start++] = null;
         if (start == queue.length) {
-            start = 0;
-            if (end == queue.length) {
-                end = 0;
-            }
+            changeMarks(0, end == queue.length ? 0 : end);
         }
         return result;
     }
@@ -88,8 +81,12 @@ public class ArrayQueue {
 
     public void clear() {
         queue = new Object[10];
-        start = 0;
-        end = 0;
+        changeMarks(0, 0);
+    }
+
+    private void changeMarks(int s, int e) {
+        start = s;
+        end = e;
     }
 
     public String toStr() {
