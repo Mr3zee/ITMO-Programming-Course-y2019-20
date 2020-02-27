@@ -75,8 +75,6 @@ public class ArrayQueueModule {
 
     public static void clear() {
         queue = new Object[10];
-        start = 0;
-        end = 0;
         changeMarks(0, 0);
     }
 
