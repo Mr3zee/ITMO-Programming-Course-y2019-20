@@ -100,7 +100,7 @@ public class ArrayQueue {
                 for (int i = start + 1; i < queue.length; i++) {
                     string.append(", ").append(queue[i]);
                 }
-                for (int i = 0; i < end + 1; i++) {
+                for (int i = 0; i < end; i++) {
                     string.append(", ").append(queue[i]);
                 }
             } else {

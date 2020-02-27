@@ -96,7 +96,7 @@ public class ArrayQueueADT {
                 for (int i = queueADT.start + 1; i < queueADT.queue.length; i++) {
                     string.append(", ").append(queueADT.queue[i]);
                 }
-                for (int i = 0; i < queueADT.end + 1; i++) {
+                for (int i = 0; i < queueADT.end; i++) {
                     string.append(", ").append(queueADT.queue[i]);
                 }
             } else {
