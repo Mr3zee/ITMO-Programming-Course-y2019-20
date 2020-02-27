@@ -1,7 +1,5 @@
 package queue;
 
-import java.util.Arrays;
-
 public class ArrayQueueADT {
     private int start = 0;
     private int end = 0;
@@ -9,9 +7,10 @@ public class ArrayQueueADT {
 
     public static void enqueue(ArrayQueueADT queueADT, Object obj) {
         assert obj != null;
-        if (size(queueADT) + 1 == queueADT.queue.length) {
+        int length = queueADT.queue.length;
+        if (size(queueADT) + 1 == length) {
             increaseCapacity(queueADT);
-        } else if (queueADT.end == queueADT.queue.length) {
+        } else if (queueADT.end == length) {
             queueADT.end = 0;
         }
         queueADT.queue[queueADT.end++] = obj;
@@ -19,25 +18,23 @@ public class ArrayQueueADT {
 
     public static void push(ArrayQueueADT queueADT, Object obj) {
         assert obj != null;
-        if (size(queueADT) + 1 == queueADT.queue.length) {
+        int length = queueADT.queue.length;
+        if (size(queueADT) + 1 == length) {
             increaseCapacity(queueADT);
         } else if (queueADT.start == 0) {
-            queueADT.start = queueADT.queue.length;
-            if (queueADT.end == 0) {
-                queueADT.end = queueADT.queue.length;
-            }
+            changeMarks(queueADT, length, queueADT.end == 0 ? length : queueADT.end);
         }
-        queueADT.start = queueADT.start == 0 ? queueADT.queue.length : queueADT.start;
+        queueADT.start = queueADT.start == 0 ? length : queueADT.start;
         queueADT.queue[--queueADT.start] = obj;
     }
 
     private static void increaseCapacity(ArrayQueueADT queueADT) {
-        Object[] newQueue = new Object[queueADT.queue.length * 2];
-        int firstPart = Math.min(queueADT.start + size(queueADT), queueADT.queue.length) - queueADT.start;
+        int length = queueADT.queue.length;
+        Object[] newQueue = new Object[length * 2];
+        int firstPart = Math.min(queueADT.start + size(queueADT), length) - queueADT.start;
         System.arraycopy(queueADT.queue, queueADT.start, newQueue, 0, firstPart);
         System.arraycopy(queueADT.queue, 0, newQueue, firstPart, size(queueADT) - firstPart);
-        queueADT.end = queueADT.queue.length - 1;
-        queueADT.start = 0;
+        changeMarks(queueADT, 0, length - 1);
         queueADT.queue = newQueue;
     }
 
@@ -52,14 +49,12 @@ public class ArrayQueueADT {
     }
 
     public static Object dequeue(ArrayQueueADT queueADT) {
+        int length = queueADT.queue.length;
         assert queueADT.start != queueADT.end;
         Object result = queueADT.queue[queueADT.start];
         queueADT.queue[queueADT.start++] = null;
-        if (queueADT.start == queueADT.queue.length) {
-            queueADT.start = 0;
-            if (queueADT.end == queueADT.queue.length) {
-                queueADT.end = 0;
-            }
+        if (queueADT.start == length) {
+            changeMarks(queueADT, 0, queueADT.end == length ? 0 : queueADT.end);
         }
         return result;
     }
@@ -84,8 +79,12 @@ public class ArrayQueueADT {
 
     public static void clear(ArrayQueueADT queueADT) {
         queueADT.queue = new Object[10];
-        queueADT.start = 0;
-        queueADT.end = 0;
+        changeMarks(queueADT, 0, 0);
+    }
+
+    private static void changeMarks(ArrayQueueADT queueADT, int s, int e) {
+        queueADT.start = s;
+        queueADT.end = e;
     }
 
     public static String toStr(ArrayQueueADT queueADT) {
