@@ -1,10 +1,6 @@
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import queue.ArrayQueue;
-import queue.ArrayQueueADT;
-import queue.ArrayQueueModule;
 
 import java.util.*;
 
@@ -47,46 +43,29 @@ public abstract class AbstractTest {
     @Test
     public abstract void doubleQueueTest();
 
-    protected Object value1() {
-        Queue<Set<Deque<Integer>>> queue = new ArrayDeque<>();
-        Deque<Integer> deque = new ArrayDeque<>();
-        Set<Deque<Integer>> set = new HashSet<>();
-        for (int i = 0; i < 100; i++) {
-            deque.add(i);
-        }
-        for (int i = 0; i < 500; i++) {
-            set.add(deque);
-        }
-        for (int i = 0; i < 23; i++) {
-            queue.add(set);
-        }
-        return queue;
-    }
+    @Test
+    public abstract void pushTest();
 
-    protected Object value2() {
-        return new StringBuilder().append('1');
-    }
+    @Test
+    public abstract void peekTest();
 
-    protected Object value3() {
-        ArrayList<Map<Integer, Set<Double>>> arrayList = new ArrayList<>();
-        arrayList.add(Map.of(1, Set.of(1.0, 1.1)));
-        return arrayList;
-    }
+    @Test
+    public abstract void removeTest();
 
     protected String isEmptyMessage(boolean expected, String queue) {
-        return "Queue " + queue + " is " + (expected ? "" : "not ") + "empty";
+        return "Queue " + Colors.paintPurple(queue) + " is " + (expected ? "" : "not ") + "empty";
     }
 
     protected String sizeMessage(int expected, String queue) {
-        return "Queue " + queue + " has size of " + Colors.paintPurple(String.valueOf(expected));
+        return "Queue " + Colors.paintPurple(queue) + " has size of " + Colors.paintPurple(String.valueOf(expected));
     }
 
     protected String enqueueMessage(Object element, String queue) {
-        return "Queue " + queue + " has new last element - " + Colors.paintPurple(element.toString());
+        return "Queue " + Colors.paintPurple(queue) + " has new last element - " + Colors.paintPurple(element.toString());
     }
 
     protected String elementMessage(Object expected, String queue) {
-        return "Queue " + queue + " has " + Colors.paintPurple(expected.toString()) + " as first element";
+        return "Queue " + Colors.paintPurple(queue) + " has " + Colors.paintPurple(expected.toString()) + " as first element";
     }
 
     protected String clearMessage() {
@@ -94,10 +73,18 @@ public abstract class AbstractTest {
     }
 
     protected String dequeueMessage(Object expected, String queue) {
-        return "Object " + Colors.paintPurple(expected.toString()) + " has been removed from queue " + queue;
+        return "Object " + Colors.paintPurple(expected.toString()) + " has been removed from the start of the queue " + Colors.paintPurple(queue);
     }
 
-    protected String messageColor(String message) {
-        return Colors.paintPurple(message);
+    protected String pushMessage(Object element, String queue) {
+        return "Queue " + Colors.paintPurple(queue) + " has new first element - " + Colors.paintPurple(element.toString());
+    }
+
+    protected String peekMessage(Object expected, String queue) {
+        return "Queue " + Colors.paintPurple(queue) + " has " + Colors.paintPurple(expected.toString()) + " as last element";
+    }
+
+    protected String removeMessage(Object expected, String queue) {
+        return "Object " + Colors.paintPurple(expected.toString()) + " has been removed from the end of the queue " + Colors.paintPurple(queue);
     }
 }

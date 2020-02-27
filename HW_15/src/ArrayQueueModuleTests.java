@@ -1,6 +1,8 @@
 import org.junit.Assert;
 import queue.ArrayQueueModule;
 
+import java.util.ArrayList;
+
 public class ArrayQueueModuleTests extends AbstractTest {
 
     @Override
@@ -69,10 +71,11 @@ public class ArrayQueueModuleTests extends AbstractTest {
 
         ArrayQueueModule.enqueue(true);
         validElement(true);
-        ArrayQueueModule.dequeue();
 
-        ArrayQueueModule.enqueue(value3());
-        validElement(value3());
+        for (int i = 0; i < 300; i++) {
+            ArrayQueueModule.enqueue("hi");
+        }
+        validElement(true);
     }
 
     @Override
@@ -85,11 +88,9 @@ public class ArrayQueueModuleTests extends AbstractTest {
         validEnqueue(false);
         ArrayQueueModule.clear();
         validEnqueue("hello");
-        validEnqueue(value2());
-        validEnqueue(value1());
         ArrayQueueModule.clear();
         for (int i = 0; i < 10; i++) {
-            ArrayQueueModule.enqueue(1);
+            validEnqueue(123 - i);
             ArrayQueueModule.dequeue();
         }
         validEnqueue(1);
@@ -100,8 +101,8 @@ public class ArrayQueueModuleTests extends AbstractTest {
             ArrayQueueModule.enqueue(1);
             ArrayQueueModule.dequeue();
         }
-        for (int i = 0; i < 8; i++) {
-            ArrayQueueModule.enqueue(2);
+        for (int i = 0; i < 800; i++) {
+            validEnqueue(i);
         }
         validEnqueue("hello");
     }
@@ -137,8 +138,6 @@ public class ArrayQueueModuleTests extends AbstractTest {
         ArrayQueueModule.enqueue(true);
         ArrayQueueModule.enqueue("126");
         ArrayQueueModule.enqueue("hello");
-        ArrayQueueModule.enqueue(value1());
-        ArrayQueueModule.enqueue(value2());
         validDequeue("123");
         validDequeue("124");
         validDequeue(false);
@@ -146,6 +145,44 @@ public class ArrayQueueModuleTests extends AbstractTest {
         validDequeue(true);
         validDequeue("126");
         validDequeue("hello");
+    }
+
+    @Override
+    public void pushTest() {
+        for (int i = 0; i < 1000; i++) {
+            for (int j = 0; j < 10; j++) {
+                validPush(j + "world", j + "world");
+            }
+            validPush("hello" + i, "hello" + i);
+            for (int j = 0; j < 5; j++) {
+                ArrayQueueModule.remove();
+            }
+        }
+    }
+
+    @Override
+    public void peekTest() {
+        for (int i = 0; i < 1500; i++) {
+            ArrayQueueModule.enqueue(22);
+            validPeek(22);
+        }
+        ArrayQueueModule.dequeue();
+        ArrayQueueModule.enqueue("hello");
+        validPeek("hello");
+    }
+
+    @Override
+    public void removeTest() {
+        for (int i = 0; i < 2000; i++) {
+            ArrayQueueModule.push(i);
+        }
+        for (int i = 0; i < 2000; i++) {
+            validRemove(i);
+        }
+        ArrayQueueModule.push("hello");
+        ArrayQueueModule.push("world");
+        validRemove("hello");
+        validRemove("world");
     }
 
     @Override
@@ -165,7 +202,7 @@ public class ArrayQueueModuleTests extends AbstractTest {
 
     private void validEnqueue(Object element) {
         ArrayQueueModule.enqueue(element);
-        Assert.assertEquals(element, ArrayQueueModule.lastElement());
+        Assert.assertEquals(element, ArrayQueueModule.peek());
         System.out.println(enqueueMessage(element, getQueue()));
     }
 
@@ -185,7 +222,23 @@ public class ArrayQueueModuleTests extends AbstractTest {
         System.out.println(dequeueMessage(expected, getQueue()));
     }
 
+    private void validPush(Object expected, Object obj) {
+        ArrayQueueModule.push(obj);
+        Assert.assertEquals(expected, ArrayQueueModule.element());
+        System.out.println(pushMessage(expected, getQueue()));
+    }
+
+    private void validPeek(Object expected) {
+        Assert.assertEquals(expected, ArrayQueueModule.peek());
+        System.out.println(peekMessage(expected, getQueue()));
+    }
+
+    private void validRemove(Object expected) {
+        Assert.assertEquals(expected, ArrayQueueModule.remove());
+        System.out.println(removeMessage(expected, getQueue()));
+    }
+
     private String getQueue() {
-        return messageColor(ArrayQueueModule.toStr());
+        return ArrayQueueModule.toStr();
     }
 }

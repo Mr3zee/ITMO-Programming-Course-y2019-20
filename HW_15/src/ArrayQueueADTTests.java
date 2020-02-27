@@ -78,9 +78,6 @@ public class ArrayQueueADTTests extends AbstractTest {
         enqueue(queueADT, a);
         validElement(a, queueADT);
         dequeue(queueADT);
-
-        enqueue(queueADT, value3());
-        validElement(value3(), queueADT);
     }
 
     @Override
@@ -93,8 +90,6 @@ public class ArrayQueueADTTests extends AbstractTest {
         validEnqueue(false, queueADT);
         clear(queueADT);
         validEnqueue("hello", queueADT);
-        validEnqueue(value2(), queueADT);
-        validEnqueue(value1(), queueADT);
 
         clear(queueADT);
         enqueue(queueADT, 1);
@@ -166,6 +161,21 @@ public class ArrayQueueADTTests extends AbstractTest {
         validClear(queueADT2);
     }
 
+    @Override
+    public void pushTest() {
+
+    }
+
+    @Override
+    public void peekTest() {
+
+    }
+
+    @Override
+    public void removeTest() {
+
+    }
+
     private void validIsEmpty(boolean expected, ArrayQueueADT queueADT) {
         Assert.assertEquals(expected, isEmpty(queueADT));
         System.out.println(isEmptyMessage(expected, getQueue(queueADT)));
@@ -199,6 +209,6 @@ public class ArrayQueueADTTests extends AbstractTest {
     }
 
     private String getQueue(ArrayQueueADT queueADT) {
-        return messageColor(toStr(queueADT));
+        return toStr(queueADT);
     }
 }

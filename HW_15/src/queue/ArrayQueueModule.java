@@ -9,14 +9,23 @@ public class ArrayQueueModule {
 
     public static void enqueue(Object obj) {
         assert obj != null;
-//        System.out.println(obj.toString() + ' ' + start + ' ' + end);
         if (size() + 1 == queue.length) {
             increaseCapacity();
         } else if (end == queue.length) {
             end = 0;
         }
         queue[end++] = obj;
-//        System.out.println(start + " " + end);
+    }
+
+    public static void push(Object obj) {
+        assert obj != null;
+        if (size() + 1 == queue.length) {
+            increaseCapacity();
+        } else if (start == 0) {
+            start = queue.length;
+        }
+        start = start == 0 ? queue.length : start;
+        queue[--start] = obj;
     }
 
     private static void increaseCapacity() {
@@ -38,6 +47,11 @@ public class ArrayQueueModule {
         return queue[start];
     }
 
+    public static Object peek() {
+        assert size() > 0;
+        return queue[end - 1];
+    }
+
     public static Object dequeue() {
         assert start != end;
         Object result = queue[start];
@@ -47,6 +61,16 @@ public class ArrayQueueModule {
         }
         if (end == queue.length) {
             end = 0;
+        }
+        return result;
+    }
+
+    public static Object remove() {
+        assert start != end;
+        Object result = queue[end - 1];
+        queue[end-- -1] = null;
+        if (end == 0 && start != 0) {
+            end = queue.length;
         }
         return result;
     }
@@ -63,11 +87,6 @@ public class ArrayQueueModule {
         queue = new Object[10];
         start = 0;
         end = 0;
-    }
-
-    public static Object lastElement() {
-        assert !isEmpty();
-        return queue[end - 1];
     }
 
     public static String toStr() {
