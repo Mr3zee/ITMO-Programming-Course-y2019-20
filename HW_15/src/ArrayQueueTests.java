@@ -1,5 +1,9 @@
 import org.junit.Assert;
 import queue.ArrayQueue;
+import queue.ArrayQueueADT;
+
+import static queue.ArrayQueueADT.*;
+import static queue.ArrayQueueADT.element;
 
 public class ArrayQueueTests extends AbstractTest {
     ArrayQueue queue;
@@ -201,52 +205,43 @@ public class ArrayQueueTests extends AbstractTest {
         validRemove("world", queue);
     }
 
-    private void validIsEmpty(boolean expected, ArrayQueue queue) {
-        Assert.assertEquals(expected, queue.isEmpty());
-        System.out.println(isEmptyMessage(expected, getQueue(queue)));
+    protected void validIsEmpty(boolean expected, ArrayQueue queue) {
+        validIsEmpty(expected, queue.isEmpty(), getQueue(queue));
     }
 
-    private void validSize(int expected, ArrayQueue queue) {
-        Assert.assertEquals(expected, queue.size());
-        System.out.println(sizeMessage(expected, getQueue(queue)));
+    protected void validSize(int expected, ArrayQueue queue) {
+        validSize(expected, queue.size(), getQueue(queue));
     }
 
-    private void validEnqueue(Object element, ArrayQueue queue) {
-        queue.enqueue(element);
-        Assert.assertEquals(element, queue.peek());
-        System.out.println(enqueueMessage(element, getQueue(queue)));
+    protected void validElement(Object expected, ArrayQueue queue) {
+        validElement(expected, queue.element(), getQueue(queue));
     }
 
-    private void validElement(Object expected, ArrayQueue queue) {
-        Assert.assertEquals(expected, queue.element());
-        System.out.println(elementMessage(expected, getQueue(queue)));
+    protected void validDequeue(Object expected, ArrayQueue queue) {
+        validDequeue(expected, queue.dequeue(), getQueue(queue));
+    }
+
+    protected void validPeek(Object expected, ArrayQueue queue) {
+        validPeek(expected, queue.peek(), getQueue(queue));
+    }
+
+    protected void validRemove(Object expected, ArrayQueue queue) {
+        validRemove(expected, queue.remove(), getQueue(queue));
+    }
+
+    private void validEnqueue(Object expected, ArrayQueue queue) {
+        queue.enqueue(expected);
+        validEnqueue(expected, queue.peek(), getQueue(queue));
     }
 
     private void validClear(ArrayQueue queue) {
         queue.clear();
-        Assert.assertTrue(queue.isEmpty());
-        System.out.println(clearMessage());
-    }
-
-    private void validDequeue(Object expected, ArrayQueue queue) {
-        Assert.assertEquals(expected, queue.dequeue());
-        System.out.println(dequeueMessage(expected, getQueue(queue)));
+        validClear(queue.isEmpty());
     }
 
     private void validPush(Object expected, ArrayQueue queue) {
         queue.push(expected);
-        Assert.assertEquals(expected, queue.element());
-        System.out.println(pushMessage(expected, getQueue(queue)));
-    }
-
-    private void validPeek(Object expected, ArrayQueue queue) {
-        Assert.assertEquals(expected, queue.peek());
-        System.out.println(peekMessage(expected, getQueue(queue)));
-    }
-
-    private void validRemove(Object expected, ArrayQueue queue) {
-        Assert.assertEquals(expected, queue.remove());
-        System.out.println(removeMessage(expected, getQueue(queue)));
+        validPush(expected, queue.element(), getQueue(queue));
     }
 
     private String getQueue(ArrayQueue queue) {
