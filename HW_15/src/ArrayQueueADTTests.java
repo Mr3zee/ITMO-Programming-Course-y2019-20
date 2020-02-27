@@ -101,7 +101,7 @@ public class ArrayQueueADTTests extends AbstractTest {
             enqueue(queueADT, 1);
             dequeue(queueADT);
         }
-        for (int i = 0; i < 800; i++) {
+        for (int i = 0; i < 15000; i++) {
             validEnqueue(i, queueADT);
         }
         validEnqueue("hello", queueADT);

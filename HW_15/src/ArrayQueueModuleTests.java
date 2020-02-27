@@ -99,7 +99,7 @@ public class ArrayQueueModuleTests extends AbstractTest {
             ArrayQueueModule.enqueue(1);
             ArrayQueueModule.dequeue();
         }
-        for (int i = 0; i < 800; i++) {
+        for (int i = 0; i < 15000; i++) {
             validEnqueue(i);
         }
         validEnqueue("hello");
