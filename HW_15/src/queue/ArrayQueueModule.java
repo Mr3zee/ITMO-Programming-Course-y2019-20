@@ -8,6 +8,9 @@ public class ArrayQueueModule {
     private static Object[] queue = new Object[10];
 
     public static void enqueue(Object obj) {
+//        System.out.println("enqueue");
+//        System.out.println(toStr() + " " + start + " " + end + " " + obj.toString());
+//        System.out.println(Arrays.toString(queue));
         assert obj != null;
         if (size() + 1 == queue.length) {
             increaseCapacity();
@@ -18,53 +21,66 @@ public class ArrayQueueModule {
     }
 
     public static void push(Object obj) {
+//        System.out.println("push");
+//        System.out.println(toStr() + " " + start + " " + end + " " + obj.toString());
+//        System.out.println(Arrays.toString(queue));
         assert obj != null;
         if (size() + 1 == queue.length) {
             increaseCapacity();
         } else if (start == 0) {
             start = queue.length;
+            if (end == 0) {
+                end = queue.length;
+            }
         }
         start = start == 0 ? queue.length : start;
         queue[--start] = obj;
     }
 
     private static void increaseCapacity() {
-        if (end < start) {
-            Object[] newQueue = new Object[queue.length * 2];
-            System.arraycopy(queue, start, newQueue, 0, queue.length - start);
-            System.arraycopy(queue, 0, newQueue, queue.length - start, end);
-            start = 0;
-            end = queue.length - 1;
-            queue = newQueue;
-        } else {
-            queue = Arrays.copyOf(queue, queue.length * 2);
-        }
+        Object[] newQueue = new Object[queue.length * 2];
+        int firstPart = Math.min(start + size(), queue.length) - start;
+        System.arraycopy(queue, start, newQueue, 0, firstPart);
+        System.arraycopy(queue, 0, newQueue, firstPart, size() - firstPart);
+        end = queue.length - 1;
+        start = 0;
+        queue = newQueue;
     }
 
     public static Object element() {
+//        System.out.println("element");
         assert size() > 0;
         return queue[start];
     }
 
     public static Object peek() {
+//        System.out.println("peek");
+//        System.out.println(toStr() + " " + start + " " + end);
+//        System.out.println(Arrays.toString(queue));
         assert size() > 0;
         return queue[end - 1];
     }
 
     public static Object dequeue() {
+//        System.out.println("dequeue");
+//        System.out.println(toStr() + " " + start + " " + end);
+//        System.out.println(Arrays.toString(queue));
         assert start != end;
         Object result = queue[start];
         queue[start++] = null;
         if (start == queue.length) {
             start = 0;
-        }
-        if (end == queue.length) {
-            end = 0;
+            if (end == queue.length) {
+                end = 0;
+            }
         }
         return result;
     }
 
     public static Object remove() {
+//        System.out.println("remove");
+//        System.out.println(toStr() + " " + start + " " + end);
+//        System.out.println(Arrays.toString(queue));
         assert start != end;
         Object result = queue[end - 1];
         queue[end-- -1] = null;
@@ -75,14 +91,19 @@ public class ArrayQueueModule {
     }
 
     public static int size() {
+//        System.out.println("size");
+//        System.out.println(toStr() + " " + start + " " + end);
+//        System.out.println(Arrays.toString(queue));
         return end < start ? (queue.length - start + end) : (end - start);
     }
 
     public static boolean isEmpty() {
+//        System.out.println("isEmpty");
         return start == end;
     }
 
     public static void clear() {
+//        System.out.println("clear");
         queue = new Object[10];
         start = 0;
         end = 0;

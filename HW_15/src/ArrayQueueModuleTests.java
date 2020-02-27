@@ -171,10 +171,10 @@ public class ArrayQueueModuleTests extends AbstractTest {
 
     @Override
     public void removeTest() {
-        for (int i = 0; i < 2000; i++) {
+        for (int i = 0; i < 20; i++) {
             ArrayQueueModule.push(i);
         }
-        for (int i = 0; i < 2000; i++) {
+        for (int i = 0; i < 20; i++) {
             validRemove(i);
         }
         ArrayQueueModule.push("hello");
