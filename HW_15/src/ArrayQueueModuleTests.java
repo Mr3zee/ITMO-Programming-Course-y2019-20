@@ -186,6 +186,6 @@ public class ArrayQueueModuleTests extends AbstractTest {
     }
 
     private String getQueue() {
-        return messageColor(ArrayQueueModule.makeStr());
+        return messageColor(ArrayQueueModule.toStr());
     }
 }

@@ -70,7 +70,7 @@ public class ArrayQueueModule {
         return queue[end - 1];
     }
 
-    public static String makeStr() {
+    public static String toStr() {
         StringBuilder string = new StringBuilder("[ ");
         if (!isEmpty()) {
             string.append(queue[start]);

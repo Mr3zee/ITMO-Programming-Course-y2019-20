@@ -199,6 +199,6 @@ public class ArrayQueueADTTests extends AbstractTest {
     }
 
     private String getQueue(ArrayQueueADT queueADT) {
-        return messageColor(makeStr(queueADT));
+        return messageColor(toStr(queueADT));
     }
 }
