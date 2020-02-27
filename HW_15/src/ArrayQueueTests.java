@@ -99,7 +99,7 @@ public class ArrayQueueTests extends AbstractTest {
             queue.enqueue(1);
             queue.dequeue();
         }
-        for (int i = 0; i < 15000; i++) {
+        for (int i = 0; i < 1500; i++) {
             validEnqueue(i, queue);
         }
         validEnqueue("hello", queue);
@@ -165,7 +165,7 @@ public class ArrayQueueTests extends AbstractTest {
 
     @Override
     public void pushTest() {
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             for (int j = 0; j < 10; j++) {
                 validPush(j + "world", queue);
             }

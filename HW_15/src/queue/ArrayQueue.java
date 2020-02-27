@@ -35,16 +35,13 @@ public class ArrayQueue {
     }
 
     private void increaseCapacity() {
-        if (end < start) {
-            Object[] newQueue = new Object[queue.length * 2];
-            System.arraycopy(queue, start, newQueue, 0, queue.length - start);
-            System.arraycopy(queue, 0, newQueue, queue.length - start, end);
-            start = 0;
-            end = queue.length - 1;
-            queue = newQueue;
-        } else {
-            queue = Arrays.copyOf(queue, queue.length * 2);
-        }
+        Object[] newQueue = new Object[queue.length * 2];
+        int firstPart = Math.min(start + size(), queue.length) - start;
+        System.arraycopy(queue, start, newQueue, 0, firstPart);
+        System.arraycopy(queue, 0, newQueue, firstPart, size() - firstPart);
+        end = queue.length - 1;
+        start = 0;
+        queue = newQueue;
     }
 
     public Object element() {
@@ -63,9 +60,9 @@ public class ArrayQueue {
         queue[start++] = null;
         if (start == queue.length) {
             start = 0;
-        }
-        if (end == queue.length) {
-            end = 0;
+            if (end == queue.length) {
+                end = 0;
+            }
         }
         return result;
     }
