@@ -92,14 +92,14 @@ public class ArrayQueueModule {
             string.append(queue[start]);
             if (end < start) {
                 for (int i = start + 1; i < queue.length; i++) {
-                    string.append(',').append(queue[i]);
+                    string.append(", ").append(queue[i]);
                 }
                 for (int i = 0; i < end; i++) {
-                    string.append(',').append(queue[i]);
+                    string.append(", ").append(queue[i]);
                 }
             } else {
                 for (int i = start + 1; i < end; i++) {
-                    string.append(',').append(queue[i]);
+                    string.append(", ").append(queue[i]);
                 }
             }
         }
