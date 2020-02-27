@@ -1,8 +1,6 @@
 import org.junit.Assert;
 import queue.ArrayQueueModule;
 
-import java.util.ArrayList;
-
 public class ArrayQueueModuleTests extends AbstractTest {
 
     @Override
@@ -151,9 +149,9 @@ public class ArrayQueueModuleTests extends AbstractTest {
     public void pushTest() {
         for (int i = 0; i < 1000; i++) {
             for (int j = 0; j < 10; j++) {
-                validPush(j + "world", j + "world");
+                validPush(j + "world");
             }
-            validPush("hello" + i, "hello" + i);
+            validPush("hello" + i);
             for (int j = 0; j < 5; j++) {
                 ArrayQueueModule.remove();
             }
@@ -222,8 +220,8 @@ public class ArrayQueueModuleTests extends AbstractTest {
         System.out.println(dequeueMessage(expected, getQueue()));
     }
 
-    private void validPush(Object expected, Object obj) {
-        ArrayQueueModule.push(obj);
+    private void validPush(Object expected) {
+        ArrayQueueModule.push(expected);
         Assert.assertEquals(expected, ArrayQueueModule.element());
         System.out.println(pushMessage(expected, getQueue()));
     }

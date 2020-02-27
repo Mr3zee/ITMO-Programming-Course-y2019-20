@@ -17,6 +17,17 @@ public class ArrayQueueADT {
         queueADT.queue[queueADT.end++] = obj;
     }
 
+    public static void push(ArrayQueueADT queueADT, Object obj) {
+        assert obj != null;
+        if (size(queueADT) + 1 == queueADT.queue.length) {
+            increaseCapacity(queueADT);
+        } else if (queueADT.start == 0) {
+            queueADT. start = queueADT.queue.length;
+        }
+        queueADT.start = queueADT.start == 0 ? queueADT.queue.length : queueADT.start;
+        queueADT.queue[--queueADT.start] = obj;
+    }
+
     private static void increaseCapacity(ArrayQueueADT queueADT) {
         if (queueADT.end < queueADT.start) {
             Object[] newQueue = new Object[queueADT.queue.length * 2];
@@ -35,6 +46,11 @@ public class ArrayQueueADT {
         return queueADT.queue[queueADT.start];
     }
 
+    public static Object peek(ArrayQueueADT queueADT) {
+        assert size(queueADT) > 0;
+        return queueADT.queue[queueADT.end - 1];
+    }
+
     public static Object dequeue(ArrayQueueADT queueADT) {
         assert queueADT.start != queueADT.end;
         Object result = queueADT.queue[queueADT.start];
@@ -44,6 +60,16 @@ public class ArrayQueueADT {
         }
         if (queueADT.end == queueADT.queue.length) {
             queueADT.end = 0;
+        }
+        return result;
+    }
+
+    public static Object remove(ArrayQueueADT queueADT) {
+        assert queueADT.start != queueADT.end;
+        Object result = queueADT.queue[queueADT.end - 1];
+        queueADT.queue[queueADT.end-- -1] = null;
+        if (queueADT.end == 0 && queueADT.start != 0) {
+            queueADT.end = queueADT.queue.length;
         }
         return result;
     }
@@ -60,11 +86,6 @@ public class ArrayQueueADT {
         queueADT.queue = new Object[10];
         queueADT.start = 0;
         queueADT.end = 0;
-    }
-
-    public static Object lastElement(ArrayQueueADT queueADT) {
-        assert !isEmpty(queueADT);
-        return queueADT.queue[queueADT.end - 1];
     }
 
     public static String toStr(ArrayQueueADT queueADT) {

@@ -43,7 +43,6 @@ public class ArrayQueueModule {
 
     public static Object element() {
         assert size() > 0;
-//        System.out.println(makeString() + ' ' + start + ' ' + end);
         return queue[start];
     }
 

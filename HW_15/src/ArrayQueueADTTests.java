@@ -1,5 +1,6 @@
 import org.junit.Assert;
 import queue.ArrayQueueADT;
+import queue.ArrayQueueModule;
 
 import static queue.ArrayQueueADT.*;
 
@@ -77,7 +78,11 @@ public class ArrayQueueADTTests extends AbstractTest {
         StringBuilder a = new StringBuilder().append("123");
         enqueue(queueADT, a);
         validElement(a, queueADT);
-        dequeue(queueADT);
+
+        for (int i = 0; i < 300; i++) {
+            enqueue(queueADT, "hi");
+        }
+        validElement(a, queueADT);
     }
 
     @Override
@@ -97,8 +102,8 @@ public class ArrayQueueADTTests extends AbstractTest {
             enqueue(queueADT, 1);
             dequeue(queueADT);
         }
-        for (int i = 0; i < 8; i++) {
-            enqueue(queueADT, 2);
+        for (int i = 0; i < 800; i++) {
+            validEnqueue(i, queueADT);
         }
         validEnqueue("hello", queueADT);
     }
@@ -163,17 +168,40 @@ public class ArrayQueueADTTests extends AbstractTest {
 
     @Override
     public void pushTest() {
-
+        for (int i = 0; i < 1000; i++) {
+            for (int j = 0; j < 10; j++) {
+                validPush(j + "world", queueADT);
+            }
+            validPush("hello" + i, queueADT);
+            for (int j = 0; j < 5; j++) {
+                remove(queueADT);
+            }
+        }
     }
 
     @Override
     public void peekTest() {
-
+        for (int i = 0; i < 1500; i++) {
+            enqueue(queueADT, 22);
+            validPeek(22, queueADT);
+        }
+        dequeue(queueADT);
+        enqueue(queueADT, "hello");
+        validPeek("hello", queueADT);
     }
 
     @Override
     public void removeTest() {
-
+        for (int i = 0; i < 2000; i++) {
+            push(queueADT, i);
+        }
+        for (int i = 0; i < 2000; i++) {
+            validRemove(i, queueADT);
+        }
+        push(queueADT, "hello");
+        push(queueADT, "world");
+        validRemove("hello", queueADT);
+        validRemove("world", queueADT);
     }
 
     private void validIsEmpty(boolean expected, ArrayQueueADT queueADT) {
@@ -188,7 +216,7 @@ public class ArrayQueueADTTests extends AbstractTest {
 
     private void validEnqueue(Object element, ArrayQueueADT queueADT) {
         enqueue(queueADT, element);
-        Assert.assertEquals(element, lastElement(queueADT));
+        Assert.assertEquals(element, peek(queueADT));
         System.out.println(elementMessage(element, getQueue(queueADT)));
     }
 
@@ -206,6 +234,22 @@ public class ArrayQueueADTTests extends AbstractTest {
     private void validDequeue(Object expected, ArrayQueueADT queueADT) {
         Assert.assertEquals(expected, dequeue(queueADT));
         System.out.println(dequeueMessage(expected, getQueue(queueADT)));
+    }
+
+    private void validPush(Object expected, ArrayQueueADT queueADT) {
+        push(queueADT, expected);
+        Assert.assertEquals(expected, element(queueADT));
+        System.out.println(pushMessage(expected, getQueue(queueADT)));
+    }
+
+    private void validPeek(Object expected, ArrayQueueADT queueADT) {
+        Assert.assertEquals(expected, peek(queueADT));
+        System.out.println(peekMessage(expected, getQueue(queueADT)));
+    }
+
+    private void validRemove(Object expected, ArrayQueueADT queueADT) {
+        Assert.assertEquals(expected, remove(queueADT));
+        System.out.println(removeMessage(expected, getQueue(queueADT)));
     }
 
     private String getQueue(ArrayQueueADT queueADT) {
