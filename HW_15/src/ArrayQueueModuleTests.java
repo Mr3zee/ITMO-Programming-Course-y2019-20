@@ -226,7 +226,7 @@ public class ArrayQueueModuleTests extends AbstractTest {
         validPush(expected, ArrayQueueModule.element(), getQueue());
     }
 
-    protected String getQueue() {
+    private String getQueue() {
         return ArrayQueueModule.toStr();
     }
 }
