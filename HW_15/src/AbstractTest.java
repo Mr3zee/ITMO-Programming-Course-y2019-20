@@ -1,6 +1,10 @@
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import queue.ArrayQueueModule;
+
+import java.util.SplittableRandom;
 
 public abstract class AbstractTest {
 
@@ -49,6 +53,51 @@ public abstract class AbstractTest {
 
     @Test
     public abstract void removeTest();
+
+    protected void validIsEmpty(boolean expected, boolean actual, String queue) {
+        Assert.assertEquals(expected, actual);
+        System.out.println(isEmptyMessage(expected, queue));
+    }
+
+    protected void validSize(int expected, int actual, String queue) {
+        Assert.assertEquals(expected, actual);
+        System.out.println(sizeMessage(expected, queue));
+    }
+
+    protected void validEnqueue(Object element, Object actual, String queue) {
+        Assert.assertEquals(element, actual);
+        System.out.println(enqueueMessage(element, queue));
+    }
+
+    protected void validClear(boolean actual) {
+        Assert.assertTrue(actual);
+        System.out.println(clearMessage());
+    }
+
+    protected void validElement(Object expected, Object actual, String queue) {
+        Assert.assertEquals(expected, actual);
+        System.out.println(elementMessage(expected, queue));
+    }
+
+    protected void validDequeue(Object expected, Object actual, String queue) {
+        Assert.assertEquals(expected, actual);
+        System.out.println(dequeueMessage(expected, queue));
+    }
+
+    protected void validPush(Object expected, Object actual, String queue) {
+        Assert.assertEquals(expected, actual);
+        System.out.println(pushMessage(expected, queue));
+    }
+
+    protected void validPeek(Object expected, Object actual, String queue) {
+        Assert.assertEquals(expected, actual);
+        System.out.println(peekMessage(expected, queue));
+    }
+
+    protected void validRemove(Object expected, Object actual, String queue) {
+        Assert.assertEquals(expected, actual);
+        System.out.println(removeMessage(expected, queue));
+    }
 
     protected String isEmptyMessage(boolean expected, String queue) {
         return "Queue " + Colors.paintPurple(queue) + " is " + (expected ? "" : "not ") + "empty";
