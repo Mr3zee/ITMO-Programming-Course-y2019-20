@@ -24,7 +24,7 @@ public class ArrayQueueADT {
         } else if (queueADT.start == 0) {
             changeMarks(queueADT, length, queueADT.end == 0 ? length : queueADT.end);
         }
-        queueADT.start = queueADT.start == 0 ? length : queueADT.start;
+        queueADT.start = queueADT.start == 0 ? queueADT.queue.length : queueADT.start;
         queueADT.queue[--queueADT.start] = obj;
     }
 
