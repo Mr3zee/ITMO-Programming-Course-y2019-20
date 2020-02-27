@@ -1,9 +1,4 @@
-import org.junit.Assert;
 import queue.ArrayQueue;
-import queue.ArrayQueueADT;
-
-import static queue.ArrayQueueADT.*;
-import static queue.ArrayQueueADT.element;
 
 public class ArrayQueueTests extends AbstractTest {
     ArrayQueue queue;
