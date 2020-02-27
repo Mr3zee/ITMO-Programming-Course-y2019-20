@@ -89,22 +89,22 @@ public class ArrayQueueADT {
     }
 
     public static String toStr(ArrayQueueADT queueADT) {
-        StringBuilder string = new StringBuilder("[ ");
+        StringBuilder string = new StringBuilder("[");
         if (!isEmpty(queueADT)) {
             string.append(queueADT.queue[queueADT.start]);
             if (queueADT.end < queueADT.start) {
                 for (int i = queueADT.start + 1; i < queueADT.queue.length; i++) {
-                    string.append("; ").append(queueADT.queue[i]);
+                    string.append(',').append(queueADT.queue[i]);
                 }
                 for (int i = 0; i < queueADT.end + 1; i++) {
-                    string.append("; ").append(queueADT.queue[i]);
+                    string.append(',').append(queueADT.queue[i]);
                 }
             } else {
                 for (int i = queueADT.start + 1; i < queueADT.end; i++) {
-                    string.append("; ").append(queueADT.queue[i]);
+                    string.append(',').append(queueADT.queue[i]);
                 }
             }
         }
-        return string.append(" ]").toString();
+        return string.append("]").toString();
     }
 }
