@@ -1,6 +1,5 @@
 import org.junit.Assert;
 import queue.ArrayQueueADT;
-import queue.ArrayQueueModule;
 
 import static queue.ArrayQueueADT.*;
 

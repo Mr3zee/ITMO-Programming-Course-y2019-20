@@ -23,6 +23,17 @@ public class ArrayQueue {
         queue[end++] = obj;
     }
 
+    public void push(Object obj) {
+        assert obj != null;
+        if (size() + 1 == queue.length) {
+            increaseCapacity();
+        } else if (start == 0) {
+            start = queue.length;
+        }
+        start = start == 0 ? queue.length : start;
+        queue[--start] = obj;
+    }
+
     private void increaseCapacity() {
         if (end < start) {
             Object[] newQueue = new Object[queue.length * 2];
@@ -41,6 +52,11 @@ public class ArrayQueue {
         return queue[start];
     }
 
+    public Object peek() {
+        assert size() > 0;
+        return queue[end - 1];
+    }
+
     public Object dequeue() {
         assert start != end;
         Object result = queue[start];
@@ -50,6 +66,16 @@ public class ArrayQueue {
         }
         if (end == queue.length) {
             end = 0;
+        }
+        return result;
+    }
+
+    public Object remove() {
+        assert start != end;
+        Object result = queue[end - 1];
+        queue[end-- -1] = null;
+        if (end == 0 && start != 0) {
+            end = queue.length;
         }
         return result;
     }
@@ -66,11 +92,6 @@ public class ArrayQueue {
         queue = new Object[10];
         start = 0;
         end = 0;
-    }
-
-    public Object lastElement() {
-        assert !isEmpty();
-        return queue[end - 1];
     }
 
     public String toStr() {
