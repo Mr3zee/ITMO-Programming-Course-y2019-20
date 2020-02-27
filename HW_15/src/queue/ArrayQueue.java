@@ -1,7 +1,5 @@
 package queue;
 
-import java.util.Arrays;
-
 public class ArrayQueue {
     private int start;
     private int end;
@@ -29,6 +27,9 @@ public class ArrayQueue {
             increaseCapacity();
         } else if (start == 0) {
             start = queue.length;
+            if (end == 0) {
+                end = queue.length;
+            }
         }
         start = start == 0 ? queue.length : start;
         queue[--start] = obj;

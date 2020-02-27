@@ -1,16 +1,11 @@
 package queue;
 
-import java.util.Arrays;
-
 public class ArrayQueueModule {
     private static int start = 0;
     private static int end = 0;
     private static Object[] queue = new Object[10];
 
     public static void enqueue(Object obj) {
-//        System.out.println("enqueue");
-//        System.out.println(toStr() + " " + start + " " + end + " " + obj.toString());
-//        System.out.println(Arrays.toString(queue));
         assert obj != null;
         if (size() + 1 == queue.length) {
             increaseCapacity();
@@ -21,9 +16,6 @@ public class ArrayQueueModule {
     }
 
     public static void push(Object obj) {
-//        System.out.println("push");
-//        System.out.println(toStr() + " " + start + " " + end + " " + obj.toString());
-//        System.out.println(Arrays.toString(queue));
         assert obj != null;
         if (size() + 1 == queue.length) {
             increaseCapacity();
@@ -48,23 +40,16 @@ public class ArrayQueueModule {
     }
 
     public static Object element() {
-//        System.out.println("element");
         assert size() > 0;
         return queue[start];
     }
 
     public static Object peek() {
-//        System.out.println("peek");
-//        System.out.println(toStr() + " " + start + " " + end);
-//        System.out.println(Arrays.toString(queue));
         assert size() > 0;
         return queue[end - 1];
     }
 
     public static Object dequeue() {
-//        System.out.println("dequeue");
-//        System.out.println(toStr() + " " + start + " " + end);
-//        System.out.println(Arrays.toString(queue));
         assert start != end;
         Object result = queue[start];
         queue[start++] = null;
@@ -78,9 +63,6 @@ public class ArrayQueueModule {
     }
 
     public static Object remove() {
-//        System.out.println("remove");
-//        System.out.println(toStr() + " " + start + " " + end);
-//        System.out.println(Arrays.toString(queue));
         assert start != end;
         Object result = queue[end - 1];
         queue[end-- -1] = null;
@@ -91,19 +73,14 @@ public class ArrayQueueModule {
     }
 
     public static int size() {
-//        System.out.println("size");
-//        System.out.println(toStr() + " " + start + " " + end);
-//        System.out.println(Arrays.toString(queue));
         return end < start ? (queue.length - start + end) : (end - start);
     }
 
     public static boolean isEmpty() {
-//        System.out.println("isEmpty");
         return start == end;
     }
 
     public static void clear() {
-//        System.out.println("clear");
         queue = new Object[10];
         start = 0;
         end = 0;
