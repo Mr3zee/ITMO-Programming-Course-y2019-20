@@ -1,9 +1,5 @@
 import org.junit.Assert;
 import queue.ArrayQueue;
-import queue.ArrayQueueADT;
-
-import static queue.ArrayQueueADT.*;
-import static queue.ArrayQueueADT.enqueue;
 
 public class ArrayQueueTests extends AbstractTest {
     ArrayQueue queue;
@@ -201,6 +197,6 @@ public class ArrayQueueTests extends AbstractTest {
     }
 
     private String getQueue(ArrayQueue queue) {
-        return messageColor(queue.toString());
+        return messageColor(queue.toStr());
     }
 }

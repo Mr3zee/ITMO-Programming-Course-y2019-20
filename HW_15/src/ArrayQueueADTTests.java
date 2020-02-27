@@ -1,6 +1,5 @@
 import org.junit.Assert;
 import queue.ArrayQueueADT;
-import queue.ArrayQueueModule;
 
 import static queue.ArrayQueueADT.*;
 
@@ -200,6 +199,6 @@ public class ArrayQueueADTTests extends AbstractTest {
     }
 
     private String getQueue(ArrayQueueADT queueADT) {
-        return messageColor(makeString(queueADT));
+        return messageColor(makeStr(queueADT));
     }
 }

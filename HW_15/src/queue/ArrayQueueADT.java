@@ -67,7 +67,7 @@ public class ArrayQueueADT {
         return queueADT.queue[queueADT.end - 1];
     }
 
-    public static String makeString(ArrayQueueADT queueADT) {
+    public static String makeStr(ArrayQueueADT queueADT) {
         StringBuilder string = new StringBuilder("[ ");
         if (!isEmpty(queueADT)) {
             string.append(queueADT.queue[queueADT.start]);

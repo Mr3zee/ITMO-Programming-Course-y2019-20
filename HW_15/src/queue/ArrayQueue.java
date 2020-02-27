@@ -73,8 +73,7 @@ public class ArrayQueue {
         return queue[end - 1];
     }
 
-    @Override
-    public String toString() {
+    public String toStr() {
         StringBuilder string = new StringBuilder("[ ");
         if (!isEmpty()) {
             string.append(queue[start]);
