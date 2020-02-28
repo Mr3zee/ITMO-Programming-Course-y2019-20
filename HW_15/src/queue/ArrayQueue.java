@@ -80,7 +80,7 @@ public class ArrayQueue {
     public Object remove() {
         assert start != end;
         Object result = queue[end - 1];
-        queue[end-- -1] = null;
+        queue[end-- - 1] = null;
         if (end == 0 && start != 0) {
             end = queue.length;
         }
