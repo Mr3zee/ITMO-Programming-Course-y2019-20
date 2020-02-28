@@ -32,7 +32,7 @@ public class SearchEngine {
             }
             // F(l, r) && C
         }
-        // (F(l, r) && r - l == 1) -> R(l, r, r) -> (r = i)
+        // (F(l, r) && r - l == 1) -> R(l, r, r) -> (i = r)
         // R(-1, n, i) && C
         return r;
     }
@@ -51,7 +51,7 @@ public class SearchEngine {
     public int upperBound(int l, int r, int value, int ... arr) {
         // F(l, r) && C
         if (r - l == 1) {
-            // (F(l, r) && r - l == 1) -> R'(l, r, r) -> r = i
+            // (F(l, r) && r - l == 1) -> R'(l, r, r) -> i = r
             // R'(l, r, i) && C
             return r;
         }
