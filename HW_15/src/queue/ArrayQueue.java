@@ -136,15 +136,20 @@ public class ArrayQueue {
     }
     // Post: R = ('[' + queueActual[0] + ", " + .. + ", " + queueActual[n - 1] + ']') && (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i])
 
+    // Pre: true
     public Object[] toArray() {
         return copy(size());
     }
+    // Post: (∀ i = 0 to n - 1: R[i] = queueActual[i]) && R.length = n && (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i])
 
+    // Pre: length >= n
     private Object[] copy(int length) {
+        assert length >= queue.length;
         Object[] newQueue = new Object[length];
         int firstPart = Math.min(start + size(), queue.length) - start;
         System.arraycopy(queue, start, newQueue, 0, firstPart);
         System.arraycopy(queue, 0, newQueue, firstPart, size() - firstPart);
         return newQueue;
     }
+    // Post: (∀ i = 0 to n - 1: R[i] = queueActual[i]) && R.length = length && (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i])
 }
