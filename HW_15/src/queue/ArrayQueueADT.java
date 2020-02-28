@@ -5,6 +5,13 @@ public class ArrayQueueADT {
     private int end = 0;
     private Object[] queue = new Object[10];
 
+    // queueActual := actual queue (queueADT), not the Object[] queue
+    // n := size() (size of the queueActual)
+    // R := result of the function
+
+    // Invariant: (∀ i = 1 to n: queue[i] != null) && n >= 0
+
+    // Pre: obj != null
     public static void enqueue(ArrayQueueADT queueADT, Object obj) {
         assert obj != null;
         int length = queueADT.queue.length;
@@ -15,7 +22,9 @@ public class ArrayQueueADT {
         }
         queueADT.queue[queueADT.end++] = obj;
     }
+    // Post: (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i]) && queueActual[n] = obj
 
+    // Pre: obj != null
     public static void push(ArrayQueueADT queueADT, Object obj) {
         assert obj != null;
         int length = queueADT.queue.length;
@@ -27,7 +36,9 @@ public class ArrayQueueADT {
         queueADT.start = queueADT.start == 0 ? queueADT.queue.length : queueADT.start;
         queueADT.queue[--queueADT.start] = obj;
     }
+    // Post: (∀ i = 1 to n: queueActual[i]' = queueActual[i - 1]) && queueActual[0] = obj
 
+    // Pre: true
     private static void increaseCapacity(ArrayQueueADT queueADT) {
         int length = queueADT.queue.length;
         Object[] newQueue = new Object[length * 2];
@@ -37,17 +48,23 @@ public class ArrayQueueADT {
         changeMarks(queueADT, 0, length - 1);
         queueADT.queue = newQueue;
     }
+    // Post: (∀ i = 1 to n: queueActual[i]' = queueActual[i - 1]) && queue.length' = queue.length * 2
 
+    // Pre: n > 0
     public static Object element(ArrayQueueADT queueADT) {
         assert size(queueADT) > 0;
         return queueADT.queue[queueADT.start];
     }
+    // Post: R = queueActual[0] && (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i])
 
+    // Pre: n > 0
     public static Object peek(ArrayQueueADT queueADT) {
         assert size(queueADT) > 0;
         return queueADT.queue[queueADT.end - 1];
     }
+    // Post: R = queueActual[n - 1] && (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i])
 
+    // Pre: n > 0
     public static Object dequeue(ArrayQueueADT queueADT) {
         int length = queueADT.queue.length;
         assert queueADT.start != queueADT.end;
@@ -58,7 +75,9 @@ public class ArrayQueueADT {
         }
         return result;
     }
+    // Post: R = queueActual[0] && (∀ i = 0 to n - 2: queueActual[i]' = queueActual[i + 1])
 
+    // Pre: n > 0
     public static Object remove(ArrayQueueADT queueADT) {
         assert queueADT.start != queueADT.end;
         Object result = queueADT.queue[queueADT.end - 1];
@@ -68,25 +87,35 @@ public class ArrayQueueADT {
         }
         return result;
     }
+    // Post: R = queueActual[n - 1] && (∀ i = 0 to n - 2: queueActual[i]' = queueActual[i])
 
+    // Pre: true
     public static int size(ArrayQueueADT queueADT) {
         return queueADT.end < queueADT.start ? (queueADT.queue.length - queueADT.start + queueADT.end) : (queueADT.end - queueADT.start);
     }
+    // Post: R = n && (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i])
 
+    // Pre: true
     public static boolean isEmpty(ArrayQueueADT queueADT) {
         return queueADT.start == queueADT.end;
     }
+    // Post: R = (n > 0) && (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i])
 
+    // Pre: true
     public static void clear(ArrayQueueADT queueADT) {
         queueADT.queue = new Object[10];
         changeMarks(queueADT, 0, 0);
     }
+    // Post: n = 0
 
+    // Pre: true
     private static void changeMarks(ArrayQueueADT queueADT, int s, int e) {
         queueADT.start = s;
         queueADT.end = e;
     }
+    // Post: start = s && end = e;
 
+    // Pre: true
     public static String toStr(ArrayQueueADT queueADT) {
         StringBuilder string = new StringBuilder("[");
         if (!isEmpty(queueADT)) {
@@ -106,4 +135,5 @@ public class ArrayQueueADT {
         }
         return string.append("]").toString();
     }
+    // Post: R = ('[' + queueActual[0] + ", " + .. + ", " + queueActual[n - 1] + ']') && (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i])
 }
