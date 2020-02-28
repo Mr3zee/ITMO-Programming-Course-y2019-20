@@ -63,15 +63,17 @@ public class SearchEngine {
             // arr[m] < value && A(l, r) -> for each m <= k <= r : arr[k] < value -> F(l, m)
             // r - l > 1 && F(l, m) && C
             r = m;
-            // F(l, r) && C
+            // F(l', r') && r' < r && l' == l && C
         } else {
             // arr[m] >= value && A(l, r) -> for each l <= k <= m : arr[k] >= value -> F(m, r)
             // r - l > 1 && F(m, r) && C
             l = m;
-            // F(l, r) && C
+            // F(l', r') && l' > l && r' == r && C
         }
-        // F(l, r) && A(l, r) && C
+        // F(l', r') && A(l, r) && C
         return upperBound(l, r, value, arr);
+        // R'(l', r', i) && C
+        // l <= l' && r' <= r -> R'(l, r, i)
         // R'(l, r, i) && C
     }
     // Post: R'(l, r, i) && C
@@ -87,10 +89,8 @@ public class SearchEngine {
     //
     // Pre: A
     public int upperBound(int value, int ... arr) {
-        // l = -1 && r == n
-        // F(l, r) && A(l, r)
+        // F(-1, n) && A(-1, n)
         return upperBound(-1, arr.length, value, arr);
-        // R'(l, r, i) -> R'(-1, n, i)
         // R'(-1, n, i) && C
     }
     // Post: R'(-1, n, i) && C
