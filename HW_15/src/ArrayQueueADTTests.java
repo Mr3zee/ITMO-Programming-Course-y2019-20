@@ -1,4 +1,5 @@
 import queue.ArrayQueueADT;
+import queue.ArrayQueueModule;
 
 import static queue.ArrayQueueADT.*;
 
@@ -204,36 +205,66 @@ public class ArrayQueueADTTests extends AbstractTest {
 
     @Override
     public void toArrayTest() {
-
+        validToArray(new Object[]{}, queueADT);
+        enqueue(queueADT, 1);
+        enqueue(queueADT, 2);
+        enqueue(queueADT, "hello");
+        push(queueADT, "world");
+        validToArray(new Object[]{"world", 1, 2, "hello"}, queueADT);
+        dequeue(queueADT);
+        validToArray(new Object[]{1, 2, "hello"}, queueADT);
+        remove(queueADT);
+        validToArray(new Object[]{1, 2}, queueADT);
+        clear(queueADT);
+        validToArray(new Object[]{}, queueADT);
     }
 
     @Override
     public void toStrTest() {
-
+        validToStr("[]", queueADT);
+        enqueue(queueADT, 1);
+        enqueue(queueADT, 2);
+        enqueue(queueADT, "hello");
+        push(queueADT, "world");
+        validToStr("[world, 1, 2, hello]", queueADT);
+        dequeue(queueADT);
+        validToStr("[1, 2, hello]", queueADT);
+        remove(queueADT);
+        validToStr("[1, 2]", queueADT);
+        clear(queueADT);
+        validToStr("[]", queueADT);
     }
 
-    protected void validIsEmpty(boolean expected, ArrayQueueADT queueADT) {
+    private void validIsEmpty(boolean expected, ArrayQueueADT queueADT) {
         validIsEmpty(expected, isEmpty(queueADT), getQueue(queueADT));
     }
 
-    protected void validSize(int expected, ArrayQueueADT queueADT) {
+    private void validSize(int expected, ArrayQueueADT queueADT) {
         validSize(expected, size(queueADT), getQueue(queueADT));
     }
 
-    protected void validElement(Object expected, ArrayQueueADT queueADT) {
+    private void validElement(Object expected, ArrayQueueADT queueADT) {
         validElement(expected, element(queueADT), getQueue(queueADT));
     }
 
-    protected void validDequeue(Object expected, ArrayQueueADT queueADT) {
+    private void validDequeue(Object expected, ArrayQueueADT queueADT) {
         validDequeue(expected, dequeue(queueADT), getQueue(queueADT));
     }
 
-    protected void validPeek(Object expected, ArrayQueueADT queueADT) {
+    private void validPeek(Object expected, ArrayQueueADT queueADT) {
         validPeek(expected, peek(queueADT), getQueue(queueADT));
     }
 
-    protected void validRemove(Object expected, ArrayQueueADT queueADT) {
+    private void validRemove(Object expected, ArrayQueueADT queueADT) {
         validRemove(expected, remove(queueADT), getQueue(queueADT));
+    }
+
+    private void validToStr(Object expected, ArrayQueueADT queueADT) {
+        validToStr(expected, toStr(queueADT), getQueue(queueADT));
+    }
+
+    private void validToArray(Object[] expected, ArrayQueueADT queueADT) {
+        validToArray(expected, toArray(queueADT), getQueue(queueADT));
     }
 
     private void validEnqueue(Object expected, ArrayQueueADT queueADT) {
