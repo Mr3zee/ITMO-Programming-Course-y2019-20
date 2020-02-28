@@ -17,7 +17,7 @@ public class SearchEngine {
         while (r - l != 1) {
             // r - l > 1 && F(l, r) && C
             int m = (r + l) >>> 1;
-            // m = (l + r) / 2 && r - l > 1 && -> l < m < r
+            // m = (l + r) / 2 && r - l > 1 -> l < m < r
             // r - l > 1 && l < m < r && F(l, r) && C
             if (arr[m] <= value) {
                 // arr[m] <= value && A -> for each m <= k <= r : arr[k] <= value -> F(l, m)
@@ -48,6 +48,7 @@ public class SearchEngine {
     // R'(l, r, i) = (arr[i - 1] >= value && value > arr[i] && l < i <= r)
     //
     // Pre: F(l, r) && A(l, r)
+    // Post: R'(l, r, i) && C
     public int upperBound(int l, int r, int value, int ... arr) {
         // F(l, r) && C
         if (r - l == 1) {
@@ -76,7 +77,6 @@ public class SearchEngine {
         // l <= l' && r' <= r -> R'(l, r, i)
         // R'(l, r, i) && C
     }
-    // Post: R'(l, r, i) && C
 
 
     // Upper bound
