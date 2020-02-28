@@ -41,10 +41,7 @@ public class ArrayQueueADT {
     // Pre: true
     private static void increaseCapacity(ArrayQueueADT queueADT) {
         int length = queueADT.queue.length;
-        Object[] newQueue = new Object[length * 2];
-        int firstPart = Math.min(queueADT.start + size(queueADT), length) - queueADT.start;
-        System.arraycopy(queueADT.queue, queueADT.start, newQueue, 0, firstPart);
-        System.arraycopy(queueADT.queue, 0, newQueue, firstPart, size(queueADT) - firstPart);
+        Object[] newQueue = copy(queueADT, length * 2);
         changeMarks(queueADT, 0, length - 1);
         queueADT.queue = newQueue;
     }
@@ -136,4 +133,16 @@ public class ArrayQueueADT {
         return string.append("]").toString();
     }
     // Post: R = ('[' + queueActual[0] + ", " + .. + ", " + queueActual[n - 1] + ']') && (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i])
+
+    public static Object[] toArray(ArrayQueueADT queueADT) {
+        return copy(queueADT, size(queueADT));
+    }
+
+    private static Object[] copy(ArrayQueueADT queueADT, int length) {
+        Object[] newQueue = new Object[length];
+        int firstPart = Math.min(queueADT.start + size(queueADT), queueADT.queue.length) - queueADT.start;
+        System.arraycopy(queueADT.queue, queueADT.start, newQueue, 0, firstPart);
+        System.arraycopy(queueADT.queue, 0, newQueue, firstPart, size(queueADT) - firstPart);
+        return newQueue;
+    }
 }

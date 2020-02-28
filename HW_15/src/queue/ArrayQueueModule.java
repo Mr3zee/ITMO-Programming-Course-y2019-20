@@ -39,10 +39,7 @@ public class ArrayQueueModule {
 
     // Pre: true
     private static void increaseCapacity() {
-        Object[] newQueue = new Object[queue.length * 2];
-        int firstPart = Math.min(start + size(), queue.length) - start;
-        System.arraycopy(queue, start, newQueue, 0, firstPart);
-        System.arraycopy(queue, 0, newQueue, firstPart, size() - firstPart);
+        Object[] newQueue = copy(queue.length * 2);
         changeMarks(0, queue.length - 1);
         queue = newQueue;
     }
@@ -133,4 +130,16 @@ public class ArrayQueueModule {
         return string.append("]").toString();
     }
     // Post: R = ('[' + queueActual[0] + ", " + .. + ", " + queueActual[n - 1] + ']') && (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i])
+
+    public static Object[] toArray() {
+        return copy(size());
+    }
+
+    private static Object[] copy(int length) {
+        Object[] newQueue = new Object[length];
+        int firstPart = Math.min(start + size(), queue.length) - start;
+        System.arraycopy(queue, start, newQueue, 0, firstPart);
+        System.arraycopy(queue, 0, newQueue, firstPart, size() - firstPart);
+        return newQueue;
+    }
 }
