@@ -51,6 +51,12 @@ public abstract class AbstractTest {
     @Test
     public abstract void removeTest();
 
+    @Test
+    public abstract void toArrayTest();
+
+    @Test
+    public abstract void toStrTest();
+
     protected void validIsEmpty(boolean expected, boolean actual, String queue) {
         Assert.assertEquals(expected, actual);
         System.out.println(isEmptyMessage(expected, queue));
@@ -96,39 +102,57 @@ public abstract class AbstractTest {
         System.out.println(removeMessage(expected, queue));
     }
 
-    protected String isEmptyMessage(boolean expected, String queue) {
+    protected void validToStr(Object expected, Object actual, String queue) {
+        Assert.assertEquals(expected, actual);
+        System.out.println(toStrMessage(queue));
+    }
+
+    protected void validToArray(Object[] expected, Object[] actual, String queue) {
+        Assert.assertArrayEquals(expected, actual);
+        System.out.println(toArrayMessage(queue));
+    }
+
+    private String isEmptyMessage(boolean expected, String queue) {
         return "Queue " + Colors.paintPurple(queue) + " is " + (expected ? "" : "not ") + "empty";
     }
 
-    protected String sizeMessage(int expected, String queue) {
+    private String sizeMessage(int expected, String queue) {
         return "Queue " + Colors.paintPurple(queue) + " has size of " + Colors.paintPurple(String.valueOf(expected));
     }
 
-    protected String enqueueMessage(Object element, String queue) {
+    private String enqueueMessage(Object element, String queue) {
         return "Queue " + Colors.paintPurple(queue) + " has new last element - " + Colors.paintPurple(element.toString());
     }
 
-    protected String elementMessage(Object expected, String queue) {
+    private String elementMessage(Object expected, String queue) {
         return "Queue " + Colors.paintPurple(queue) + " has " + Colors.paintPurple(expected.toString()) + " as first element";
     }
 
-    protected String clearMessage() {
+    private String clearMessage() {
         return "Queue cleared";
     }
 
-    protected String dequeueMessage(Object expected, String queue) {
+    private String dequeueMessage(Object expected, String queue) {
         return "Object " + Colors.paintPurple(expected.toString()) + " has been removed from the start of the queue " + Colors.paintPurple(queue);
     }
 
-    protected String pushMessage(Object element, String queue) {
+    private String pushMessage(Object element, String queue) {
         return "Queue " + Colors.paintPurple(queue) + " has new first element - " + Colors.paintPurple(element.toString());
     }
 
-    protected String peekMessage(Object expected, String queue) {
+    private String peekMessage(Object expected, String queue) {
         return "Queue " + Colors.paintPurple(queue) + " has " + Colors.paintPurple(expected.toString()) + " as last element";
     }
 
-    protected String removeMessage(Object expected, String queue) {
+    private String removeMessage(Object expected, String queue) {
         return "Object " + Colors.paintPurple(expected.toString()) + " has been removed from the end of the queue " + Colors.paintPurple(queue);
+    }
+
+    private String toStrMessage(String queue) {
+        return "String for queue is correct: " + Colors.paintPurple(queue);
+    }
+
+    private String toArrayMessage(String queue) {
+        return "Array for queue is correct: " + Colors.paintPurple(queue);
     }
 }

@@ -142,7 +142,7 @@ public class ArrayQueueADT {
 
     // Pre: length >= n
     private static Object[] copy(ArrayQueueADT queueADT, int length) {
-        assert length >= queueADT.queue.length;
+        assert length >= size(queueADT);
         Object[] newQueue = new Object[length];
         int firstPart = Math.min(queueADT.start + size(queueADT), queueADT.queue.length) - queueADT.start;
         System.arraycopy(queueADT.queue, queueADT.start, newQueue, 0, firstPart);

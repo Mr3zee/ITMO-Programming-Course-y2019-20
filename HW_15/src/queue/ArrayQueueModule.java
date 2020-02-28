@@ -139,7 +139,7 @@ public class ArrayQueueModule {
 
     // Pre: length >= n
     private static Object[] copy(int length) {
-        assert length >= queue.length;
+        assert length >= size();
         Object[] newQueue = new Object[length];
         int firstPart = Math.min(start + size(), queue.length) - start;
         System.arraycopy(queue, start, newQueue, 0, firstPart);

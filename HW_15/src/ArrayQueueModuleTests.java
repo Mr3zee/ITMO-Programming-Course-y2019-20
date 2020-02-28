@@ -187,28 +187,68 @@ public class ArrayQueueModuleTests extends AbstractTest {
         System.out.println("DoubleQueueTest is not supported");
     }
 
-    protected void validIsEmpty(boolean expected) {
+    @Override
+    public void toArrayTest() {
+        validToArray(new Object[]{});
+        ArrayQueueModule.enqueue(1);
+        ArrayQueueModule.enqueue(2);
+        ArrayQueueModule.enqueue("hello");
+        ArrayQueueModule.push("world");
+        validToArray(new Object[]{"world", 1, 2, "hello"});
+        ArrayQueueModule.dequeue();
+        validToArray(new Object[]{1, 2, "hello"});
+        ArrayQueueModule.remove();
+        validToArray(new Object[]{1, 2});
+        ArrayQueueModule.clear();
+        validToArray(new Object[]{});
+    }
+
+    @Override
+    public void toStrTest() {
+        validToStr("[]");
+        ArrayQueueModule.enqueue(1);
+        ArrayQueueModule.enqueue(2);
+        ArrayQueueModule.enqueue("hello");
+        ArrayQueueModule.push("world");
+        validToStr("[world, 1, 2, hello]");
+        ArrayQueueModule.dequeue();
+        validToStr("[1, 2, hello]");
+        ArrayQueueModule.remove();
+        validToStr("[1, 2]");
+        ArrayQueueModule.clear();
+        validToStr("[]");
+    }
+
+    private void validIsEmpty(boolean expected) {
         validIsEmpty(expected, ArrayQueueModule.isEmpty(), getQueue());
     }
 
-    protected void validSize(int expected) {
+    private void validSize(int expected) {
         validSize(expected, ArrayQueueModule.size(), getQueue());
     }
 
-    protected void validElement(Object expected) {
+    private void validElement(Object expected) {
         validElement(expected, ArrayQueueModule.element(), getQueue());
     }
 
-    protected void validDequeue(Object expected) {
+    private void validDequeue(Object expected) {
         validDequeue(expected, ArrayQueueModule.dequeue(), getQueue());
     }
 
-    protected void validPeek(Object expected) {
+    private void validPeek(Object expected) {
         validPeek(expected, ArrayQueueModule.peek(), getQueue());
     }
 
-    protected void validRemove(Object expected) {
+    private void validRemove(Object expected) {
         validRemove(expected, ArrayQueueModule.remove(), getQueue());
+    }
+
+    private void validToStr(Object expected) {
+        validToStr(expected, ArrayQueueModule.toStr(), getQueue());
+    }
+
+    private void validToArray(Object[] expected) {
+        validToArray(expected, ArrayQueueModule.toArray(), getQueue());
     }
 
     private void validEnqueue(Object expected) {

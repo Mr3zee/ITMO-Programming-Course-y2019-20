@@ -202,6 +202,16 @@ public class ArrayQueueADTTests extends AbstractTest {
         validRemove("world", queueADT);
     }
 
+    @Override
+    public void toArrayTest() {
+
+    }
+
+    @Override
+    public void toStrTest() {
+
+    }
+
     protected void validIsEmpty(boolean expected, ArrayQueueADT queueADT) {
         validIsEmpty(expected, isEmpty(queueADT), getQueue(queueADT));
     }
