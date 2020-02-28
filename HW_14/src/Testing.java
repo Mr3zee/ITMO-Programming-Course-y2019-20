@@ -61,12 +61,12 @@ public class Testing {
     }
 
     private void validSearchIter(int expected, int value, int ... arr) {
-        Assert.assertEquals(expected, engine.searchIter(value, arr));
+        Assert.assertEquals(expected, engine.lowerBound(value, arr));
         message(expected, value, arr);
     }
 
     private void validSearchRecur(int expected, int value, int ... arr) {
-        Assert.assertEquals(expected, engine.searchRecur(value, arr));
+        Assert.assertEquals(expected, engine.upperBound(value, arr));
         message(expected, value, arr);
     }
 

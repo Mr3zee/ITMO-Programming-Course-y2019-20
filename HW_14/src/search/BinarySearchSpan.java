@@ -3,9 +3,11 @@ package search;
 public class BinarySearchSpan {
     // args.length = n + 1
     // value = args[0]
-    // arr[0; n - 1] = args[1; n]
+    // arr[0 .. n - 1] = args[1 .. n]
     // A = (for each 0 <= p < q < n : arr[p] >= arr[q])
     // C = (for each 0 <= j < n : arr[j]' == arr[j])
+    // R(l, r, i) = (arr[i - 1] > value && value >= arr[i] && l < i <= r)
+    // R'(l, r, i) = (arr[i - 1] >= value && value > arr[i] && l < i <= r)
     //
     // Pre : A && n >= 0
     public static void main(String[] args) {
@@ -20,16 +22,16 @@ public class BinarySearchSpan {
         SearchEngine engine = new SearchEngine();
         // C -> A
         // A
-        int i = engine.searchIter(value, arr);
-        // arr[i] <= value && (i -> min) && C
+        int i = engine.lowerBound(value, arr);
+        // R(-1, n, i) && C
         // C -> A
         // A
-        int j = engine.searchRecur(value, arr);
-        // arr[j] < value && (j -> min) && C
-        // (arr[i] <= value && (i -> min)) && (arr[j] < value && (j -> min)) -> for each i <= k < j : arr[k] = arr[i] -> span = j - i -> j = i + span
+        int j = engine.upperBound(value, arr);
+        // R'(-1, n, j) && C
+        // R(-1, n, i) && R'(-1, n, j) && A -> for each i <= k < j : arr[k] = arr[i] -> span = j - i -> j = i + span
         span = j - i;
-        // (arr[i] <= value && (i -> min)) && (for each i <= k < i + span : arr[k] = arr[i]) && C
+        // R(-1, n, i) && (for each i <= k < i + span : arr[k] = arr[i]) && C
         System.out.println(i + " " + span);
     }
-    // Post: (arr[i] <= value && (i -> min)) && (for each i <= k < i + span : arr[k] = arr[i]) && C
+    // Post: R(-1, n, i) && (for each i <= k < i + span : arr[k] = arr[i]) && C
 }
