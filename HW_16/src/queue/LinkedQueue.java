@@ -55,12 +55,8 @@ public class LinkedQueue extends AbstractQueue {
         assert size > 0;
         Object result = start.value;
         start = start.next;
-        size--;
-        if (size == 0) {
-            clear();
-        } else {
-            start.prev = null;
-        }
+        if (removeLastElement()) return result;
+        start.prev = null;
         return result;
     }
 
@@ -69,13 +65,18 @@ public class LinkedQueue extends AbstractQueue {
         assert size > 0;
         Object result = end.value;
         end = end.prev;
+        if (removeLastElement()) return result;
+        end.next = null;
+        return result;
+    }
+
+    private boolean removeLastElement() {
         size--;
         if (size == 0) {
             clear();
-        } else {
-            end.next = null;
+            return true;
         }
-        return result;
+        return false;
     }
 
     @Override
