@@ -71,8 +71,7 @@ public class LinkedQueue extends AbstractQueue {
     }
 
     private boolean removeLastElement() {
-        size--;
-        if (size == 0) {
+        if (--size == 0) {
             clear();
             return true;
         }

@@ -1,2 +1,3 @@
 javac queue\ArrayQueue.java
-java -jar -ea ArrayQueueDequeTest.jar
+javac queue\LinkedQueue.java
+java -jar -ea QueueTest.jar
