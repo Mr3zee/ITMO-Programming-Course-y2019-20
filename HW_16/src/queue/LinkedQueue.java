@@ -1,7 +1,6 @@
 package queue;
 
 public class LinkedQueue extends AbstractQueue {
-    private final Node NULL = new Node(null, null, null);
     private Node start;
     private Node end;
     private int size;
@@ -85,8 +84,8 @@ public class LinkedQueue extends AbstractQueue {
 
     @Override
     public void clear() {
-        start = NULL;
-        end = NULL;
+        start = new Node();
+        end = new Node();
         size = 0;
     }
 
@@ -127,6 +126,12 @@ public class LinkedQueue extends AbstractQueue {
             this.next = next;
             this.prev = prev;
             this.value = value;
+        }
+
+        public Node() {
+            next = null;
+            prev = null;
+            value = null;
         }
     }
 }
