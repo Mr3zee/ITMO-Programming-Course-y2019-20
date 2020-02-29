@@ -10,12 +10,6 @@ public class LinkedQueue extends AbstractQueue {
         clear();
     }
 
-    public LinkedQueue(Node start, Node end, int size) {
-        this.start = start;
-        this.end = end;
-        this.size = size;
-    }
-
     @Override
     public void enqueue(Object obj) {
         assert obj != null;
