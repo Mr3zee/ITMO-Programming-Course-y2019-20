@@ -11,7 +11,7 @@ public class SearchEngine {
     // R(l, r, i) = (arr[i - 1] > value && value >= arr[i] && l < i <= r)
     //
     // Pre: A
-    public int lowerBound(int value, int ... arr) {
+    public static int lowerBound(int value, int ... arr) {
         int l = -1, r = arr.length;
         // F(-1, n) && C
         while (r - l != 1) {
@@ -49,7 +49,7 @@ public class SearchEngine {
     //
     // Pre: F(l, r) && A(l, r)
     // Post: R'(l, r, i) && C
-    public int upperBound(int l, int r, int value, int ... arr) {
+    public static int upperBound(int l, int r, int value, int ... arr) {
         // F(l, r) && C
         if (r - l == 1) {
             // (F(l, r) && r - l == 1) -> R'(l, r, r) -> i = r
@@ -88,7 +88,7 @@ public class SearchEngine {
     // R'(l, r, i) = (arr[i - 1] >= value && value > arr[i] && l < i <= r)
     //
     // Pre: A
-    public int upperBound(int value, int ... arr) {
+    public static int upperBound(int value, int ... arr) {
         // F(-1, n) && A(-1, n)
         return upperBound(-1, arr.length, value, arr);
         // R'(-1, n, i) && C

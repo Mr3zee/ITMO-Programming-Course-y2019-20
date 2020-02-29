@@ -18,15 +18,13 @@ public class BinarySearchSpan {
         for (int i = 1; i < args.length; i++) {
             arr[i - 1] = Integer.parseInt(args[i]);
         }
-        // C
-        SearchEngine engine = new SearchEngine();
         // C -> A
         // A
-        int i = engine.lowerBound(value, arr);
+        int i = SearchEngine.lowerBound(value, arr);
         // R(-1, n, i) && C
         // C -> A
         // A
-        int j = engine.upperBound(value, arr);
+        int j = SearchEngine.upperBound(value, arr);
         // R'(-1, n, j) && C
         // R(-1, n, i) && R'(-1, n, j) && A -> for each i <= k < j : arr[k] = arr[i] -> span = j - i -> j = i + span
         span = j - i;
