@@ -4,6 +4,7 @@ public class BinarySearchSpan {
     // args.length = n + 1
     // value = args[0]
     // arr[0 .. n - 1] = args[1 .. n]
+    // i - result of the function
     // A = (for each 0 <= p < q < n : arr[p] >= arr[q])
     // C = (for each 0 <= j < n : arr[j]' == arr[j])
     // R(l, r, i) = (arr[i - 1] > value && value >= arr[i] && l < i <= r)
