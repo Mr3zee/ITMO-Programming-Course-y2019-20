@@ -156,24 +156,6 @@ public abstract class AbstractTest {
     }
 
     @Test
-    public void doubleQueueTest() {
-        ArrayQueue queue2 = new ArrayQueue();
-        validEnqueue(1);
-        validEnqueue(22);
-        validEnqueue(32);
-        validSize(1);
-        validSize(22);
-        validElement(1);
-        validElement(22);
-        validDequeue(1);
-        validDequeue(22);
-        validIsEmpty(true);
-        validIsEmpty(false);
-        validClear();
-        validClear();
-    }
-
-    @Test
     public void pushTest() {
         for (int i = 0; i < 100; i++) {
             for (int j = 0; j < 10; j++) {
