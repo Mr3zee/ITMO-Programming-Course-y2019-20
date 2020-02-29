@@ -1,6 +1,6 @@
 package queue;
 
-public class ArrayQueue {
+public class ArrayQueue extends AbstractQueue {
     private int start;
     private int end;
     private Object[] queue;
@@ -11,13 +11,7 @@ public class ArrayQueue {
         this.queue = new Object[10];
     }
 
-    // queueActual := actual queue, not the Object[] queue
-    // n := size() (size of the queueActual)
-    // R := result of the function
-
-    // Invariant: (∀ i = 1 to n: queue[i] != null) && n >= 0
-
-    // Pre: obj != null
+    @Override
     public void enqueue(Object obj) {
         assert obj != null;
         if (size() + 1 == queue.length) {
@@ -27,9 +21,8 @@ public class ArrayQueue {
         }
         queue[end++] = obj;
     }
-    // Post: (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i]) && queueActual[n] = obj
 
-    // Pre: obj != null
+    @Override
     public void push(Object obj) {
         assert obj != null;
         if (size() + 1 == queue.length) {
@@ -40,31 +33,20 @@ public class ArrayQueue {
         start = start == 0 ? queue.length : start;
         queue[--start] = obj;
     }
-    // Post: (∀ i = 1 to n: queueActual[i]' = queueActual[i - 1]) && queueActual[0] = obj
 
-    // Pre: true
-    private void increaseCapacity() {
-        Object[] newQueue = copy(queue.length * 2);
-        changeMarks(0, queue.length - 1);
-        queue = newQueue;
-    }
-    // Post: (∀ i = 1 to n: queueActual[i]' = queueActual[i - 1]) && queue.length' = queue.length * 2
-
-    // Pre: n > 0
+    @Override
     public Object element() {
         assert size() > 0;
         return queue[start];
     }
-    // Post: R = queueActual[0] && (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i])
 
-    // Pre: n > 0
+    @Override
     public Object peek() {
         assert size() > 0;
         return queue[end - 1];
     }
-    // Post: R = queueActual[n - 1] && (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i])
 
-    // Pre: n > 0
+    @Override
     public Object dequeue() {
         assert start != end;
         Object result = queue[start];
@@ -74,9 +56,8 @@ public class ArrayQueue {
         }
         return result;
     }
-    // Post: R = queueActual[0] && (∀ i = 0 to n - 2: queueActual[i]' = queueActual[i + 1])
 
-    // Pre: n > 0
+    @Override
     public Object remove() {
         assert start != end;
         Object result = queue[end - 1];
@@ -86,35 +67,19 @@ public class ArrayQueue {
         }
         return result;
     }
-    // Post: R = queueActual[n - 1] && (∀ i = 0 to n - 2: queueActual[i]' = queueActual[i])
 
-    // Pre: true
+    @Override
     public int size() {
         return end < start ? (queue.length - start + end) : (end - start);
     }
-    // Post: R = n && (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i])
 
-    // Pre: true
-    public boolean isEmpty() {
-        return start == end;
-    }
-    // Post: R = (n > 0) && (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i])
-
-    // Pre: true
+    @Override
     public void clear() {
         queue = new Object[10];
         changeMarks(0, 0);
     }
-    // Post: n = 0
 
-    // Pre: true
-    private void changeMarks(int s, int e) {
-        start = s;
-        end = e;
-    }
-    // Post: start = s && end = e;
-
-    // Pre: true
+    @Override
     public String toStr() {
         StringBuilder string = new StringBuilder("[");
         if (!isEmpty()) {
@@ -134,13 +99,26 @@ public class ArrayQueue {
         }
         return string.append("]").toString();
     }
-    // Post: R = ('[' + queueActual[0] + ", " + .. + ", " + queueActual[n - 1] + ']') && (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i])
 
-    // Pre: true
+    @Override
     public Object[] toArray() {
         return copy(size());
     }
-    // Post: (∀ i = 0 to n - 1: R[i] = queueActual[i]) && R.length = n && (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i])
+
+    // Pre: true
+    private void increaseCapacity() {
+        Object[] newQueue = copy(queue.length * 2);
+        changeMarks(0, queue.length - 1);
+        queue = newQueue;
+    }
+    // Post: (∀ i = 1 to n: queueActual[i]' = queueActual[i - 1]) && queue.length' = queue.length * 2
+
+    // Pre: true
+    private void changeMarks(int s, int e) {
+        start = s;
+        end = e;
+    }
+    // Post: start = s && end = e;
 
     // Pre: length >= n
     private Object[] copy(int length) {
