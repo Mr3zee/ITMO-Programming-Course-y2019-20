@@ -1,12 +1,13 @@
 package queue;
 
 public class LinkedQueue extends AbstractQueue {
+    private final Node NULL = new Node(null, null, null);
     private Node start;
     private Node end;
     private int size;
 
     public LinkedQueue() {
-        this(null, null, 0);
+        clear();
     }
 
     public LinkedQueue(Node start, Node end, int size) {
@@ -18,6 +19,7 @@ public class LinkedQueue extends AbstractQueue {
     @Override
     public void enqueue(Object obj) {
         assert obj != null;
+        if (addFirstElement(obj)) return;
         end.next = new Node(null, end, obj);
         end = end.next;
         size++;
@@ -26,21 +28,32 @@ public class LinkedQueue extends AbstractQueue {
     @Override
     public void push(Object obj) {
         assert obj != null;
+        if (addFirstElement(obj)) return;
         start.prev = new Node(start, null, obj);
         start = start.prev;
         size++;
     }
 
+    private boolean addFirstElement(Object obj) {
+        if (size == 0) {
+            start = new Node(null, null, obj);
+            end = start;
+            size++;
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public Object element() {
         assert size > 0;
-        return end.value;
+        return start.value;
     }
 
     @Override
     public Object peek() {
         assert size > 0;
-        return start.value;
+        return end.value;
     }
 
     @Override
@@ -49,6 +62,11 @@ public class LinkedQueue extends AbstractQueue {
         Object result = start.value;
         start = start.next;
         size--;
+        if (size == 0) {
+            clear();
+        } else {
+            start.prev = null;
+        }
         return result;
     }
 
@@ -58,6 +76,11 @@ public class LinkedQueue extends AbstractQueue {
         Object result = end.value;
         end = end.prev;
         size--;
+        if (size == 0) {
+            clear();
+        } else {
+            end.next = null;
+        }
         return result;
     }
 
@@ -68,13 +91,16 @@ public class LinkedQueue extends AbstractQueue {
 
     @Override
     public void clear() {
-        start = null;
-        end = null;
+        start = NULL;
+        end = NULL;
         size = 0;
     }
 
     @Override
     public String toStr() {
+        if (size == 0) {
+            return "[]";
+        }
         StringBuilder string = new StringBuilder("[");
         Node node = start;
         while (node.next != null) {
@@ -86,10 +112,13 @@ public class LinkedQueue extends AbstractQueue {
 
     @Override
     public Object[] toArray() {
+        if (size == 0) {
+            return new Object[0];
+        }
         Object[] result = new Object[size];
         Node node = start;
-        for (Object obj : result) {
-            obj = node.value;
+        for (int i = 0; i < size; i++) {
+            result[i] = node.value;
             node = node.next;
         }
         return result;
