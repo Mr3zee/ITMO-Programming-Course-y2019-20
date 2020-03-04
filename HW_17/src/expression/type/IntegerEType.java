@@ -11,7 +11,7 @@ public class IntegerEType extends AbstractEType<Integer> {
     }
 
     @Override
-    protected Integer calcAdd(Integer v) {
+    protected Integer calcAdd(Integer v) throws OverflowEEException, UnderflowEEException {
         Integer value = value();
         if (value > 0 && Integer.MAX_VALUE - value < v) {
             throw new OverflowEEException("Add", value, v);
@@ -23,7 +23,7 @@ public class IntegerEType extends AbstractEType<Integer> {
     }
 
     @Override
-    protected Integer calcSubtract(Integer v) {
+    protected Integer calcSubtract(Integer v) throws OverflowEEException, UnderflowEEException {
         Integer value = value();
         if ((value > 0 && value - Integer.MAX_VALUE > v) || (value == 0 && v == Integer.MIN_VALUE)) {
             throw new OverflowEEException("Subtract", value, v);
@@ -35,7 +35,7 @@ public class IntegerEType extends AbstractEType<Integer> {
     }
 
     @Override
-    protected Integer calcMultiply(Integer v) {
+    protected Integer calcMultiply(Integer v) throws OverflowEEException, UnderflowEEException {
         Integer value = value();
         if ((value > 0 && v > 0 && (Integer.MAX_VALUE / value) < v) ||
             (value < 0 && v < 0 && (Integer.MAX_VALUE / value) > v)) {
@@ -49,7 +49,7 @@ public class IntegerEType extends AbstractEType<Integer> {
     }
 
     @Override
-    protected Integer calcDivide(Integer v) {
+    protected Integer calcDivide(Integer v) throws DivisionByZeroEException, OverflowEEException {
         Integer value = value();
         if (v == 0) {
             throw new DivisionByZeroEException(value.toString());
@@ -61,7 +61,7 @@ public class IntegerEType extends AbstractEType<Integer> {
     }
 
     @Override
-    protected Integer calcNegate() {
+    protected Integer calcNegate() throws OverflowEEException {
         Integer value = value();
         if (value == Integer.MIN_VALUE) {
             throw new OverflowEEException("Negate", value);

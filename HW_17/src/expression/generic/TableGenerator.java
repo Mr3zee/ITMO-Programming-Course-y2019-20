@@ -1,12 +1,12 @@
 package expression.generic;
 
 import expression.CommonExpression;
-import expression.exceptions.EExceptions.EvaluatingExpressionException;
+import expression.exceptions.EExceptions.*;
 import expression.exceptions.ExpressionParser;
 import expression.type.EType;
 
 public class TableGenerator<T extends Number> {
-    public Object[][][] tabulate(EType<T> type, String expression, int x1, int x2, int y1, int y2, int z1, int z2) {
+    public Object[][][] tabulate(EType<T> type, String expression, int x1, int x2, int y1, int y2, int z1, int z2) throws ExpressionException {
         int dx = x2 - x1 + 1;
         int dy = y2 - y1 + 1;
         int dz = z2 - z1 + 1;

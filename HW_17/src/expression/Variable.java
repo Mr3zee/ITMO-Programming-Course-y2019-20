@@ -4,7 +4,6 @@ import expression.exceptions.EExceptions.EvaluatingExpressionException;
 import expression.exceptions.EExceptions.IllegalVariableName;
 import expression.type.EType;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class Variable<T extends Number> implements CommonExpression<T> {
@@ -20,7 +19,7 @@ public class Variable<T extends Number> implements CommonExpression<T> {
     }
 
     @Override
-    public EType<T> evaluate(EType<T> x, EType<T> y, EType<T> z) throws EvaluatingExpressionException {
+    public EType<T> evaluate(EType<T> x, EType<T> y, EType<T> z) throws IllegalVariableName {
         switch (name) {
             case "x" :
                 return x;

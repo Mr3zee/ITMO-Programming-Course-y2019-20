@@ -28,7 +28,7 @@ public class BigIntegerEType extends AbstractEType<BigInteger> {
     }
 
     @Override
-    protected BigInteger calcDivide(BigInteger v) {
+    protected BigInteger calcDivide(BigInteger v) throws DivisionByZeroEException {
         if (v.equals(BigInteger.ZERO)) {
             throw new DivisionByZeroEException(value().toString());
         }

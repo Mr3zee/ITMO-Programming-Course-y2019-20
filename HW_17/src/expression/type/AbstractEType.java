@@ -1,5 +1,9 @@
 package expression.type;
 
+import expression.exceptions.EExceptions.DivisionByZeroEException;
+import expression.exceptions.EExceptions.OverflowEEException;
+import expression.exceptions.EExceptions.UnderflowEEException;
+
 public abstract class AbstractEType<T extends Number> implements EType<T> {
     private T value;
 
