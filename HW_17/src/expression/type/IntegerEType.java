@@ -34,4 +34,9 @@ public class IntegerEType extends AbstractEType<Integer> {
     public EType<Integer> valueOf(Integer v) {
         return new IntegerEType(v);
     }
+
+    @Override
+    public Integer valueOf(String v) {
+        return Integer.parseInt(v);
+    }
 }

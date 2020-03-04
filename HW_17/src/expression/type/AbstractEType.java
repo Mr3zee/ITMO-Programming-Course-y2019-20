@@ -7,6 +7,10 @@ public abstract class AbstractEType<T extends Number> implements EType<T> {
         this.value = value;
     }
 
+    public AbstractEType(String value) {
+        this.value = valueOf(value);
+    }
+
     @Override
     public T value() {
         return value;
@@ -49,4 +53,7 @@ public abstract class AbstractEType<T extends Number> implements EType<T> {
 
     @Override
     public abstract EType<T> valueOf(T v);
+
+    @Override
+    public abstract T valueOf(String v);
 }
