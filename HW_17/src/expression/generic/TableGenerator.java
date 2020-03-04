@@ -1,6 +1,7 @@
 package expression.generic;
 
 import expression.CommonExpression;
+import expression.exceptions.EExceptions.EvaluatingExpressionException;
 import expression.exceptions.ExpressionParser;
 import expression.type.EType;
 
@@ -17,7 +18,11 @@ public class TableGenerator<T extends Number> {
                 EType<T> yj = type.parse(String.valueOf(y1 + j));
                 for (int k = 0; k < dz; k++) {
                     EType<T> zk = type.parse(String.valueOf(z1 + k));
-                    result[i][j][k] = parsedExpression.evaluate(xi, yj, zk).value();
+                    try {
+                        result[i][j][k] = parsedExpression.evaluate(xi, yj, zk).value();
+                    } catch (EvaluatingExpressionException e) {
+                        result[i][j][k] = null;
+                    }
                 }
             }
         }

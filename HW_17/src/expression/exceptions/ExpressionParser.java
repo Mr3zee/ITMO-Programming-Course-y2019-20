@@ -99,7 +99,15 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
     }
 
     private CommonExpression<T> parseNumber(final String number) throws ParsingExpressionException {
-        return new Const<>(type.parse(number));
+        try {
+            return new Const<>(type.parse(number));
+        } catch (NumberFormatException e) {
+            int position = source.getPosition() - number.length() - 1;
+            if (number.charAt(0) == '-') {
+                throw new ConstantUnderflowPEException(number, position, source.getExpression());
+            }
+            throw new ConstantOverflowPEException(number, position, source.getExpression());
+        }
     }
 
     private ParsingExpressionException missingLexemeHandler() {

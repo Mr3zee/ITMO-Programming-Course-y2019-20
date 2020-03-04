@@ -52,7 +52,7 @@ public class IntegerEType extends AbstractEType<Integer> {
     protected Integer calcDivide(Integer v) {
         Integer value = value();
         if (v == 0) {
-            throw new DivisionByZeroEException(value);
+            throw new DivisionByZeroEException(value.toString());
         }
         if (value == Integer.MIN_VALUE && v == -1) {
             throw new OverflowEEException("Divide", value, v);

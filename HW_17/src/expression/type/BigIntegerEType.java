@@ -1,5 +1,7 @@
 package expression.type;
 
+import expression.exceptions.EExceptions.DivisionByZeroEException;
+
 import java.math.BigInteger;
 
 public class BigIntegerEType extends AbstractEType<BigInteger> {
@@ -27,6 +29,9 @@ public class BigIntegerEType extends AbstractEType<BigInteger> {
 
     @Override
     protected BigInteger calcDivide(BigInteger v) {
+        if (v.equals(BigInteger.ZERO)) {
+            throw new DivisionByZeroEException(value().toString());
+        }
         return value().divide(v);
     }
 
