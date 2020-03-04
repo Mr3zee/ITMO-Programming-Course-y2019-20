@@ -1,5 +1,7 @@
 package expression;
 
+import expression.exceptions.EExceptions.EvaluatingExpressionException;
+import expression.exceptions.EExceptions.IllegalVariableName;
 import expression.type.EType;
 
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ public class Variable<T extends Number> implements CommonExpression<T> {
     }
 
     @Override
-    public EType<T> evaluate(EType<T> x, EType<T> y, EType<T> z) {
+    public EType<T> evaluate(EType<T> x, EType<T> y, EType<T> z) throws EvaluatingExpressionException {
         switch (name) {
             case "x" :
                 return x;
@@ -27,8 +29,7 @@ public class Variable<T extends Number> implements CommonExpression<T> {
             case "z" :
                 return z;
             default:
-                throw new IllegalArgumentException();
-                // TODO: 04.03.2020 exception
+                throw new IllegalVariableName(name);
         }
     }
 
