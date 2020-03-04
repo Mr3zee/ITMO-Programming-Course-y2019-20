@@ -1,7 +1,11 @@
 package expression.type;
 
 public abstract class AbstractEType<T extends Number> implements EType<T> {
-    protected T value;
+    private T value;
+
+    public AbstractEType(T value) {
+        this.value = value;
+    }
 
     @Override
     public T value() {
@@ -10,26 +14,39 @@ public abstract class AbstractEType<T extends Number> implements EType<T> {
 
     @Override
     public EType<T> add(EType<T> v) {
-        return null;
+        return valueOf(calcAdd(v.value()));
     }
 
     @Override
     public EType<T> subtract(EType<T> v) {
-        return null;
+        return valueOf(calcSubtract(v.value()));
     }
 
     @Override
     public EType<T> divide(EType<T> v) {
-        return null;
+        return valueOf(calcDivide(v.value()));
     }
 
     @Override
     public EType<T> multiply(EType<T> v) {
-        return null;
+        return valueOf(calcMultiply(v.value()));
     }
 
     @Override
     public EType<T> negate() {
-        return null;
+        return valueOf(calcNegate());
     }
+
+    protected abstract T calcAdd(T v);
+
+    protected abstract T calcSubtract(T v);
+
+    protected abstract T calcMultiply(T v);
+
+    protected abstract T calcDivide(T v);
+
+    protected abstract T calcNegate();
+
+    @Override
+    public abstract EType<T> valueOf(T v);
 }

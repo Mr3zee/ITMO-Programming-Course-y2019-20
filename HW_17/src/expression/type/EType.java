@@ -13,4 +13,6 @@ public interface EType<T extends Number> {
     EType<T> multiply(EType<T> v);
 
     EType<T> negate();
+
+    EType<T> valueOf(T v);
 }
