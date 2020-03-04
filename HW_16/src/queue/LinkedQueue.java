@@ -9,49 +9,44 @@ public class LinkedQueue extends AbstractQueue {
         clear();
     }
 
+    // Pre: true
+    // Post: (∀ i = 0 to n - 1: queue[i]' = queue[i]) && queue[n] = obj
     @Override
-    public void enqueue(Object obj) {
-        assert obj != null;
+    protected void enqueueImpl(Object obj) {
         if (addFirstElement(obj)) return;
         end.next = new Node(null, end, obj);
         end = end.next;
         size++;
     }
 
+    // Pre: true
+    // Post: (∀ i = 1 to n: queue[i]' = queue[i - 1]) && queue[0] = obj
     @Override
-    public void push(Object obj) {
-        assert obj != null;
+    protected void pushImpl(Object obj) {
         if (addFirstElement(obj)) return;
         start.prev = new Node(start, null, obj);
         start = start.prev;
         size++;
     }
 
-    private boolean addFirstElement(Object obj) {
-        if (size == 0) {
-            start = new Node(null, null, obj);
-            end = start;
-            size++;
-            return true;
-        }
-        return false;
-    }
-
+    // Pre: true
+    // Post: R = queue[0] && (∀ i = 0 to n - 1: queue[i]' = queue[i])
     @Override
-    public Object element() {
-        assert size > 0;
+    protected Object elementImpl() {
         return start.value;
     }
 
+    // Pre: true
+    // Post: R = queue[n - 1] && (∀ i = 0 to n - 1: queue[i]' = queue[i])
     @Override
-    public Object peek() {
-        assert size > 0;
+    protected Object peekImpl() {
         return end.value;
     }
 
+    // Pre: true
+    // Post: R = queue[0] && (∀ i = 0 to n - 2: queue[i]' = queue[i + 1])
     @Override
-    public Object dequeue() {
-        assert size > 0;
+    protected Object dequeueImpl() {
         Object result = start.value;
         start = start.next;
         if (removeLastElement()) return result;
@@ -59,22 +54,15 @@ public class LinkedQueue extends AbstractQueue {
         return result;
     }
 
+    // Pre: true
+    // Post: R = queue[n - 1] && (∀ i = 0 to n - 2: queue[i]' = queue[i])
     @Override
-    public Object remove() {
-        assert size > 0;
+    protected Object removeImpl() {
         Object result = end.value;
         end = end.prev;
         if (removeLastElement()) return result;
         end.next = null;
         return result;
-    }
-
-    private boolean removeLastElement() {
-        if (--size == 0) {
-            clear();
-            return true;
-        }
-        return false;
     }
 
     @Override
@@ -117,7 +105,29 @@ public class LinkedQueue extends AbstractQueue {
         return result;
     }
 
+    // Pre: size = 0
+    // Post: queue[0] = obj && size = 1
+    private boolean addFirstElement(Object obj) {
+        if (size == 0) {
+            start = new Node(null, null, obj);
+            end = start;
+            size++;
+            return true;
+        }
+        return false;
+    }
+
+    // Pre: true
+    // Post: size' = size - 1
+    private boolean removeLastElement() {
+        if (--size == 0) {
+            clear();
+            return true;
+        }
+        return false;
+    }
     private static class Node {
+
         private Node next;
         private Node prev;
         private final Object value;

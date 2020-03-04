@@ -11,9 +11,10 @@ public class ArrayQueue extends AbstractQueue {
         this.queue = new Object[10];
     }
 
+    // Pre: true
+    // Post: (∀ i = 0 to n - 1: queue[i]' = queue[i]) && queue[n] = obj
     @Override
-    public void enqueue(Object obj) {
-        assert obj != null;
+    protected void enqueueImpl(Object obj) {
         if (size() + 1 == queue.length) {
             increaseCapacity();
         } else if (end == queue.length) {
@@ -22,9 +23,10 @@ public class ArrayQueue extends AbstractQueue {
         queue[end++] = obj;
     }
 
+    // Pre: true
+    // Post: (∀ i = 1 to n: queue[i]' = queue[i - 1]) && queue[0] = obj
     @Override
-    public void push(Object obj) {
-        assert obj != null;
+    protected void pushImpl(Object obj) {
         if (size() + 1 == queue.length) {
             increaseCapacity();
         } else if (start == 0) {
@@ -34,21 +36,24 @@ public class ArrayQueue extends AbstractQueue {
         queue[--start] = obj;
     }
 
+    // Pre: true
+    // Post: R = queue[0] && (∀ i = 0 to n - 1: queue[i]' = queue[i])
     @Override
-    public Object element() {
-        assert size() > 0;
+    protected Object elementImpl() {
         return queue[start];
     }
 
+    // Pre: true
+    // Post: R = queue[n - 1] && (∀ i = 0 to n - 1: queue[i]' = queue[i])
     @Override
-    public Object peek() {
-        assert size() > 0;
+    protected Object peekImpl() {
         return queue[end - 1];
     }
 
+    // Pre: true
+    // Post: R = queue[0] && (∀ i = 0 to n - 2: queue[i]' = queue[i + 1])
     @Override
-    public Object dequeue() {
-        assert start != end;
+    protected Object dequeueImpl() {
         Object result = queue[start];
         queue[start++] = null;
         if (start == queue.length) {
@@ -57,9 +62,10 @@ public class ArrayQueue extends AbstractQueue {
         return result;
     }
 
+    // Pre: true
+    // Post: R = queue[n - 1] && (∀ i = 0 to n - 2: queue[i]' = queue[i])
     @Override
-    public Object remove() {
-        assert start != end;
+    protected Object removeImpl() {
         Object result = queue[end - 1];
         queue[end-- - 1] = null;
         if (end == 0 && start != 0) {
@@ -106,21 +112,22 @@ public class ArrayQueue extends AbstractQueue {
     }
 
     // Pre: true
+    // Post: (∀ i = 1 to n: queueActual[i]' = queueActual[i - 1]) && queue.length' = queue.length * 2
     private void increaseCapacity() {
         Object[] newQueue = copy(queue.length * 2);
         changeMarks(0, queue.length - 1);
         queue = newQueue;
     }
-    // Post: (∀ i = 1 to n: queueActual[i]' = queueActual[i - 1]) && queue.length' = queue.length * 2
 
     // Pre: true
+    // Post: start = s && end = e;
     private void changeMarks(int s, int e) {
         start = s;
         end = e;
     }
-    // Post: start = s && end = e;
 
     // Pre: length >= n
+    // Post: (∀ i = 0 to n - 1: R[i] = queueActual[i]) && R.length = length && (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i])
     private Object[] copy(int length) {
         assert length >= size();
         Object[] newQueue = new Object[length];
@@ -129,5 +136,4 @@ public class ArrayQueue extends AbstractQueue {
         System.arraycopy(queue, 0, newQueue, firstPart, size() - firstPart);
         return newQueue;
     }
-    // Post: (∀ i = 0 to n - 1: R[i] = queueActual[i]) && R.length = length && (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i])
 }
