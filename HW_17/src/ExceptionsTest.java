@@ -1,6 +1,8 @@
 import expression.CommonExpression;
 import expression.exceptions.ExpressionParser;
 import expression.exceptions.EExceptions.*;
+import expression.type.EType;
+import expression.type.IntegerEType;
 import org.junit.*;
 
 public class ExceptionsTest {
@@ -14,11 +16,13 @@ public class ExceptionsTest {
     private static final String ANSI_CYAN = "\u001B[36m";
     private static final String ANSI_WHITE = "\u001B[37m";
 
-    private ExpressionParser parser;
+    private ExpressionParser<Integer> parser;
+    private EType<Integer> type;
 
     @Before
     public void setUp() {
-        parser = new ExpressionParser();
+        type = new IntegerEType();
+        parser = new ExpressionParser<>(type);
         System.out.print(ANSI_CYAN + "Test of ");
     }
 
@@ -244,12 +248,15 @@ public class ExceptionsTest {
         System.out.println("\"" + input + "\" - " + ANSI_YELLOW + "Passed!" + ANSI_RESET);
     }
 
-    private void validEvaluate(final int valid, final String input, int x, int y, int z) {
-        Assert.assertEquals(valid, parse(input).evaluate(x, y, z));
+    private void validEvaluate(final Integer valid, final String input, int x, int y, int z) {
+        EType<Integer> xt = type.parse(String.valueOf(x));
+        EType<Integer> yt = type.parse(String.valueOf(y));
+        EType<Integer> zt = type.parse(String.valueOf(z));
+        Assert.assertEquals(valid, parse(input).evaluate(xt, yt, zt).value());
         System.out.println("\"" + input + " = " + valid + "\", with args: (" + x + ", " + y + ", " + z + ") - "  + ANSI_YELLOW + "Passed!" + ANSI_RESET);
     }
 
-    private CommonExpression parse(final String input) {
+    private CommonExpression<Integer> parse(final String input) {
         return parser.parse(input);
     }
 
@@ -279,7 +286,10 @@ public class ExceptionsTest {
 
     private void invalidEvaluate(final String input, final int x, final int y, final int z, final String name) {
         try {
-            int found = parse(input).evaluate(x, y, z);
+            EType<Integer> xt = type.parse(String.valueOf(x));
+            EType<Integer> yt = type.parse(String.valueOf(y));
+            EType<Integer> zt = type.parse(String.valueOf(z));
+            Integer found = parse(input).evaluate(xt, yt, zt).value();
             Assert.fail("Evaluating failure expected for \"" + input + "\", found \"" + found + "\"");
         } catch (EvaluatingExpressionException e) {
             Assert.assertEquals(name, getName(e.getMessage()));
