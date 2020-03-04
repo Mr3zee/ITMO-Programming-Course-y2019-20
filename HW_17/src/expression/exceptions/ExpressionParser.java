@@ -4,17 +4,18 @@ import expression.*;
 import expression.exceptions.EExceptions.*;
 import expression.operations.*;
 import expression.parser.*;
-import expression.type.AbstractEType;
-import expression.type.EType;
+import expression.type.*;
 
 import java.util.Set;
 
 public class ExpressionParser<T extends Number> extends BaseParser implements Parser<T> {
     private final Set<Character> BINARY_END_OPS = Set.of('*', '/', '\0', ')');
+    private final ParserType type;
     private Lexeme lastLexeme;
 
-    public ExpressionParser() {
+    public ExpressionParser(ParserType type) {
         super(Set.of ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'x', 'y', 'z', '+', '-', '*', '/', '(', ')', '\0'));
+        this.type = type;
     }
 
     @Override
@@ -98,17 +99,27 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
     }
 
     private CommonExpression<T> parseNumber(final String number) throws ParsingExpressionException {
-        try {
-            EType<T> num = null;
-            return new Const<>(num);
-            // TODO: 04.03.2020 strToEType
-        } catch (NumberFormatException e) {
-            int position = source.getPosition() - number.length() - 1;
-            if (number.charAt(0) == '-') {
-                throw new ConstantUnderflowPEException(number, position, source.getExpression());
-            }
-            throw new ConstantOverflowPEException(number, position, source.getExpression());
+        EType<T> num = null;
+        switch (type) {
+            case IP:
+                try {
+                    num = (EType<T>) IntegerEType.parseInteger(number);
+                    // TODO: 04.03.2020 strToEType
+                } catch (NumberFormatException e) {
+                    int position = source.getPosition() - number.length() - 1;
+                    if (number.charAt(0) == '-') {
+                        throw new ConstantUnderflowPEException(number, position, source.getExpression());
+                    }
+                    throw new ConstantOverflowPEException(number, position, source.getExpression());
+                }
+                break;
+            case DP:
+                num = (EType<T>) DoubleEType.parseDouble(number);
+                break;
+            case BIP:
+                num = (EType<T>) BigIntegerEType.parseBigInteger(number);
         }
+        return new Const<>(num);
     }
 
     private ParsingExpressionException missingLexemeHandler() {

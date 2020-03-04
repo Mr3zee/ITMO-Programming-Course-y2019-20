@@ -37,8 +37,7 @@ public class BigIntegerEType extends AbstractEType<BigInteger> {
         return new BigIntegerEType(v);
     }
 
-    @Override
-    public BigInteger valueOf(String v) {
-        return new BigInteger(v);
+    public static EType<BigInteger> parseBigInteger(String v) {
+        return new BigIntegerEType(new BigInteger(v));
     }
 }
