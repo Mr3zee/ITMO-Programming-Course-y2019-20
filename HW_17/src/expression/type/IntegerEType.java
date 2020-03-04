@@ -35,7 +35,8 @@ public class IntegerEType extends AbstractEType<Integer> {
         return new IntegerEType(v);
     }
 
-    public static EType<Integer> parseInteger(String v) {
-        return new IntegerEType(Integer.parseInt(v));
+    @Override
+    public EType<Integer> parse(String v) {
+        return valueOf(Integer.parseInt(v));
     }
 }

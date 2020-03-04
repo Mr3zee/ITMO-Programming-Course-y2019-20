@@ -15,4 +15,6 @@ public interface EType<T extends Number> {
     EType<T> negate();
 
     EType<T> valueOf(T v);
+
+    EType<T> parse(String v);
 }

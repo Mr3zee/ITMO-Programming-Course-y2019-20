@@ -35,7 +35,8 @@ public class DoubleEType extends AbstractEType<Double> {
         return new DoubleEType(v);
     }
 
-    public static EType<Double> parseDouble(String v) {
-        return new DoubleEType(Double.parseDouble(v));
+    @Override
+    public EType<Double> parse(String v) {
+        return valueOf(Double.parseDouble(v));
     }
 }

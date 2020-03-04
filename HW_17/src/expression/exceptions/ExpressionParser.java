@@ -10,10 +10,10 @@ import java.util.Set;
 
 public class ExpressionParser<T extends Number> extends BaseParser implements Parser<T> {
     private final Set<Character> BINARY_END_OPS = Set.of('*', '/', '\0', ')');
-    private final ParserType type;
+    private final EType<T> type;
     private Lexeme lastLexeme;
 
-    public ExpressionParser(ParserType type) {
+    public ExpressionParser(EType<T> type) {
         super(Set.of ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'x', 'y', 'z', '+', '-', '*', '/', '(', ')', '\0'));
         this.type = type;
     }
@@ -99,27 +99,7 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
     }
 
     private CommonExpression<T> parseNumber(final String number) throws ParsingExpressionException {
-        EType<T> num = null;
-        switch (type) {
-            case IP:
-                try {
-                    num = (EType<T>) IntegerEType.parseInteger(number);
-                    // TODO: 04.03.2020 strToEType
-                } catch (NumberFormatException e) {
-                    int position = source.getPosition() - number.length() - 1;
-                    if (number.charAt(0) == '-') {
-                        throw new ConstantUnderflowPEException(number, position, source.getExpression());
-                    }
-                    throw new ConstantOverflowPEException(number, position, source.getExpression());
-                }
-                break;
-            case DP:
-                num = (EType<T>) DoubleEType.parseDouble(number);
-                break;
-            case BIP:
-                num = (EType<T>) BigIntegerEType.parseBigInteger(number);
-        }
-        return new Const<>(num);
+        return new Const<>(type.parse(number));
     }
 
     private ParsingExpressionException missingLexemeHandler() {
