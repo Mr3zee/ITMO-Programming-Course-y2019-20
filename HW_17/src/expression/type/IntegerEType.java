@@ -5,6 +5,9 @@ public class IntegerEType extends AbstractEType<Integer> {
         super(value);
     }
 
+    public IntegerEType() {
+    }
+
     @Override
     protected Integer calcAdd(Integer v) {
         return value() + v;

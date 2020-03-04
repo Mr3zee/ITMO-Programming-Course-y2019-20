@@ -7,6 +7,9 @@ public class BigIntegerEType extends AbstractEType<BigInteger> {
         super(value);
     }
 
+    public BigIntegerEType() {
+    }
+
     @Override
     protected BigInteger calcAdd(BigInteger v) {
         return value().add(v);
