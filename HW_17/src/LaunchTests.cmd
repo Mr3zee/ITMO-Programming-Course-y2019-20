@@ -1,0 +1,2 @@
+javac expression/exceptions/ExceptionsPowLogTest.java
+java -ea expression.exceptions.ExceptionsPowLogTest
