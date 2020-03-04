@@ -1,34 +1,30 @@
-package expression;
+package expression.operations;
+
+import expression.CommonExpression;
+import expression.type.EType;
 
 import java.util.Objects;
 
-public abstract class BinaryOperations implements CommonExpression {
-    private CommonExpression firstExp;
-    private CommonExpression secondExp;
+public abstract class BinaryOperations<T extends Number> implements CommonExpression<T> {
+    private CommonExpression<T> firstExp;
+    private CommonExpression<T> secondExp;
 
-    public BinaryOperations(CommonExpression firstExp, CommonExpression secondExp) {
+    public BinaryOperations(CommonExpression<T> firstExp, CommonExpression<T> secondExp) {
         this.firstExp = firstExp;
         this.secondExp = secondExp;
     }
 
     @Override
-    public int evaluate(int x) {
+    public EType<T> evaluate(EType<T> x) {
         return toCalculate(firstExp.evaluate(x), secondExp.evaluate(x));
     }
 
     @Override
-    public double evaluate(double x) {
-        return toCalculate(firstExp.evaluate(x), secondExp.evaluate(x));
-    }
-
-    @Override
-    public int evaluate(int x, int y, int z) {
+    public EType<T> evaluate(EType<T> x, EType<T> y, EType<T> z) {
         return toCalculate(firstExp.evaluate(x, y, z), secondExp.evaluate(x, y, z));
     }
 
-    protected abstract int toCalculate(int firstArg, int secondArg);
-
-    protected abstract double toCalculate(double firstArg, double secondArg);
+    protected abstract EType<T> toCalculate(EType<T> firstArg, EType<T> secondArg);
 
     @Override
     public String toString() {
@@ -51,7 +47,8 @@ public abstract class BinaryOperations implements CommonExpression {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || this.getClass() != o.getClass()) return false;
-        BinaryOperations that = (BinaryOperations) o;
+        BinaryOperations<?> that = (BinaryOperations<?>) o;
+        // TODO: 04.03.2020 cast
         return Objects.equals(firstExp, that.firstExp) &&
                 Objects.equals(secondExp, that.secondExp);
     }

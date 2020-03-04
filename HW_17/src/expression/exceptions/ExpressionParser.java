@@ -2,12 +2,14 @@ package expression.exceptions;
 
 import expression.*;
 import expression.exceptions.EExceptions.*;
+import expression.operations.*;
 import expression.parser.*;
+import expression.type.AbstractEType;
+import expression.type.EType;
 
-import java.util.Map;
 import java.util.Set;
 
-public class ExpressionParser extends BaseParser implements Parser {
+public class ExpressionParser<T extends Number> extends BaseParser implements Parser<T> {
     private final Set<Character> BINARY_END_OPS = Set.of('*', '/', '\0', ')');
     private Lexeme lastLexeme;
 
@@ -16,7 +18,7 @@ public class ExpressionParser extends BaseParser implements Parser {
     }
 
     @Override
-    public CommonExpression parse(final String expression) throws ParsingExpressionException {
+    public CommonExpression<T> parse(final String expression) throws ParsingExpressionException {
         source = new ExpressionSource(expression);
         nextChar();
         skipWhitespaces();
@@ -24,7 +26,7 @@ public class ExpressionParser extends BaseParser implements Parser {
             throw new EmptyExpressionPEException();
         }
         lastLexeme = Lexeme.START;
-        CommonExpression result = expressionParse();
+        CommonExpression<T> result = expressionParse();
         if (hasNext()) {
             throw new NoParenthesisPEException("opening", getNext());
         }
@@ -32,15 +34,15 @@ public class ExpressionParser extends BaseParser implements Parser {
     }
 
 
-    private CommonExpression expressionParse() throws ParsingExpressionException {
-        CommonExpression result = additiveParse();
+    private CommonExpression<T> expressionParse() throws ParsingExpressionException {
+        CommonExpression<T> result = additiveParse();
         while (test('+', '-')) {
             if (compare('+')) {
                 lastLexeme = Lexeme.PLUS;
-                result = new CheckedAdd(result, additiveParse());
+                result = new Add<>(result, additiveParse());
             } else if (compare('-')) {
                 lastLexeme = Lexeme.MINUS;
-                result = new CheckedSubtract(result, additiveParse());
+                result = new Subtract<>(result, additiveParse());
             }
         }
         if (!BINARY_END_OPS.contains(getCurrentLex())) {
@@ -49,27 +51,27 @@ public class ExpressionParser extends BaseParser implements Parser {
         return result;
     }
 
-    private CommonExpression additiveParse() throws ParsingExpressionException {
-        CommonExpression result = lowLevelParse();
+    private CommonExpression<T> additiveParse() throws ParsingExpressionException {
+        CommonExpression<T> result = lowLevelParse();
         skipWhitespaces();
         while (test('*', '/')) {
             if (compare('*')) {
                 lastLexeme = Lexeme.MULT;
-                result = new CheckedMultiply(result, lowLevelParse());
+                result = new Multiply<>(result, lowLevelParse());
             } else if (compare('/')) {
                 lastLexeme = Lexeme.DIV;
-                result = new CheckedDivide(result, lowLevelParse());
+                result = new Divide<>(result, lowLevelParse());
             }
             skipWhitespaces();
         }
         return result;
     }
 
-    private CommonExpression lowLevelParse() throws ParsingExpressionException {
+    private CommonExpression<T> lowLevelParse() throws ParsingExpressionException {
         skipWhitespaces();
         if (compare('(')) {
             lastLexeme = Lexeme.OPAR;
-            CommonExpression result = expressionParse();
+            CommonExpression<T> result = expressionParse();
             if (compare(')')) {
                 lastLexeme = Lexeme.CPAR;
                 return result;
@@ -80,7 +82,7 @@ public class ExpressionParser extends BaseParser implements Parser {
             lastLexeme = c == 'x' ? Lexeme.X : c == 'y' ? Lexeme.Y : Lexeme.Z;
             String name = String.valueOf(c);
             nextChar();
-            return new Variable(name);
+            return new Variable<>(name);
         } else if (isDigit()) {
             lastLexeme = Lexeme.NUM;
             return parseNumber(takeNumber());
@@ -90,15 +92,16 @@ public class ExpressionParser extends BaseParser implements Parser {
                 return parseNumber("-" + takeNumber());
             }
             lastLexeme = Lexeme.MINUS;
-            return new CheckedNegate(lowLevelParse());
+            return new Negate<>(lowLevelParse());
         }
         throw missingLexemeHandler();
     }
 
-    private CommonExpression parseNumber(final String number) throws ParsingExpressionException {
+    private CommonExpression<T> parseNumber(final String number) throws ParsingExpressionException {
         try {
-            int num = Integer.parseInt(number);
-            return new Const(num);
+            EType<T> num = null;
+            return new Const<>(num);
+            // TODO: 04.03.2020 strToEType
         } catch (NumberFormatException e) {
             int position = source.getPosition() - number.length() - 1;
             if (number.charAt(0) == '-') {

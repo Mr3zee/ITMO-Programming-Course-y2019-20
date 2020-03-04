@@ -1,19 +1,17 @@
-package expression;
+package expression.operations;
 
-public class Negate extends UnaryOperations {
+import expression.CommonExpression;
+import expression.type.EType;
 
-    public Negate(CommonExpression expression) {
+public class Negate<T extends Number> extends UnaryOperations<T> {
+
+    public Negate(CommonExpression<T> expression) {
         super(expression);
     }
 
     @Override
-    protected int toCalculate(int arg) {
-        return -arg;
-    }
-
-    @Override
-    protected double toCalculate(double arg) {
-        return -arg;
+    protected EType<T> toCalculate(EType<T> arg) {
+        return arg.negate();
     }
 
     @Override

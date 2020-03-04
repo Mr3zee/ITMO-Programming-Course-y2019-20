@@ -1,32 +1,28 @@
-package expression;
+package expression.operations;
+
+import expression.CommonExpression;
+import expression.type.EType;
 
 import java.util.Objects;
 
-public abstract class UnaryOperations implements CommonExpression {
-    CommonExpression expression;
+public abstract class UnaryOperations<T extends Number> implements CommonExpression<T> {
+    CommonExpression<T> expression;
 
-    public UnaryOperations(CommonExpression expression) {
+    public UnaryOperations(CommonExpression<T> expression) {
         this.expression = expression;
     }
 
     @Override
-    public double evaluate(double x) {
+    public EType<T> evaluate(EType<T> x) {
         return toCalculate(expression.evaluate(x));
     }
 
     @Override
-    public int evaluate(int x) {
-        return toCalculate(expression.evaluate(x));
-    }
-
-    @Override
-    public int evaluate(int x, int y, int z) {
+    public EType<T> evaluate(EType<T> x, EType<T> y, EType<T> z) {
         return toCalculate(expression.evaluate(x, y, z));
     }
 
-    protected abstract int toCalculate(int arg);
-
-    protected abstract double toCalculate(double arg);
+    protected abstract EType<T> toCalculate(EType<T> arg);
 
     @Override
     public String toString() {
@@ -44,7 +40,8 @@ public abstract class UnaryOperations implements CommonExpression {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || this.getClass() != o.getClass()) return false;
-        UnaryOperations that = (UnaryOperations) o;
+        UnaryOperations<?> that = (UnaryOperations<?>) o;
+        // TODO: 04.03.2020 cast
         return Objects.equals(expression, that.expression);
     }
 

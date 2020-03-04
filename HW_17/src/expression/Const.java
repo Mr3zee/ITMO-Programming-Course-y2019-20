@@ -1,27 +1,24 @@
 package expression;
 
+import expression.type.EType;
+
 import java.util.Objects;
 
-public class Const implements CommonExpression {
-    private final Number value;
+public class Const<T extends Number> implements CommonExpression<T> {
+    private final EType<T> value;
 
-    public Const(final Number value) {
+    public Const(final EType<T> value) {
         this.value = value;
     }
 
     @Override
-    public int evaluate(int x) {
-        return value.intValue();
+    public EType<T> evaluate(EType<T> x) {
+        return value;
     }
 
     @Override
-    public double evaluate(double x) {
-        return value.doubleValue();
-    }
-
-    @Override
-    public int evaluate(int x, int y, int z) {
-        return value.intValue();
+    public EType<T> evaluate(EType<T> x, EType<T> y, EType<T> z) {
+        return value;
     }
 
     @Override
@@ -33,7 +30,8 @@ public class Const implements CommonExpression {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || this.getClass() != o.getClass()) return false;
-        Const that = (Const) o;
+        Const<?> that = (Const<?>) o;
+        // TODO: 04.03.2020 cast
         return value.equals(that.value);
     }
 
