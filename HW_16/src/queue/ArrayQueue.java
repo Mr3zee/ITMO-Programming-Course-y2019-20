@@ -27,10 +27,10 @@ public class ArrayQueue extends AbstractQueue {
     protected void pushImpl(Object obj) {
         if (size() + 1 == queue.length) {
             increaseCapacity();
-        } else if (start == 0) {
+        }
+        if (start == 0) {
             changeMarks(queue.length, end == 0 ? queue.length : end);
         }
-        start = start == 0 ? queue.length : start;
         queue[--start] = obj;
     }
 
@@ -47,8 +47,8 @@ public class ArrayQueue extends AbstractQueue {
     @Override
     protected Object dequeueImpl() {
         Object result = queue[start];
-        queue[start++] = null;
-        if (start == queue.length) {
+        queue[start] = null;
+        if (++start == queue.length) {
             changeMarks(0, end == queue.length ? 0 : end);
         }
         return result;
@@ -57,8 +57,8 @@ public class ArrayQueue extends AbstractQueue {
     @Override
     protected Object removeImpl() {
         Object result = queue[end - 1];
-        queue[end-- - 1] = null;
-        if (end == 0 && start != 0) {
+        queue[end - 1] = null;
+        if (--end == 0 && start != 0) {
             end = queue.length;
         }
         return result;
