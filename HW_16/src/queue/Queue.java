@@ -55,9 +55,9 @@ public interface Queue {
 
     // Pre: predicate != null
     // Post: result is the subsequence of this.queue
-    Queue filter(Predicate<Object> predicate);
+    Queue filter(final Predicate<Object> predicate);
 
     // Pre: function != null
     // Post: result is this.queue with function applied to it's elements
-    Queue map(Function<Object, Object> function);
+    Queue map(final Function<Object, Object> function);
 }

@@ -14,7 +14,7 @@ public class ArrayQueue extends AbstractQueue {
     }
 
     @Override
-    protected void enqueueImpl(Object obj) {
+    protected void enqueueImpl(final Object obj) {
         if (size() + 1 == queue.length) {
             increaseCapacity();
         } else if (end == queue.length) {
@@ -24,7 +24,7 @@ public class ArrayQueue extends AbstractQueue {
     }
 
     @Override
-    protected void pushImpl(Object obj) {
+    protected void pushImpl(final Object obj) {
         if (size() + 1 == queue.length) {
             increaseCapacity();
         }
@@ -65,8 +65,8 @@ public class ArrayQueue extends AbstractQueue {
     }
 
     @Override
-    protected Queue makeQueue(Function<Object, Object> function, boolean functionType) {
-        ArrayQueue newQueue = new ArrayQueue();
+    protected Queue makeQueue(final Function<Object, Object> function, boolean functionType) {
+        final ArrayQueue newQueue = new ArrayQueue();
         int length = queue.length;
         for (int i = 0; i < size(); i++) {
             insert(function, functionType, newQueue, queue[(start + i) % length]);
@@ -87,7 +87,7 @@ public class ArrayQueue extends AbstractQueue {
 
     @Override
     public String toStr() {
-        StringBuilder string = new StringBuilder("[");
+        final StringBuilder string = new StringBuilder("[");
         int length = queue.length;
         if (!isEmpty()) {
             for (int i = 0; i < size() - 1; i++) {
@@ -106,7 +106,7 @@ public class ArrayQueue extends AbstractQueue {
     // Pre: true
     // Post: (∀ i = 1 to n: queueActual[i]' = queueActual[i - 1]) && queue.length' = queue.length * 2
     private void increaseCapacity() {
-        Object[] newQueue = copy(queue.length * 2);
+        final Object[] newQueue = copy(queue.length * 2);
         changeMarks(0, queue.length - 1);
         queue = newQueue;
     }
@@ -122,7 +122,7 @@ public class ArrayQueue extends AbstractQueue {
     // Post: (∀ i = 0 to n - 1: R[i] = queueActual[i]) && R.length = length && (∀ i = 0 to n - 1: queueActual[i]' = queueActual[i])
     private Object[] copy(int length) {
         assert length >= size();
-        Object[] newQueue = new Object[length];
+        final Object[] newQueue = new Object[length];
         int firstPart = Math.min(start + size(), queue.length) - start;
         System.arraycopy(queue, start, newQueue, 0, firstPart);
         System.arraycopy(queue, 0, newQueue, firstPart, size() - firstPart);

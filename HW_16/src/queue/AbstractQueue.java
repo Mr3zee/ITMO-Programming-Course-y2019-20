@@ -46,13 +46,13 @@ public abstract class AbstractQueue implements Queue {
     }
 
     @Override
-    public Queue filter(Predicate<Object> predicate) {
+    public Queue filter(final Predicate<Object> predicate) {
         checkObject(predicate);
         return makeQueue(predicate::test, true);
     }
 
     @Override
-    public Queue map(Function<Object, Object> function) {
+    public Queue map(final Function<Object, Object> function) {
         checkObject(function);
         return makeQueue(function, false);
     }
@@ -61,8 +61,7 @@ public abstract class AbstractQueue implements Queue {
     // Post: if function is predicate and it is true: queue.enqueue(object).post
     //       if function is not predicate: queue.enqueue(function.apply(object)).post
     //       else: nothing
-    protected void insert(Function<Object, Object> function, boolean functionType, Queue queue, Object object) {
-        checkObject(object);
+    protected void insert(final Function<Object, Object> function, boolean functionType, final Queue queue, Object object) {
         Object value = function.apply(object);
         checkObject(value);
         if (functionType) {
@@ -77,15 +76,15 @@ public abstract class AbstractQueue implements Queue {
     // Pre: function != null
     // Post: if function is predicate : result is the subsequence of this.queue
     //       if function is not predicate : result is this.queue with function applied to it's elements
-    protected abstract Queue makeQueue(Function<Object, Object> function, boolean type);
+    protected abstract Queue makeQueue(final Function<Object, Object> function, boolean type);
 
     // Pre: true
     // Post: (∀ i = 0 to n - 1: queue[i]' = queue[i]) && queue[n] = obj
-    protected abstract void enqueueImpl(Object obj);
+    protected abstract void enqueueImpl(final Object obj);
 
     // Pre: true
     // Post: (∀ i = 1 to n: queue[i]' = queue[i - 1]) && queue[0] = obj
-    protected abstract void pushImpl(Object obj);
+    protected abstract void pushImpl(final Object obj);
 
     // Pre: true
     // Post: R = queue[0] && (∀ i = 0 to n - 1: queue[i]' = queue[i])
@@ -105,13 +104,13 @@ public abstract class AbstractQueue implements Queue {
 
     // Pre: true
     // Post: queue.size > 0
-    private void checkSize(){
+    protected void checkSize(){
         assert size() > 0;
     }
 
     // Pre: true
     // Post: obj != null
-    private void checkObject(Object obj) {
+    protected void checkObject(final Object obj) {
         assert obj != null;
     }
 }

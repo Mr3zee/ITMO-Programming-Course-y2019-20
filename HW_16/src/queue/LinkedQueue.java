@@ -12,7 +12,7 @@ public class LinkedQueue extends AbstractQueue {
     }
 
     @Override
-    protected void enqueueImpl(Object obj) {
+    protected void enqueueImpl(final Object obj) {
         if (addFirstElement(obj)) return;
         end.next = new Node(null, end, obj);
         end = end.next;
@@ -20,7 +20,7 @@ public class LinkedQueue extends AbstractQueue {
     }
 
     @Override
-    protected void pushImpl(Object obj) {
+    protected void pushImpl(final Object obj) {
         if (addFirstElement(obj)) return;
         start.prev = new Node(start, null, obj);
         start = start.prev;
@@ -56,8 +56,8 @@ public class LinkedQueue extends AbstractQueue {
     }
 
     @Override
-    protected Queue makeQueue(Function<Object, Object> function, boolean functionType) {
-        LinkedQueue newQueue = new LinkedQueue();
+    protected Queue makeQueue(final Function<Object, Object> function, boolean functionType) {
+        final LinkedQueue newQueue = new LinkedQueue();
         if (size != 0) {
             Node node = start;
             while (node != null) {
@@ -85,7 +85,7 @@ public class LinkedQueue extends AbstractQueue {
         if (size == 0) {
             return "[]";
         }
-        StringBuilder string = new StringBuilder("[");
+        final StringBuilder string = new StringBuilder("[");
         Node node = start;
         while (node.next != null) {
             string.append(node.value.toString()).append(", ");
@@ -99,7 +99,7 @@ public class LinkedQueue extends AbstractQueue {
         if (size == 0) {
             return new Object[0];
         }
-        Object[] result = new Object[size];
+        final Object[] result = new Object[size];
         Node node = start;
         for (int i = 0; i < size; i++) {
             result[i] = node.value;
