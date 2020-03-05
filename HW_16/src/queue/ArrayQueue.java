@@ -78,24 +78,11 @@ public class ArrayQueue extends AbstractQueue {
     }
 
     @Override
-    protected Queue filterImpl(Predicate<Object> predicate) {
+    protected Queue makeQueue(Function<Object, Object> function, boolean type) {
         ArrayQueue newQueue = new ArrayQueue();
         int length = queue.length;
         for (int i = 0; i < size(); i++) {
-            int j = (start + i) % length;
-            if (predicate.test(queue[j])) {
-                newQueue.enqueue(queue[j]);
-            }
-        }
-        return newQueue;
-    }
-
-    @Override
-    protected Queue mapImpl(Function<Object, Object> function) {
-        ArrayQueue newQueue = new ArrayQueue();
-        int length = queue.length;
-        for (int i = 0; i < size(); i++) {
-            newQueue.enqueue(function.apply(queue[(start + i) % length]));
+            insert(function, type, newQueue, queue[(start + i) % length]);
         }
         return newQueue;
     }

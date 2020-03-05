@@ -48,18 +48,27 @@ public abstract class AbstractQueue implements Queue {
     @Override
     public Queue filter(Predicate<Object> predicate) {
         checkObject(predicate);
-        return filterImpl(predicate);
+        return makeQueue(predicate::test, true);
     }
 
     @Override
     public Queue map(Function<Object, Object> function) {
         checkObject(function);
-        return mapImpl(function);
+        return makeQueue(function, false);
     }
 
-    protected abstract Queue mapImpl(Function<Object, Object> function);
+    protected void insert(Function<Object, Object> function, boolean type, Queue newQueue, Object object) {
+        Object value = function.apply(object);
+        if (type) {
+            if ((boolean) value) {
+                newQueue.enqueue(object);
+            }
+        } else {
+            newQueue.enqueue(value);
+        }
+    }
 
-    protected abstract Queue filterImpl(Predicate<Object> predicate);
+    protected abstract Queue makeQueue(Function<Object, Object> function, boolean type);
 
     protected abstract void enqueueImpl(Object obj);
 

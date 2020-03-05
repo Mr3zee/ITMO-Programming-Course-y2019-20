@@ -69,27 +69,12 @@ public class LinkedQueue extends AbstractQueue {
     }
 
     @Override
-    protected Queue filterImpl(Predicate<Object> predicate) {
+    protected Queue makeQueue(Function<Object, Object> function, boolean type) {
         LinkedQueue newQueue = new LinkedQueue();
         if (size != 0) {
             Node node = start;
             while (node != null) {
-                if (predicate.test(node.value)) {
-                    newQueue.enqueue(node.value);
-                }
-                node = node.next;
-            }
-        }
-        return newQueue;
-    }
-
-    @Override
-    protected Queue mapImpl(Function<Object, Object> function) {
-        LinkedQueue newQueue = new LinkedQueue();
-        if (size != 0) {
-            Node node = start;
-            while (node != null) {
-                newQueue.enqueue(function.apply(node.value));
+                insert(function, type, newQueue, node.value);
                 node = node.next;
             }
         }
