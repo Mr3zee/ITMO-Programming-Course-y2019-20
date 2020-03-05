@@ -17,7 +17,8 @@ public class ArrayQueue extends AbstractQueue {
     protected void enqueueImpl(final Object obj) {
         if (size() + 1 == queue.length) {
             increaseCapacity();
-        } else if (end == queue.length) {
+        }
+        if (end == queue.length) {
             end = 0;
         }
         queue[end++] = obj;
