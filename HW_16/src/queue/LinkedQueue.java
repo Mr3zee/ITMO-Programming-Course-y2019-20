@@ -1,7 +1,6 @@
 package queue;
 
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 public class LinkedQueue extends AbstractQueue {
     private Node start;
@@ -12,8 +11,6 @@ public class LinkedQueue extends AbstractQueue {
         clear();
     }
 
-    // Pre: true
-    // Post: (∀ i = 0 to n - 1: queue[i]' = queue[i]) && queue[n] = obj
     @Override
     protected void enqueueImpl(Object obj) {
         if (addFirstElement(obj)) return;
@@ -22,8 +19,6 @@ public class LinkedQueue extends AbstractQueue {
         size++;
     }
 
-    // Pre: true
-    // Post: (∀ i = 1 to n: queue[i]' = queue[i - 1]) && queue[0] = obj
     @Override
     protected void pushImpl(Object obj) {
         if (addFirstElement(obj)) return;
@@ -32,22 +27,16 @@ public class LinkedQueue extends AbstractQueue {
         size++;
     }
 
-    // Pre: true
-    // Post: R = queue[0] && (∀ i = 0 to n - 1: queue[i]' = queue[i])
     @Override
     protected Object elementImpl() {
         return start.value;
     }
 
-    // Pre: true
-    // Post: R = queue[n - 1] && (∀ i = 0 to n - 1: queue[i]' = queue[i])
     @Override
     protected Object peekImpl() {
         return end.value;
     }
 
-    // Pre: true
-    // Post: R = queue[0] && (∀ i = 0 to n - 2: queue[i]' = queue[i + 1])
     @Override
     protected Object dequeueImpl() {
         Object result = start.value;
@@ -57,8 +46,6 @@ public class LinkedQueue extends AbstractQueue {
         return result;
     }
 
-    // Pre: true
-    // Post: R = queue[n - 1] && (∀ i = 0 to n - 2: queue[i]' = queue[i])
     @Override
     protected Object removeImpl() {
         Object result = end.value;
@@ -69,12 +56,12 @@ public class LinkedQueue extends AbstractQueue {
     }
 
     @Override
-    protected Queue makeQueue(Function<Object, Object> function, boolean type) {
+    protected Queue makeQueue(Function<Object, Object> function, boolean functionType) {
         LinkedQueue newQueue = new LinkedQueue();
         if (size != 0) {
             Node node = start;
             while (node != null) {
-                insert(function, type, newQueue, node.value);
+                insert(function, functionType, newQueue, node.value);
                 node = node.next;
             }
         }
@@ -142,8 +129,8 @@ public class LinkedQueue extends AbstractQueue {
         }
         return false;
     }
-    private static class Node {
 
+    private static class Node {
         private Node next;
         private Node prev;
         private final Object value;
@@ -155,8 +142,6 @@ public class LinkedQueue extends AbstractQueue {
         }
 
         public Node() {
-            next = null;
-            prev = null;
             value = null;
         }
     }

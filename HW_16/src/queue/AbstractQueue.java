@@ -57,35 +57,60 @@ public abstract class AbstractQueue implements Queue {
         return makeQueue(function, false);
     }
 
-    protected void insert(Function<Object, Object> function, boolean type, Queue newQueue, Object object) {
+    // Pre: function != null && queue != null && object != null
+    // Post: if function is predicate and it is true: queue.enqueue(object).post
+    //       if function is not predicate: queue.enqueue(function.apply(object)).post
+    //       else: nothing
+    protected void insert(Function<Object, Object> function, boolean functionType, Queue queue, Object object) {
+        checkObject(object);
         Object value = function.apply(object);
-        if (type) {
+        checkObject(value);
+        if (functionType) {
             if ((boolean) value) {
-                newQueue.enqueue(object);
+                queue.enqueue(object);
             }
         } else {
-            newQueue.enqueue(value);
+            queue.enqueue(value);
         }
     }
 
+    // Pre: function != null
+    // Post: if function is predicate : result is the subsequence of this.queue
+    //       if function is not predicate : result is this.queue with function applied to it's elements
     protected abstract Queue makeQueue(Function<Object, Object> function, boolean type);
 
+    // Pre: true
+    // Post: (∀ i = 0 to n - 1: queue[i]' = queue[i]) && queue[n] = obj
     protected abstract void enqueueImpl(Object obj);
 
+    // Pre: true
+    // Post: (∀ i = 1 to n: queue[i]' = queue[i - 1]) && queue[0] = obj
     protected abstract void pushImpl(Object obj);
 
+    // Pre: true
+    // Post: R = queue[0] && (∀ i = 0 to n - 1: queue[i]' = queue[i])
     protected abstract Object elementImpl();
 
+    // Pre: true
+    // Post: R = queue[n - 1] && (∀ i = 0 to n - 1: queue[i]' = queue[i])
     protected abstract Object peekImpl();
 
+    // Pre: true
+    // Post: R = queue[0] && (∀ i = 0 to n - 2: queue[i]' = queue[i + 1])
     protected abstract Object dequeueImpl();
 
+    // Pre: true
+    // Post: R = queue[n - 1] && (∀ i = 0 to n - 2: queue[i]' = queue[i])
     protected abstract Object removeImpl();
 
+    // Pre: true
+    // Post: queue.size > 0
     private void checkSize(){
         assert size() > 0;
     }
 
+    // Pre: true
+    // Post: obj != null
     private void checkObject(Object obj) {
         assert obj != null;
     }

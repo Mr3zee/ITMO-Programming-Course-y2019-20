@@ -1,7 +1,6 @@
 package queue;
 
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 public class ArrayQueue extends AbstractQueue {
     private int start;
@@ -14,8 +13,6 @@ public class ArrayQueue extends AbstractQueue {
         this.queue = new Object[10];
     }
 
-    // Pre: true
-    // Post: (∀ i = 0 to n - 1: queue[i]' = queue[i]) && queue[n] = obj
     @Override
     protected void enqueueImpl(Object obj) {
         if (size() + 1 == queue.length) {
@@ -26,8 +23,6 @@ public class ArrayQueue extends AbstractQueue {
         queue[end++] = obj;
     }
 
-    // Pre: true
-    // Post: (∀ i = 1 to n: queue[i]' = queue[i - 1]) && queue[0] = obj
     @Override
     protected void pushImpl(Object obj) {
         if (size() + 1 == queue.length) {
@@ -39,22 +34,16 @@ public class ArrayQueue extends AbstractQueue {
         queue[--start] = obj;
     }
 
-    // Pre: true
-    // Post: R = queue[0] && (∀ i = 0 to n - 1: queue[i]' = queue[i])
     @Override
     protected Object elementImpl() {
         return queue[start];
     }
 
-    // Pre: true
-    // Post: R = queue[n - 1] && (∀ i = 0 to n - 1: queue[i]' = queue[i])
     @Override
     protected Object peekImpl() {
         return queue[end - 1];
     }
 
-    // Pre: true
-    // Post: R = queue[0] && (∀ i = 0 to n - 2: queue[i]' = queue[i + 1])
     @Override
     protected Object dequeueImpl() {
         Object result = queue[start];
@@ -65,8 +54,6 @@ public class ArrayQueue extends AbstractQueue {
         return result;
     }
 
-    // Pre: true
-    // Post: R = queue[n - 1] && (∀ i = 0 to n - 2: queue[i]' = queue[i])
     @Override
     protected Object removeImpl() {
         Object result = queue[end - 1];
@@ -78,11 +65,11 @@ public class ArrayQueue extends AbstractQueue {
     }
 
     @Override
-    protected Queue makeQueue(Function<Object, Object> function, boolean type) {
+    protected Queue makeQueue(Function<Object, Object> function, boolean functionType) {
         ArrayQueue newQueue = new ArrayQueue();
         int length = queue.length;
         for (int i = 0; i < size(); i++) {
-            insert(function, type, newQueue, queue[(start + i) % length]);
+            insert(function, functionType, newQueue, queue[(start + i) % length]);
         }
         return newQueue;
     }
