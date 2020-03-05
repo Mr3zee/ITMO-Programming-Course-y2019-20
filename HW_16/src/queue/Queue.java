@@ -1,5 +1,8 @@
 package queue;
 
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 public interface Queue {
     // n := size o f queue
     // R := result of the function
@@ -49,4 +52,11 @@ public interface Queue {
     // Pre: true
     Object[] toArray();
     // Post: (∀ i = 0 to n - 1: R[i] = queue[i]) && R.length = n && (∀ i = 0 to n - 1: queue[i]' = queue[i])
+
+    // Pre: predicate != null
+    Queue filter(Predicate<Object> predicate);
+    // Post: newQueue
+
+    // Pre: function != null
+    Queue map(Function<Object, Object> function);
 }

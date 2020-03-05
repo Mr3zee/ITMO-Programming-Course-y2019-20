@@ -1,5 +1,8 @@
 package queue;
 
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 public class ArrayQueue extends AbstractQueue {
     private int start;
     private int end;
@@ -75,6 +78,29 @@ public class ArrayQueue extends AbstractQueue {
     }
 
     @Override
+    protected Queue filterImpl(Predicate<Object> predicate) {
+        ArrayQueue newQueue = new ArrayQueue();
+        int length = queue.length;
+        for (int i = 0; i < size(); i++) {
+            int j = (start + i) % length;
+            if (predicate.test(queue[j])) {
+                newQueue.enqueue(queue[j]);
+            }
+        }
+        return newQueue;
+    }
+
+    @Override
+    protected Queue mapImpl(Function<Object, Object> function) {
+        ArrayQueue newQueue = new ArrayQueue();
+        int length = queue.length;
+        for (int i = 0; i < size(); i++) {
+            newQueue.enqueue(function.apply(queue[(start + i) % length]));
+        }
+        return newQueue;
+    }
+
+    @Override
     public int size() {
         return end < start ? (queue.length - start + end) : (end - start);
     }
@@ -88,20 +114,12 @@ public class ArrayQueue extends AbstractQueue {
     @Override
     public String toStr() {
         StringBuilder string = new StringBuilder("[");
+        int length = queue.length;
         if (!isEmpty()) {
-            string.append(queue[start]);
-            if (end < start) {
-                for (int i = start + 1; i < queue.length; i++) {
-                    string.append(", ").append(queue[i]);
-                }
-                for (int i = 0; i < end; i++) {
-                    string.append(", ").append(queue[i]);
-                }
-            } else {
-                for (int i = start + 1; i < end; i++) {
-                    string.append(", ").append(queue[i]);
-                }
+            for (int i = 0; i < size() - 1; i++) {
+                string.append(queue[(start + i) % length]).append(", ");
             }
+            string.append(queue[end - 1]);
         }
         return string.append("]").toString();
     }

@@ -1,5 +1,8 @@
 package queue;
 
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 public class LinkedQueue extends AbstractQueue {
     private Node start;
     private Node end;
@@ -66,6 +69,34 @@ public class LinkedQueue extends AbstractQueue {
     }
 
     @Override
+    protected Queue filterImpl(Predicate<Object> predicate) {
+        LinkedQueue newQueue = new LinkedQueue();
+        if (size != 0) {
+            Node node = start;
+            while (node != null) {
+                if (predicate.test(node.value)) {
+                    newQueue.enqueue(node.value);
+                }
+                node = node.next;
+            }
+        }
+        return newQueue;
+    }
+
+    @Override
+    protected Queue mapImpl(Function<Object, Object> function) {
+        LinkedQueue newQueue = new LinkedQueue();
+        if (size != 0) {
+            Node node = start;
+            while (node != null) {
+                newQueue.enqueue(function.apply(node.value));
+                node = node.next;
+            }
+        }
+        return newQueue;
+    }
+
+    @Override
     public int size() {
         return size;
     }
@@ -88,7 +119,7 @@ public class LinkedQueue extends AbstractQueue {
             string.append(node.value.toString()).append(", ");
             node = node.next;
         }
-        return string.append(node.value.toString()).append("]").toString();
+        return string.append(node.value).append("]").toString();
     }
 
     @Override

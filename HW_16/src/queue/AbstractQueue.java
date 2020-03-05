@@ -1,5 +1,8 @@
 package queue;
 
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 public abstract class AbstractQueue implements Queue {
     @Override
     public boolean isEmpty() {
@@ -41,6 +44,22 @@ public abstract class AbstractQueue implements Queue {
         checkSize();
         return removeImpl();
     }
+
+    @Override
+    public Queue filter(Predicate<Object> predicate) {
+        checkObject(predicate);
+        return filterImpl(predicate);
+    }
+
+    @Override
+    public Queue map(Function<Object, Object> function) {
+        checkObject(function);
+        return mapImpl(function);
+    }
+
+    protected abstract Queue mapImpl(Function<Object, Object> function);
+
+    protected abstract Queue filterImpl(Predicate<Object> predicate);
 
     protected abstract void enqueueImpl(Object obj);
 
