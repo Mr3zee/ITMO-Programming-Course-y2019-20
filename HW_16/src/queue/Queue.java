@@ -54,10 +54,10 @@ public interface Queue {
     Object[] toArray();
 
     // Pre: predicate != null
-    // Post: R is the subsequence of this.queue, with elements satisfying predicate
+    // Post:  for each j = 0 .. n - 1 : if (predicate.test(queue[j]) == true) { newQueue.enqueue(queue[j]) } && R = newQueue
     Queue filter(final Predicate<Object> predicate);
 
     // Pre: function != null
-    // Post: R is this.queue with function applied to it's elements
+    // Post: ∀ i = 0 to n - 1 : R[i] = function.apply(queue[i])
     Queue map(final Function<Object, Object> function);
 }

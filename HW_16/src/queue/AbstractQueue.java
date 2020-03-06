@@ -78,8 +78,8 @@ public abstract class AbstractQueue implements Queue {
     }
 
     // Pre: function != null
-    // Post: if function is predicate::test : R is the subsequence of this.queue, with elements satisfying predicate
-    //       if function is not predicate : R is this.queue with function applied to it's elements
+    // Post: if function is predicate::test : for each j = 0 .. n - 1 : if (predicate.test(queue[j]) == true) { newQueue.enqueue(queue[j]) } && R = newQueue
+    //       if function is not predicate::test : ∀ i = 0 to n - 1 : R[i] = function.apply(queue[i])
     protected abstract Queue makeQueue(final Function<Object, Object> function, boolean type);
 
     // Pre: true
