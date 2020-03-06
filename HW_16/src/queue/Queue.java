@@ -54,10 +54,10 @@ public interface Queue {
     Object[] toArray();
 
     // Pre: predicate != null
-    // Post: result is the subsequence of this.queue
+    // Post: R is the subsequence of this.queue, with elements satisfying predicate
     Queue filter(final Predicate<Object> predicate);
 
     // Pre: function != null
-    // Post: result is this.queue with function applied to it's elements
+    // Post: R is this.queue with function applied to it's elements
     Queue map(final Function<Object, Object> function);
 }
