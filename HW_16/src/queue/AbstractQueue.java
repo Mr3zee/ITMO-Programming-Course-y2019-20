@@ -4,6 +4,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 public abstract class AbstractQueue implements Queue {
+    // R - result of the function
+
     @Override
     public boolean isEmpty() {
         return size() == 0;
@@ -57,9 +59,11 @@ public abstract class AbstractQueue implements Queue {
         return makeQueue(function, false);
     }
 
+    // functionType : "true" if function is predicate::test, "false" if not
+    //
     // Pre: function != null && queue != null && object != null
-    // Post: if function is predicate and it is true: queue.enqueue(object).post
-    //       if function is not predicate: queue.enqueue(function.apply(object)).post
+    // Post: if function is predicate::test and it's value for object is true : queue.enqueue(object).post
+    //       if function is not predicate::test : queue.enqueue(function.apply(object)).post
     //       else: nothing
     protected void insert(final Function<Object, Object> function, boolean functionType, final Queue queue, Object object) {
         Object value = function.apply(object);
@@ -74,8 +78,8 @@ public abstract class AbstractQueue implements Queue {
     }
 
     // Pre: function != null
-    // Post: if function is predicate : result is the subsequence of this.queue
-    //       if function is not predicate : result is this.queue with function applied to it's elements
+    // Post: if function is predicate::test : R is the subsequence of this.queue, with elements satisfying predicate
+    //       if function is not predicate : R is this.queue with function applied to it's elements
     protected abstract Queue makeQueue(final Function<Object, Object> function, boolean type);
 
     // Pre: true
