@@ -56,12 +56,12 @@ public class LinkedQueue extends AbstractQueue {
     }
 
     @Override
-    protected Queue makeQueue(final Function<Object, Object> function, boolean functionType) {
+    protected Queue makeQueue(final Function<Object, Object> function) {
         final LinkedQueue newQueue = new LinkedQueue();
         if (size != 0) {
             Node node = start;
             while (node != null) {
-                insert(function, functionType, newQueue, node.value);
+                insert(function, newQueue, node.value);
                 node = node.next;
             }
         }

@@ -66,11 +66,11 @@ public class ArrayQueue extends AbstractQueue {
     }
 
     @Override
-    protected Queue makeQueue(final Function<Object, Object> function, boolean functionType) {
+    protected Queue makeQueue(final Function<Object, Object> function) {
         final ArrayQueue newQueue = new ArrayQueue();
         int length = queue.length;
         for (int i = 0; i < size(); i++) {
-            insert(function, functionType, newQueue, queue[(start + i) % length]);
+            insert(function, newQueue, queue[(start + i) % length]);
         }
         return newQueue;
     }

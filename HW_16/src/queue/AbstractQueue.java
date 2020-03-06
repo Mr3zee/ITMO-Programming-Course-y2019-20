@@ -50,13 +50,13 @@ public abstract class AbstractQueue implements Queue {
     @Override
     public Queue filter(final Predicate<Object> predicate) {
         checkObject(predicate);
-        return makeQueue(predicate::test, true);
+        return makeQueue(result -> predicate.test(result) ? result : null);
     }
 
     @Override
     public Queue map(final Function<Object, Object> function) {
         checkObject(function);
-        return makeQueue(function, false);
+        return makeQueue(function);
     }
 
     // functionType : "true" if function is predicate::test, "false" if not
@@ -65,14 +65,9 @@ public abstract class AbstractQueue implements Queue {
     // Post: if function is predicate::test and it's value for object is true : queue.enqueue(object).post
     //       if function is not predicate::test : queue.enqueue(function.apply(object)).post
     //       else: nothing
-    protected void insert(final Function<Object, Object> function, boolean functionType, final Queue queue, Object object) {
+    protected void insert(final Function<Object, Object> function, final Queue queue, Object object) {
         Object value = function.apply(object);
-        checkObject(value);
-        if (functionType) {
-            if ((boolean) value) {
-                queue.enqueue(object);
-            }
-        } else {
+        if (value != null) {
             queue.enqueue(value);
         }
     }
@@ -80,7 +75,7 @@ public abstract class AbstractQueue implements Queue {
     // Pre: function != null
     // Post: if function is predicate::test : for each j = 0 .. n - 1 : if (predicate.test(queue[j]) == true) { newQueue.enqueue(queue[j]) } && R = newQueue
     //       if function is not predicate::test : ∀ i = 0 to n - 1 : R[i] = function.apply(queue[i])
-    protected abstract Queue makeQueue(final Function<Object, Object> function, boolean type);
+    protected abstract Queue makeQueue(final Function<Object, Object> function);
 
     // Pre: true
     // Post: (∀ i = 0 to n - 1: queue[i]' = queue[i]) && queue[n] = obj
