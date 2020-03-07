@@ -1,4 +1,4 @@
-package expression.exceptions.EExceptions;
+package expression.exceptions;
 
 public class OverflowEEException extends EvaluatingExpressionException {
     public OverflowEEException(final String operation, final int arg) {

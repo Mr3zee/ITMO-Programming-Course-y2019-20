@@ -1,4 +1,4 @@
-package expression.exceptions.EExceptions;
+package expression.exceptions;
 
 public class UnsupportedETypeException extends ExpressionException {
     public UnsupportedETypeException(String type) {

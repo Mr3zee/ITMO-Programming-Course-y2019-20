@@ -1,4 +1,4 @@
-package expression.exceptions.EExceptions;
+package expression.exceptions;
 
 public class ConstantOverflowPEException extends ParsingExpressionException {
     public ConstantOverflowPEException(final String number, final int position, final String input) {

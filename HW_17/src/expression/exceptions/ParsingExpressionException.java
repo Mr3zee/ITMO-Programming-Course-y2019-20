@@ -1,4 +1,4 @@
-package expression.exceptions.EExceptions;
+package expression.exceptions;
 
 public class ParsingExpressionException extends ExpressionException {
     private final int position;

@@ -1,9 +1,5 @@
 package expression.type;
 
-import expression.exceptions.EExceptions.DivisionByZeroEException;
-import expression.exceptions.EExceptions.OverflowEEException;
-import expression.exceptions.EExceptions.UnderflowEEException;
-
 public abstract class AbstractEType<T extends Number> implements EType<T> {
     private T value;
 
@@ -53,8 +49,6 @@ public abstract class AbstractEType<T extends Number> implements EType<T> {
     protected abstract T calcDivide(T v);
 
     protected abstract T calcNegate();
-
-    public abstract EType<T> parse(String v);
 
     @Override
     public abstract EType<T> valueOf(T v);

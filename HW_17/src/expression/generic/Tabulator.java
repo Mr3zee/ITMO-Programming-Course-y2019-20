@@ -1,6 +1,6 @@
 package expression.generic;
 
-import expression.exceptions.EExceptions.ExpressionException;
+import expression.exceptions.ExpressionException;
 
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)

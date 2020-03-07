@@ -1,6 +1,6 @@
 package expression.type;
 
-import expression.exceptions.EExceptions.DivisionByZeroEException;
+import expression.exceptions.DivisionByZeroEException;
 
 import java.math.BigInteger;
 
@@ -45,8 +45,7 @@ public class BigIntegerEType extends AbstractEType<BigInteger> {
         return new BigIntegerEType(v);
     }
 
-    @Override
-    public EType<BigInteger> parse(String v) {
-        return valueOf(new BigInteger(v));
+    public static EType<BigInteger> parseBigInteger(String v) {
+        return new BigIntegerEType(new BigInteger(v));
     }
 }

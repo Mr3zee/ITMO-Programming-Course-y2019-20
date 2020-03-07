@@ -1,6 +1,7 @@
 package expression.generic;
 
-import expression.exceptions.EExceptions.*;
+import expression.exceptions.ExpressionException;
+import expression.exceptions.UnsupportedETypeException;
 import expression.type.*;
 
 import java.math.BigInteger;
@@ -10,11 +11,11 @@ public class GenericTabulator implements Tabulator {
     public Object[][][] tabulate(String mode, String expression, int x1, int x2, int y1, int y2, int z1, int z2) throws ExpressionException {
         switch (mode) {
             case "i" :
-                return new TableGenerator<Integer>().tabulate(new IntegerEType(), expression, x1, x2, y1, y2, z1, z2);
+                return new TableGenerator<Integer>().tabulate(IntegerEType::parseInteger, expression, x1, x2, y1, y2, z1, z2);
             case "d" :
-                return new TableGenerator<Double>().tabulate(new DoubleEType(), expression, x1, x2, y1, y2, z1, z2);
+                return new TableGenerator<Double>().tabulate(DoubleEType::parseDouble, expression, x1, x2, y1, y2, z1, z2);
             case "bi" :
-                return new TableGenerator<BigInteger>().tabulate(new BigIntegerEType(), expression, x1, x2, y1, y2, z1, z2);
+                return new TableGenerator<BigInteger>().tabulate(BigIntegerEType::parseBigInteger, expression, x1, x2, y1, y2, z1, z2);
             default:
                 throw new UnsupportedETypeException(mode);
         }

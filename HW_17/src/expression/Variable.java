@@ -1,7 +1,6 @@
 package expression;
 
-import expression.exceptions.EExceptions.EvaluatingExpressionException;
-import expression.exceptions.EExceptions.IllegalVariableName;
+import expression.exceptions.IllegalVariableName;
 import expression.type.EType;
 
 import java.util.Objects;

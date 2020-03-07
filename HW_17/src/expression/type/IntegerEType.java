@@ -1,6 +1,8 @@
 package expression.type;
 
-import expression.exceptions.EExceptions.*;
+import expression.exceptions.DivisionByZeroEException;
+import expression.exceptions.OverflowEEException;
+import expression.exceptions.UnderflowEEException;
 
 public class IntegerEType extends AbstractEType<Integer> {
     public IntegerEType(Integer value) {
@@ -74,8 +76,7 @@ public class IntegerEType extends AbstractEType<Integer> {
         return new IntegerEType(v);
     }
 
-    @Override
-    public EType<Integer> parse(String v) {
-        return valueOf(Integer.parseInt(v));
+    public static EType<Integer> parseInteger(String v) {
+        return new IntegerEType(Integer.parseInt(v));
     }
 }

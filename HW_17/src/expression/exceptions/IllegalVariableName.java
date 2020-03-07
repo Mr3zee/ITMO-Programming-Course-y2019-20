@@ -1,4 +1,4 @@
-package expression.exceptions.EExceptions;
+package expression.exceptions;
 
 public class IllegalVariableName extends EvaluatingExpressionException {
     public IllegalVariableName(String name) {

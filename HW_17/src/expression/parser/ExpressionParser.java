@@ -1,21 +1,21 @@
-package expression.exceptions;
+package expression.parser;
 
 import expression.*;
-import expression.exceptions.EExceptions.*;
+import expression.exceptions.*;
 import expression.operations.*;
-import expression.parser.*;
 import expression.type.*;
 
 import java.util.Set;
+import java.util.function.Function;
 
 public class ExpressionParser<T extends Number> extends BaseParser implements Parser<T> {
     private final Set<Character> BINARY_END_OPS = Set.of('*', '/', '\0', ')');
-    private final EType<T> type;
+    private final Function<String, EType<T>> parseEType;
     private Lexeme lastLexeme;
 
-    public ExpressionParser(EType<T> type) {
+    public ExpressionParser(Function<String, EType<T>> parseEType) {
         super(Set.of ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'x', 'y', 'z', '+', '-', '*', '/', '(', ')', '\0'));
-        this.type = type;
+        this.parseEType = parseEType;
     }
 
     @Override
@@ -100,7 +100,7 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
 
     private CommonExpression<T> parseNumber(final String number) throws ParsingExpressionException {
         try {
-            return new Const<>(type.parse(number));
+            return new Const<>(parseEType.apply(number));
         } catch (NumberFormatException e) {
             int position = source.getPosition() - number.length() - 1;
             if (number.charAt(0) == '-') {

@@ -1,2 +1,2 @@
-javac expression/exceptions/ExceptionsPowLogTest.java
-java -ea expression.exceptions.ExceptionsPowLogTest
+javac expression/generic/GenericTest.java
+java -ea expression.generic.GenericTest
