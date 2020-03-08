@@ -31,7 +31,6 @@ public class Const<T extends Number> implements CommonExpression<T> {
         if (this == o) return true;
         if (o == null || this.getClass() != o.getClass()) return false;
         Const<?> that = (Const<?>) o;
-        // TODO: 04.03.2020 cast
         return value.equals(that.value);
     }
 

@@ -64,7 +64,6 @@ public abstract class AbstractEType<T extends Number> implements EType<T> {
         if (this == o) return true;
         if (o == null || this.getClass() != o.getClass()) return false;
         AbstractEType<?> that = (AbstractEType<?>) o;
-        // TODO: 04.03.2020 cast
         return Objects.equals(value, that.value);
     }
 }

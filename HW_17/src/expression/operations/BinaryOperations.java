@@ -48,7 +48,6 @@ public abstract class BinaryOperations<T extends Number> implements CommonExpres
         if (this == o) return true;
         if (o == null || this.getClass() != o.getClass()) return false;
         BinaryOperations<?> that = (BinaryOperations<?>) o;
-        // TODO: 04.03.2020 cast
         return Objects.equals(firstExp, that.firstExp) &&
                 Objects.equals(secondExp, that.secondExp);
     }

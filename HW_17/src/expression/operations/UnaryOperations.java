@@ -41,7 +41,6 @@ public abstract class UnaryOperations<T extends Number> implements CommonExpress
         if (this == o) return true;
         if (o == null || this.getClass() != o.getClass()) return false;
         UnaryOperations<?> that = (UnaryOperations<?>) o;
-        // TODO: 04.03.2020 cast
         return Objects.equals(expression, that.expression);
     }
 
