@@ -5,9 +5,6 @@ public class DoubleEType extends AbstractEType<Double> {
         super(value);
     }
 
-    public DoubleEType() {
-    }
-
     @Override
     protected Double calcAdd(Double v) {
         return value() + v;

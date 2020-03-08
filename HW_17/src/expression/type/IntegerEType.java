@@ -9,9 +9,6 @@ public class IntegerEType extends AbstractEType<Integer> {
         super(value);
     }
 
-    public IntegerEType() {
-    }
-
     @Override
     protected Integer calcAdd(Integer v) throws OverflowEEException, UnderflowEEException {
         Integer value = value();
