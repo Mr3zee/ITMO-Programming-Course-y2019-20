@@ -76,4 +76,6 @@ public class IntegerEType extends AbstractEType<Integer> {
     public static EType<Integer> parseInteger(String v) {
         return new IntegerEType(Integer.parseInt(v));
     }
+
+
 }
