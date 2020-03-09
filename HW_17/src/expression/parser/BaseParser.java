@@ -23,9 +23,9 @@ public class BaseParser {
         return false;
     }
 
-    protected FoundNextInfo getNext() {
+    protected NextWordParameters getNext() {
         String next = nextWord();
-        return new FoundNextInfo(next, source.getPosition() - next.length() - 1, source.getExpression());
+        return new NextWordParameters(next, source.getPosition() - next.length() - 1, source.getExpression());
     }
 
     protected String nextWord() {

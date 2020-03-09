@@ -1,9 +1,9 @@
 package expression.exceptions;
 
-import expression.parser.FoundNextInfo;
+import expression.parser.NextWordParameters;
 
 public class IllegalSymbolPEException extends ParsingExpressionException {
-    public IllegalSymbolPEException(final FoundNextInfo found) {
-        super("Unknown symbol or sequence of symbols - \"" + found.getNext() + "\"", found.getPosition(), found.getInput());
+    public IllegalSymbolPEException(final NextWordParameters found) {
+        super("Unknown symbol or sequence of symbols - \"" + found.getWord() + "\"", found.getPosition(), found.getInput());
     }
 }

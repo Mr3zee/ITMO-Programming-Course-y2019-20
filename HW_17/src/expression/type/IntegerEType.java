@@ -1,8 +1,6 @@
 package expression.type;
 
-import expression.exceptions.DivisionByZeroEException;
-import expression.exceptions.OverflowEEException;
-import expression.exceptions.UnderflowEEException;
+import expression.exceptions.*;
 
 public class IntegerEType extends AbstractEType<Integer> {
     public IntegerEType(Integer value) {

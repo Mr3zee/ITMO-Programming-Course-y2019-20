@@ -1,9 +1,9 @@
 package expression.exceptions;
 
-import expression.parser.FoundNextInfo;
+import expression.parser.NextWordParameters;
 
 public class NoParenthesisPEException extends ParsingExpressionException {
-    public NoParenthesisPEException(final String expected, final FoundNextInfo found) {
-        super("Expected " + expected + " parenthesis, found '" + found.getNext() + "'", found.getPosition(), found.getInput());
+    public NoParenthesisPEException(final String expected, final NextWordParameters found) {
+        super("Expected " + expected + " parenthesis, found '" + found.getWord() + "'", found.getPosition(), found.getInput());
     }
 }

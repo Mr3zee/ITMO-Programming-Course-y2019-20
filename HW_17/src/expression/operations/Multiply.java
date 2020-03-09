@@ -1,7 +1,6 @@
 package expression.operations;
 
 import expression.CommonExpression;
-import expression.operations.BinaryOperations;
 import expression.type.EType;
 
 public class Multiply<T extends Number> extends BinaryOperations<T> {

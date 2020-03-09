@@ -1,7 +1,5 @@
 package expression.type;
 
-import expression.operations.UnaryOperations;
-
 import java.util.Objects;
 
 public abstract class AbstractEType<T extends Number> implements EType<T> {

@@ -1,6 +1,6 @@
 package expression.type;
 
-import expression.exceptions.DivisionByZeroEException;
+import expression.exceptions.*;
 
 import java.math.BigInteger;
 

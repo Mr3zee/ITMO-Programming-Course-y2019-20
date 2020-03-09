@@ -111,8 +111,8 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
     }
 
     private ParsingExpressionException missingLexemeHandler() {
-        FoundNextInfo next = getNext();
-        if (find(next.getNext())) {
+        NextWordParameters next = getNext();
+        if (find(next.getWord())) {
             return new MissingLexemePEException(lastLexeme.getName(), next);
         }
         return new IllegalSymbolPEException(next);
