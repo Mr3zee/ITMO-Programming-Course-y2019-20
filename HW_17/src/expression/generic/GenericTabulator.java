@@ -1,9 +1,7 @@
 package expression.generic;
 
 import expression.CommonExpression;
-import expression.exceptions.EvaluatingExpressionException;
-import expression.exceptions.ExpressionException;
-import expression.exceptions.UnsupportedETypeException;
+import expression.exceptions.*;
 import expression.parser.ExpressionParser;
 import expression.type.*;
 
@@ -34,9 +32,9 @@ public class GenericTabulator implements Tabulator {
         }
     }
 
-    public class TableGenerator<T extends Number> {
+    private class TableGenerator<T extends Number> {
 
-        public Object[][][] tabulate(Function<String, EType<T>> parseEType) throws ExpressionException {
+        private Object[][][] tabulate(Function<String, EType<T>> parseEType) throws ExpressionException {
             Object[][][] result = new Object[dx][dy][dz];
             CommonExpression<T> parsedExpression = new ExpressionParser<>(parseEType).parse(expression);
             for (int i = 0; i < dx; i++) {
