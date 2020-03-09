@@ -38,4 +38,9 @@ public class DoubleEType extends AbstractEType<Double> {
     public static EType<Double> parseDouble(String v) {
         return new DoubleEType(Double.parseDouble(v));
     }
+
+    @Override
+    protected int primary() {
+        return 1637;
+    }
 }

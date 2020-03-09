@@ -56,7 +56,7 @@ public abstract class BinaryOperations<T extends Number> implements CommonExpres
     public int hashCode() {
         final int MOD = 1073676287;
         final int PRIME = primary();
-        int result = 1;
+        int result = 3527;
         result = (PRIME * result + firstExp.hashCode()) % MOD;
         result = (PRIME * result + secondExp.hashCode()) % MOD;
         return result;

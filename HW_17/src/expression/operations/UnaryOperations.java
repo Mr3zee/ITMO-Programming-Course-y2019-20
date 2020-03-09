@@ -46,9 +46,7 @@ public abstract class UnaryOperations<T extends Number> implements CommonExpress
 
     @Override
     public int hashCode() {
-        final int MOD = 1073676287;
-        final int PRIME = primary();
-        return (PRIME + expression.hashCode()) % MOD;
+        return (primary() * 2467 + expression.hashCode()) % 1073676287;
     }
 
     protected abstract int primary();

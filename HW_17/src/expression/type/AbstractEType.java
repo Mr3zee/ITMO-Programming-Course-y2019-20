@@ -66,4 +66,11 @@ public abstract class AbstractEType<T extends Number> implements EType<T> {
         AbstractEType<?> that = (AbstractEType<?>) o;
         return Objects.equals(value, that.value);
     }
+
+    @Override
+    public int hashCode() {
+        return (primary() * 2399) % 1073676287;
+    }
+
+    protected abstract int primary();
 }

@@ -77,4 +77,8 @@ public class IntegerEType extends AbstractEType<Integer> {
         return new IntegerEType(Integer.parseInt(v));
     }
 
+    @Override
+    protected int primary() {
+        return 2153;
+    }
 }
