@@ -22,11 +22,11 @@ public class GenericTabulator implements Tabulator {
         initParameters(expression, x1, x2, y1, y2, z1, z2);
         switch (mode) {
             case "i":
-                return new TableGenerator<Integer>().tabulate(IntegerEType::parseInteger);
+                return new TableGenerator<Integer>().generateTable(IntegerEType::parseInteger);
             case "d":
-                return new TableGenerator<Double>().tabulate(DoubleEType::parseDouble);
+                return new TableGenerator<Double>().generateTable(DoubleEType::parseDouble);
             case "bi":
-                return new TableGenerator<BigInteger>().tabulate(BigIntegerEType::parseBigInteger);
+                return new TableGenerator<BigInteger>().generateTable(BigIntegerEType::parseBigInteger);
             default:
                 throw new UnsupportedETypeException(mode);
         }
@@ -34,7 +34,7 @@ public class GenericTabulator implements Tabulator {
 
     private class TableGenerator<T extends Number> {
 
-        private Object[][][] tabulate(Function<String, EType<T>> parseEType) throws ExpressionException {
+        private Object[][][] generateTable(Function<String, EType<T>> parseEType) throws ExpressionException {
             Object[][][] result = new Object[dx][dy][dz];
             CommonExpression<T> parsedExpression = new ExpressionParser<>(parseEType).parse(expression);
             for (int i = 0; i < dx; i++) {
