@@ -10,53 +10,53 @@ public class IntegerEType extends AbstractEType<Integer> {
     }
 
     @Override
-    protected Integer calcAdd(Integer v) throws OverflowEEException, UnderflowEEException {
-        Integer value = value();
-        if (value > 0 && Integer.MAX_VALUE - value < v) {
-            throw new OverflowEEException("Add", value, v);
+    protected Integer calcAdd(Integer augend) throws OverflowEEException, UnderflowEEException {
+        Integer addend = value();
+        if (addend > 0 && Integer.MAX_VALUE - addend < augend) {
+            throw new OverflowEEException("Add", addend, augend);
         }
-        if (value < 0 && Integer.MIN_VALUE - value > v) {
-            throw new UnderflowEEException("Add", value, v);
+        if (addend < 0 && Integer.MIN_VALUE - addend > augend) {
+            throw new UnderflowEEException("Add", addend, augend);
         }
-        return value() + v;
+        return addend + augend;
     }
 
     @Override
-    protected Integer calcSubtract(Integer v) throws OverflowEEException, UnderflowEEException {
-        Integer value = value();
-        if ((value > 0 && value - Integer.MAX_VALUE > v) || (value == 0 && v == Integer.MIN_VALUE)) {
-            throw new OverflowEEException("Subtract", value, v);
+    protected Integer calcSubtract(Integer subtrahend) throws OverflowEEException, UnderflowEEException {
+        Integer minuend = value();
+        if ((minuend > 0 && minuend - Integer.MAX_VALUE > subtrahend) || (minuend == 0 && subtrahend == Integer.MIN_VALUE)) {
+            throw new OverflowEEException("Subtract", minuend, subtrahend);
         }
-        if (value < 0 && value - Integer.MIN_VALUE < v) {
-            throw new UnderflowEEException("Subtract", value, v);
+        if (minuend < 0 && minuend - Integer.MIN_VALUE < subtrahend) {
+            throw new UnderflowEEException("Subtract", minuend, subtrahend);
         }
-        return value() - v;
+        return minuend - subtrahend;
     }
 
     @Override
-    protected Integer calcMultiply(Integer v) throws OverflowEEException, UnderflowEEException {
-        Integer value = value();
-        if ((value > 0 && v > 0 && (Integer.MAX_VALUE / value) < v) ||
-            (value < 0 && v < 0 && (Integer.MAX_VALUE / value) > v)) {
-            throw new OverflowEEException("Multiply", value, v);
+    protected Integer calcMultiply(Integer factor) throws OverflowEEException, UnderflowEEException {
+        Integer multiplier = value();
+        if ((multiplier > 0 && factor > 0 && (Integer.MAX_VALUE / multiplier) < factor) ||
+            (multiplier < 0 && factor < 0 && (Integer.MAX_VALUE / multiplier) > factor)) {
+            throw new OverflowEEException("Multiply", multiplier, factor);
         }
-        if ((value > 0 && v < 0 && (Integer.MIN_VALUE / value) > v) ||
-            (value != -1 && value < 0 && v > 0 && (Integer.MIN_VALUE / value) < v)) {
-            throw new UnderflowEEException("Multiply", value, v);
+        if ((multiplier > 0 && factor < 0 && (Integer.MIN_VALUE / multiplier) > factor) ||
+            (multiplier != -1 && multiplier < 0 && factor > 0 && (Integer.MIN_VALUE / multiplier) < factor)) {
+            throw new UnderflowEEException("Multiply", multiplier, factor);
         }
-        return value() * v;
+        return multiplier * factor;
     }
 
     @Override
-    protected Integer calcDivide(Integer v) throws DivisionByZeroEException, OverflowEEException {
-        Integer value = value();
-        if (v == 0) {
-            throw new DivisionByZeroEException(value.toString());
+    protected Integer calcDivide(Integer divider) throws DivisionByZeroEException, OverflowEEException {
+        Integer dividend = value();
+        if (divider == 0) {
+            throw new DivisionByZeroEException(dividend.toString());
         }
-        if (value == Integer.MIN_VALUE && v == -1) {
-            throw new OverflowEEException("Divide", value, v);
+        if (dividend == Integer.MIN_VALUE && divider == -1) {
+            throw new OverflowEEException("Divide", dividend, divider);
         }
-        return value() / v;
+        return dividend / divider;
     }
 
     @Override
@@ -76,6 +76,5 @@ public class IntegerEType extends AbstractEType<Integer> {
     public static EType<Integer> parseInteger(String v) {
         return new IntegerEType(Integer.parseInt(v));
     }
-
 
 }
