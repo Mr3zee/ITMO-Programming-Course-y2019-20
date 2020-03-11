@@ -16,6 +16,8 @@ public interface EType<T extends Number> {
 
     EType<T> valueOf(T v);
 
+    EType<T> bitCount();
+
     @Override
     String toString();
 }

@@ -5,6 +5,7 @@ import expression.exceptions.*;
 import expression.operations.*;
 import expression.type.*;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -14,7 +15,8 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
     private Lexeme lastLexeme;
 
     public ExpressionParser(Function<String, EType<T>> parseEType) {
-        super(Set.of ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'x', 'y', 'z', '+', '-', '*', '/', '(', ')', '\0'));
+        super(Set.of ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'x', 'y', 'z', '+', '-', '*', '/', '(', ')', '\0'),
+                Map.of('c', "count"));
         this.parseEType = parseEType;
     }
 
@@ -84,6 +86,8 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
             String name = String.valueOf(c);
             nextChar();
             return new Variable<>(name);
+        } else if (test('c')) {
+            return new Count<>(wordOpsHandler("count", Lexeme.CNT));
         } else if (isDigit()) {
             lastLexeme = Lexeme.NUM;
             return parseNumber(takeNumber());
@@ -96,6 +100,23 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
             return new Negate<>(lowLevelParse());
         }
         throw missingLexemeHandler();
+    }
+
+    private CommonExpression<T> wordOpsHandler(String expected, Lexeme lexeme) {
+        checkLexeme(expected);
+        if (Character.isWhitespace(getCurrentLex()) || test('-', '(', '\0')) {
+            lastLexeme = lexeme;
+            return lowLevelParse();
+        }
+        throw new MissingWhitespacePEException(lexeme.getName(), getNext());
+    }
+
+    private void checkLexeme(final String expect) {
+        int position = source.getPosition() - 1;
+        String res = takeWord(expect);
+        if (!res.equals(expect)) {
+            throw new InvalidOperatorFormPEException(expect, new NextWordParameters(res + getCurrentLex(), position, source.getExpression()));
+        }
     }
 
     private CommonExpression<T> parseNumber(final String number) throws ParsingExpressionException {

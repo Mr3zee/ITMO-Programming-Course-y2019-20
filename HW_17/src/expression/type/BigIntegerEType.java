@@ -38,6 +38,11 @@ public class BigIntegerEType extends AbstractEType<BigInteger> {
     }
 
     @Override
+    protected BigInteger calcBitCount() {
+        return new BigInteger(String.valueOf(value().bitCount()));
+    }
+
+    @Override
     public EType<BigInteger> valueOf(BigInteger v) {
         return new BigIntegerEType(v);
     }
@@ -45,6 +50,7 @@ public class BigIntegerEType extends AbstractEType<BigInteger> {
     public static EType<BigInteger> parseBigInteger(String v) {
         return new BigIntegerEType(new BigInteger(v));
     }
+
 
     @Override
     protected int primary() {

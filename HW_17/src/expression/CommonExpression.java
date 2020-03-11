@@ -13,6 +13,7 @@ public interface CommonExpression<T extends Number> extends Expression<T>, Tripl
     // Integer EType: 2153
     // Double EType: 1637
     // BigInteger EType: 2969
+    // Count: 2797
 
     int getPriority();
 

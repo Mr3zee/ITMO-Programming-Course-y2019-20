@@ -67,6 +67,11 @@ public class IntegerEType extends AbstractEType<Integer> {
     }
 
     @Override
+    protected Integer calcBitCount() {
+        return Integer.bitCount(value());
+    }
+
+    @Override
     public EType<Integer> valueOf(Integer v) {
         return new IntegerEType(v);
     }

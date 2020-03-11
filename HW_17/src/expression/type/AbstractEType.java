@@ -35,6 +35,11 @@ public abstract class AbstractEType<T extends Number> implements EType<T> {
     }
 
     @Override
+    public EType<T> bitCount() {
+        return valueOf(calcBitCount());
+    }
+
+    @Override
     public EType<T> negate() {
         return valueOf(calcNegate());
     }
@@ -48,6 +53,8 @@ public abstract class AbstractEType<T extends Number> implements EType<T> {
     protected abstract T calcDivide(T v);
 
     protected abstract T calcNegate();
+
+    protected abstract T calcBitCount();
 
     @Override
     public abstract EType<T> valueOf(T v);

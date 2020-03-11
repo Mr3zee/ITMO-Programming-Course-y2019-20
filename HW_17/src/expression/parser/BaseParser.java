@@ -1,14 +1,17 @@
 package expression.parser;
 
+import java.util.Map;
 import java.util.Set;
 
 public class BaseParser {
     protected final Set<Character> LEXEMES;
+    protected final Map<Character, String> WORDS;
     protected ExpressionSource source;
     private char currentLex;
 
-    public BaseParser(final Set<Character> LEXEMES) {
+    public BaseParser(Set<Character> LEXEMES, Map<Character, String> WORDS) {
         this.LEXEMES = LEXEMES;
+        this.WORDS = WORDS;
     }
 
     protected void nextChar() {
@@ -24,8 +27,23 @@ public class BaseParser {
     }
 
     protected NextWordParameters getNext() {
-        String next = nextWord();
+        String next;
+        next = takeWord(WORDS.get(currentLex));
+        next = next == null ? nextWord() : next;
         return new NextWordParameters(next, source.getPosition() - next.length() - 1, source.getExpression());
+    }
+
+    protected String takeWord(String expect) {
+        if (expect == null) {
+            return null;
+        }
+        StringBuilder word = new StringBuilder();
+        int i = 0;
+        while (i < expect.length() && currentLex == expect.charAt(i++)) {
+            word.append(getCurrentLex());
+            nextChar();
+        }
+        return word.toString();
     }
 
     protected String nextWord() {
@@ -76,10 +94,23 @@ public class BaseParser {
         return source.hasNext() || currentLex != '\0';
     }
 
+    protected boolean find(char c) {
+        return LEXEMES.contains(c);
+    }
+
     protected boolean find(String c) {
         if (c.length() == 0) {
             return true;
         }
-        return LEXEMES.contains(c.charAt(0));
+        if (c.length() == 1) {
+            return find(c.charAt(0));
+        }
+        return WORDS.containsValue(c);
     }
+
+    protected void getBack() {
+        source.getBack();
+        nextChar();
+    }
+
 }
