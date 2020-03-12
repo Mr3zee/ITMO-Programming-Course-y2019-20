@@ -2,7 +2,7 @@ package expression.type;
 
 import expression.exceptions.*;
 
-public class UncheckedIntegerEType extends IntegerEType{
+public class UncheckedIntegerEType extends AbstractEType<Integer> implements ForbiddenDivisionByZero<Integer> {
     public UncheckedIntegerEType(Long value) {
         super(value.intValue());
     }
@@ -33,8 +33,24 @@ public class UncheckedIntegerEType extends IntegerEType{
         return -value();
     }
 
-    public EType<Integer> valueOf(Long v) {
-        return super.valueOf(v.intValue());
+    @Override
+    protected Integer calcBitCount() {
+        return Integer.bitCount(value());
+    }
+
+    @Override
+    protected Integer calcMin(Integer v) {
+        return Math.min(value(), v);
+    }
+
+    @Override
+    protected Integer calcMax(Integer v) {
+        return Math.max(value(), v);
+    }
+
+    @Override
+    public EType<Integer> valueOf(Integer v) {
+        return new UncheckedIntegerEType((long) v);
     }
 
     public static EType<Integer> parseUncheckedInteger(String v) {
@@ -44,5 +60,10 @@ public class UncheckedIntegerEType extends IntegerEType{
     @Override
     protected int primary() {
         return 2213;
+    }
+
+    @Override
+    public Integer getZero() {
+        return 0;
     }
 }
