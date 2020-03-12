@@ -13,7 +13,7 @@ public class IntegerParserTest extends ParserTest<Integer> {
 
     @Override
     protected Function<String, EType<Integer>> getParseFunction() {
-        return CheckedIntegerEType::parseInteger;
+        return CheckedIntegerEType::parseCheckedInteger;
     }
 
     @Override

@@ -69,7 +69,7 @@ public class CheckedIntegerEType extends AbstractIntegerEType {
         return new CheckedIntegerEType(v);
     }
 
-    public static EType<Integer> parseInteger(String v) {
+    public static EType<Integer> parseCheckedInteger(String v) {
         return new CheckedIntegerEType(Integer.parseInt(v));
     }
 
