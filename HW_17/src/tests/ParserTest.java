@@ -62,6 +62,13 @@ public abstract class ParserTest<T extends Number> {
     }
 
     @Test
+    public void UnsupportedCastPEExceptionTests() {
+        printTestName("UnsupportedCastPEExceptionTests");
+        currentExceptionName = "Unsupported";
+        implUnsupportedCastPEExceptionTests();
+    }
+
+    @Test
     public void WhitespacesTest() {
         printTestName("Whitespaces parse");
         implWhitespacesTest();
@@ -155,6 +162,8 @@ public abstract class ParserTest<T extends Number> {
     protected abstract void implOverflowEEExceptionTests();
 
     protected abstract void implUnderflowEEExceptionTests();
+
+    protected abstract void implUnsupportedCastPEExceptionTests();
 
     protected abstract void implPlusMinusTests();
 

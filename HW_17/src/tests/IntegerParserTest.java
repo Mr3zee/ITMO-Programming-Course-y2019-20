@@ -53,6 +53,13 @@ public class IntegerParserTest extends ParserTest<Integer> {
     }
 
     @Override
+    protected void implUnsupportedCastPEExceptionTests() {
+        invalidParse("10.1", 0);
+        invalidParse("0.1", 0);
+        invalidParse("10.0", 0);
+    }
+
+    @Override
     protected void implConstantOverflowPEExceptionTests() {
         invalidParse("2147483649", 0);
         invalidParse(" 2147483649", 1);

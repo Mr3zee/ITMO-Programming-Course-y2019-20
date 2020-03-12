@@ -142,10 +142,6 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
         }
     }
 
-    private void checkIfDouble(String number) {
-
-    }
-
     private ParsingExpressionException missingLexemeOrIllegalSymbolException(NextWordParameters nextWord) {
         if (findLexeme(nextWord.getWord())) {
             return new MissingLexemePEException(lastLexeme.getName(), nextWord);

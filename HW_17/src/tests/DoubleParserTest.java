@@ -77,6 +77,11 @@ public class DoubleParserTest extends ParserTest<Double> {
     }
 
     @Override
+    protected void implUnsupportedCastPEExceptionTests() {
+        notAvailable();
+    }
+
+    @Override
     protected void implPlusMinusTests() {
         validParseAndEvaluate("x + y", 1.0, 1.0, 1.0, "x + y", 2.0);
         validParseAndEvaluate("x + z", 1.0, 1.0, 1.0, "x + z", 2.0);

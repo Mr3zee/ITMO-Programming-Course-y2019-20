@@ -3,9 +3,7 @@ package tests;
 import expression.type.BigIntegerEType;
 import expression.type.EType;
 
-import javax.swing.text.StyleContext;
 import java.math.BigInteger;
-import java.net.BindException;
 import java.util.function.Function;
 
 public class BigIntegerParserTest extends ParserTest<BigInteger> {
@@ -68,6 +66,13 @@ public class BigIntegerParserTest extends ParserTest<BigInteger> {
     @Override
     protected void implConstantUnderflowPEExceptionTests() {
         notAvailable();
+    }
+
+    @Override
+    protected void implUnsupportedCastPEExceptionTests() {
+        invalidParse("100000000000000000000000000.0", 0);
+        invalidParse("0.0", 0);
+        invalidParse("0.1", 0);
     }
 
     @Override

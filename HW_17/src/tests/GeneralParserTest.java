@@ -117,6 +117,11 @@ public class GeneralParserTest extends ParserTest<Integer> {
     }
 
     @Override
+    protected void implUnsupportedCastPEExceptionTests() {
+        notAvailable();
+    }
+
+    @Override
     protected void implConstantOverflowPEExceptionTests() {
         notAvailable();
     }
