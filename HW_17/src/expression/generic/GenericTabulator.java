@@ -22,7 +22,7 @@ public class GenericTabulator implements Tabulator {
         initParameters(expression, x1, x2, y1, y2, z1, z2);
         switch (mode) {
             case "i":
-                return new TableGenerator<Integer>().generateTable(IntegerEType::parseInteger);
+                return new TableGenerator<Integer>().generateTable(CheckedIntegerEType::parseInteger);
             case "d":
                 return new TableGenerator<Double>().generateTable(DoubleEType::parseDouble);
             case "bi":

@@ -1,8 +1,7 @@
 package tests;
 
 import expression.type.EType;
-import expression.type.IntegerEType;
-import tests.ParserTest;
+import expression.type.CheckedIntegerEType;
 
 import java.util.function.Function;
 
@@ -14,7 +13,7 @@ public class GeneralParserTest extends ParserTest<Integer> {
 
     @Override
     protected Function<String, EType<Integer>> getParseFunction() {
-        return IntegerEType::parseInteger;
+        return CheckedIntegerEType::parseInteger;
     }
 
     @Override
