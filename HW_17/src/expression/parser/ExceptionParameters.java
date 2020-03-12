@@ -1,11 +1,11 @@
 package expression.parser;
 
-public class NextWordParameters {
+public class ExceptionParameters {
     private final String word;
     private final int position;
     private final String input;
 
-    public NextWordParameters(String lexeme, int position, final String input) {
+    public ExceptionParameters(String lexeme, int position, final String input) {
         this.word = lexeme;
         this.position = position;
         this.input = input;

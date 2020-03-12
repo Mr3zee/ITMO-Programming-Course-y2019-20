@@ -32,7 +32,7 @@ public class ExpressionSource implements Source {
         return expression;
     }
 
-    public void getBack() {
-        pos -= 2;
+    public void rollBack(int v) {
+        pos -= v;
     }
 }
