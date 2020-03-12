@@ -48,9 +48,7 @@ public class IntegerEType extends AbstractEType<Integer> {
     @Override
     protected Integer calcDivide(Integer divider) throws DivisionByZeroEException, OverflowEEException {
         Integer dividend = value();
-        if (divider == 0) {
-            throw new DivisionByZeroEException(dividend.toString());
-        }
+        checkDivisionByZero(divider);
         if (dividend == Integer.MIN_VALUE && divider == -1) {
             throw new OverflowEEException("Divide", dividend, divider);
         }
@@ -88,6 +86,11 @@ public class IntegerEType extends AbstractEType<Integer> {
 
     public static EType<Integer> parseInteger(String v) {
         return new IntegerEType(Integer.parseInt(v));
+    }
+
+    @Override
+    protected Integer getZero() {
+        return 0;
     }
 
     @Override

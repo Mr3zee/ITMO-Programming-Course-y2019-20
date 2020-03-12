@@ -1,8 +1,10 @@
 package expression.type;
 
+import expression.exceptions.*;
+
 public class UncheckedIntegerEType extends IntegerEType {
-    public UncheckedIntegerEType(Integer value) {
-        super(value);
+    public UncheckedIntegerEType(Long value) {
+        super(value.intValue());
     }
 
     @Override
@@ -21,13 +23,27 @@ public class UncheckedIntegerEType extends IntegerEType {
     }
 
     @Override
-    protected Integer calcDivide(Integer v) {
+    protected Integer calcDivide(Integer v) throws DivisionByZeroEException {
+        checkDivisionByZero(v);
         return value() / v;
     }
 
     @Override
     protected Integer calcNegate() {
         return -value();
+    }
+
+    public EType<Integer> valueOf(Long v) {
+        return super.valueOf(v.intValue());
+    }
+
+    public static EType<Integer> parseUncheckedInteger(String v) {
+        return new UncheckedIntegerEType(Long.parseLong(v));
+    }
+
+    @Override
+    protected Integer getZero() {
+        return 0;
     }
 
     @Override
