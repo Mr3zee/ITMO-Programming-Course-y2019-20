@@ -1,5 +1,7 @@
 package expression.type;
 
+import expression.exceptions.DivisionByZeroEException;
+
 public class LongEType extends AbstractEType<Long> {
     public LongEType(Long value) {
         super(value);
@@ -21,7 +23,10 @@ public class LongEType extends AbstractEType<Long> {
     }
 
     @Override
-    protected Long calcDivide(Long v) {
+    protected Long calcDivide(Long v) throws DivisionByZeroEException {
+        if (v == 0) {
+            throw new DivisionByZeroEException(v.toString());
+        }
         return value() / v;
     }
 

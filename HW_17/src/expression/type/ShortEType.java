@@ -1,5 +1,7 @@
 package expression.type;
 
+import expression.exceptions.DivisionByZeroEException;
+
 public class ShortEType extends AbstractEType<Short> {
     public ShortEType(Short value) {
         super(value);
@@ -21,7 +23,10 @@ public class ShortEType extends AbstractEType<Short> {
     }
 
     @Override
-    protected Short calcDivide(Short v) {
+    protected Short calcDivide(Short v) throws DivisionByZeroEException {
+        if (v == 0) {
+            throw new DivisionByZeroEException(v.toString());
+        }
         return (short) (value() / v);
     }
 
@@ -51,7 +56,7 @@ public class ShortEType extends AbstractEType<Short> {
     }
 
     public static ShortEType parseShort(String v) {
-        return new ShortEType(Short.parseShort(v));
+        return new ShortEType((short) Integer.parseInt(v));
     }
 
     @Override
