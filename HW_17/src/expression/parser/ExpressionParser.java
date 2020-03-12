@@ -29,7 +29,7 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
         lastLexeme = Lexeme.START;
         CommonExpression<T> result = minMaxParse();
         if (hasNext()) {
-            throw new NoParenthesisPEException("opening", getExceptionParameters());
+            throw new ParenthesisAbsencePEException("opening", getExceptionParameters());
         }
         return result;
     }
@@ -90,7 +90,7 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
                 lastLexeme = Lexeme.CPAR;
                 return result;
             }
-            throw new NoParenthesisPEException("closing", getExceptionParameters());
+            throw new ParenthesisAbsencePEException("closing", getExceptionParameters());
         } else if (compare("x", "y", "z")) {
             char c = getCurrentLex();
             lastLexeme = c == 'x' ? Lexeme.X : c == 'y' ? Lexeme.Y : Lexeme.Z;

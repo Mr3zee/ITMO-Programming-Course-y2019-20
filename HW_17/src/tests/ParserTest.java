@@ -17,14 +17,14 @@ public abstract class ParserTest<T extends Number> {
     public void setUp() {
         parseEType = getParseFunction();
         parser = new ExpressionParser<>(parseEType);
-        System.out.print(Colors.paintCyan("(" + testingTypeName() + ") Test of "));
+        System.out.format(Colors.paintCyan("(%s) Test description: "), testingTypeName());
     }
 
     protected abstract String testingTypeName();
 
     protected abstract Function<String, EType<T>> getParseFunction();
 
-    private void printTestName(String name) {
+    private void printTestDescription(String name) {
         System.out.println(Colors.paintYellow(name));
     }
 
@@ -35,115 +35,131 @@ public abstract class ParserTest<T extends Number> {
 
     @Test
     public void IllegalSymbolPEExceptionTests() {
-        printTestName("IllegalSymbolPEException");
+        printTestDescription("Illegal symbols in expressions");
         currentExceptionName = "Unknown";
         implIllegalSymbolPEExceptionTests();
     }
 
     @Test
     public void MissingLexemePEExceptionTests() {
-        printTestName("MissingLexemePEException");
+        printTestDescription("Missing lexemes in expressions");
         currentExceptionName = "Missing";
         implMissingLexemePEExceptionTests();
     }
 
     @Test
-    public void NoParenthesisPEExceptionTests() {
-        printTestName("NoParenthesisPEException");
+    public void ParenthesisAbsencePEExceptionTests() {
+        printTestDescription("Missing parenthesises in expressions");
         currentExceptionName = "Expected";
         implNoParenthesisPEExceptionTests();
     }
 
     @Test
     public void EmptyExpressionPEExceptionTests() {
-        printTestName("EmptyExpressionPEException");
+        printTestDescription("Empty expressions");
         currentExceptionName = "Expression";
         implEmptyExpressionPEException();
     }
 
     @Test
     public void UnsupportedCastPEExceptionTests() {
-        printTestName("UnsupportedCastPEExceptionTests");
+        printTestDescription("Unsupported casts in expressions");
         currentExceptionName = "Unsupported";
         implUnsupportedCastPEExceptionTests();
     }
 
     @Test
-    public void WhitespacesTest() {
-        printTestName("Whitespaces parse");
-        implWhitespacesTest();
+    public void WhitespacesTests() {
+        printTestDescription("Expressions with redundant whitespaces");
+        implWhitespacesTests();
     }
 
     @Test
     public void ParenthesisTests() {
-        printTestName("Parenthesis parse");
+        printTestDescription("Expressions with redundant parenthesises");
         implParenthesisTests();
     }
 
     @Test
     public void RandomTests() {
-        printTestName("RandomTests");
+        printTestDescription("Random expressions");
         implRandomTests();
     }
 
     @Test
     public void ConstantOverflowPEExceptionTests() {
-        printTestName("ConstantOverflowPEException");
+        printTestDescription("Overflow of constants in expression");
         currentExceptionName = "Overflow";
         implConstantOverflowPEExceptionTests();
     }
 
     @Test
     public void ConstantUnderflowPEExceptionTests() {
-        printTestName("ConstantUnderflowPEException");
+        printTestDescription("Underflow of constants in expression");
         currentExceptionName = "Underflow";
         implConstantUnderflowPEExceptionTests();
     }
 
     @Test
     public void DivisionByZeroEExceptionTests() {
-        printTestName("DivisionByZeroEException");
+        printTestDescription("Division by zero in expression");
         currentExceptionName = "Division";
         implDivisionByZeroEExceptionTests();
     }
 
     @Test
     public void OverflowEEExceptionTests() {
-        printTestName("OverflowEEException");
+        printTestDescription("Overflow of variables in expression");
         currentExceptionName = "Overflow";
         implOverflowEEExceptionTests();
     }
 
     @Test
     public void UnderflowEEExceptionTests() {
-        printTestName("UnderflowEEException");
+        printTestDescription("Underflow of variables in expression");
         currentExceptionName = "Underflow";
         implUnderflowEEExceptionTests();
     }
 
     @Test
-    public void PlusMinusTest() {
-        printTestName("Plus and Minus parse");
+    public void PlusMinusTests() {
+        printTestDescription("Plus and minus operations");
         implPlusMinusTests();
     }
 
     @Test
     public void MultiplyDivideTests() {
-        printTestName("Multiply and Divide parse");
+        printTestDescription("Multiply and Divide operations");
         implMultiplyDivideTests();
     }
 
     @Test
     public void NegateTests() {
-        printTestName("UnaryOperationsTest");
+        printTestDescription("Negate operation");
         implNegateTests();
     }
 
     @Test
     public void CountOperationTests() {
-        printTestName("CountOperationTests");
+        printTestDescription("Count operation");
         implCountOperationTests();
     }
+
+    @Test
+    public void MinimumTests() {
+        printTestDescription("Minimum operation");
+        implMinimumTests();
+    }
+
+    @Test
+    public void MaximumTests() {
+        printTestDescription("Maximum operation");
+        implMaximumTests();
+    }
+
+    protected abstract void implMinimumTests();
+
+    protected abstract void implMaximumTests();
 
     protected abstract void implIllegalSymbolPEExceptionTests();
 
@@ -169,7 +185,7 @@ public abstract class ParserTest<T extends Number> {
 
     protected abstract void implMultiplyDivideTests();
 
-    protected abstract void implWhitespacesTest();
+    protected abstract void implWhitespacesTests();
 
     protected abstract void implParenthesisTests();
 

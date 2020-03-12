@@ -90,7 +90,7 @@ public class GeneralParserTest extends ParserTest<Integer> {
     }
 
     @Override
-    protected void implWhitespacesTest() {
+    protected void implWhitespacesTests() {
         validParse("x + y", "x+y");
         validParse("x + y", "x    +y");
         validParse("x + y", "x    +       y");
@@ -163,6 +163,16 @@ public class GeneralParserTest extends ParserTest<Integer> {
 
     @Override
     protected void implCountOperationTests() {
+        notAvailable();
+    }
+
+    @Override
+    protected void implMinimumTests() {
+        notAvailable();
+    }
+
+    @Override
+    protected void implMaximumTests() {
         notAvailable();
     }
 }

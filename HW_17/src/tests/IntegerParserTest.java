@@ -38,7 +38,7 @@ public class IntegerParserTest extends ParserTest<Integer> {
     }
 
     @Override
-    protected void implWhitespacesTest() {
+    protected void implWhitespacesTests() {
         notAvailable();
     }
 
@@ -138,5 +138,21 @@ public class IntegerParserTest extends ParserTest<Integer> {
         validParseAndEvaluate("count x", Integer.MAX_VALUE, 1, 1, "count x", 31);
         validParseAndEvaluate("count y", 1, Integer.MIN_VALUE, 1, "count y", 1);
         validParseAndEvaluate("count       z", 1, 1, 0, "count z", 0);
+    }
+
+    @Override
+    protected void implMinimumTests() {
+        validParseAndEvaluate("1 min 2", 1, 1, 1, "1 min 2", 1);
+        validParseAndEvaluate("-1 min 2", 1, 1, 1, "-1 min 2", -1);
+        validParseAndEvaluate("-1 + 4 min 2", 1, 1, 1, "-1 + 4 min 2", 2);
+        validParseAndEvaluate("-1 + 4 min 2 * 3", 1, 1, 1, "-1 + 4 min 2 * 3", 3);
+    }
+
+    @Override
+    protected void implMaximumTests() {
+        validParseAndEvaluate("1 max 2", 1, 1, 1, "1 max 2", 2);
+        validParseAndEvaluate("-1 max 2", 1, 1, 1, "-1 max 2", 2);
+        validParseAndEvaluate("-1 + 4 max 2", 1, 1, 1, "-1 + 4 max 2", 3);
+        validParseAndEvaluate("-1 + 4 max 2 * 3", 1, 1, 1, "-1 + 4 max 2 * 3", 6);
     }
 }

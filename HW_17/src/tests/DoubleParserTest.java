@@ -37,7 +37,7 @@ public class DoubleParserTest extends ParserTest<Double> {
     }
 
     @Override
-    protected void implWhitespacesTest() {
+    protected void implWhitespacesTests() {
         notAvailable();
     }
 
@@ -124,5 +124,23 @@ public class DoubleParserTest extends ParserTest<Double> {
 
     private double validBits(double val) {
         return Long.bitCount(Double.doubleToLongBits(val));
+    }
+
+    @Override
+    protected void implMinimumTests() {
+        validParseAndEvaluate("1.0 min 2", 1.0, 1.0, 1.0, "1.0 min 2.0", 1.0);
+        validParseAndEvaluate("-1.0 min 2", 1.0, 1.0, 1.0, "-1.0 min 2.0", -1.0);
+        validParseAndEvaluate("-1.0 + 4 min 2", 1.0, 1.0, 1.0, "-1.0 + 4.0 min 2.0", 2.0);
+        validParseAndEvaluate("-1.0 + 4 min 2 * 3", 1.0, 1.0, 1.0, "-1.0 + 4.0 min 2.0 * 3.0", 3.0);
+        validParseAndEvaluate("1.5 min 1.50000001", 1.0, 1.0, 1.0, "1.5 min 1.50000001", 1.5);
+    }
+
+    @Override
+    protected void implMaximumTests() {
+        validParseAndEvaluate("1.0 max 2", 1.0, 1.0, 1.0, "1.0 max 2.0", 2.0);
+        validParseAndEvaluate("-1.0 max 2", 1.0, 1.0, 1.0, "-1.0 max 2.0", 2.0);
+        validParseAndEvaluate("-1.0 + 4 max 2", 1.0, 1.0, 1.0, "-1.0 + 4.0 max 2.0", 3.0);
+        validParseAndEvaluate("-1.0 + 4 max 2 * 3", 1.0, 1.0, 1.0, "-1.0 + 4.0 max 2.0 * 3.0", 6.0);
+        validParseAndEvaluate("1.5 max 1.50000001", 1.0, 1.0, 1.0, "1.5 max 1.50000001", 1.50000001);
     }
 }

@@ -44,7 +44,7 @@ public class BigIntegerParserTest extends ParserTest<BigInteger> {
     }
 
     @Override
-    protected void implWhitespacesTest() {
+    protected void implWhitespacesTests() {
         notAvailable();
     }
 
@@ -136,6 +136,22 @@ public class BigIntegerParserTest extends ParserTest<BigInteger> {
         validParseAndEvaluate("count x", BIG, ONE, ONE, "count x", toBi(BIG.bitCount()));
         validParseAndEvaluate("count y", ONE, SMALL, ONE, "count y", toBi(SMALL.bitCount()));
         validParseAndEvaluate("count       z", ONE, ONE, ZERO, "count z", ZERO);
+    }
+
+    @Override
+    protected void implMinimumTests() {
+        validParseAndEvaluate("1 min 2", toBi(1), toBi(1), toBi(1), "1 min 2", toBi(1));
+        validParseAndEvaluate("-1 min 2", toBi(1), toBi(1), toBi(1), "-1 min 2", toBi(-1));
+        validParseAndEvaluate("-1 + 4 min 2", toBi(1), toBi(1), toBi(1), "-1 + 4 min 2", toBi(2));
+        validParseAndEvaluate("-1 + 4 min 2 * 3", toBi(1), toBi(1), toBi(1), "-1 + 4 min 2 * 3", toBi(3));
+    }
+
+    @Override
+    protected void implMaximumTests() {
+        validParseAndEvaluate("1 max 2", toBi(1), toBi(1), toBi(1), "1 max 2", toBi(2));
+        validParseAndEvaluate("-1 max 2", toBi(1), toBi(1), toBi(1), "-1 max 2", toBi(2));
+        validParseAndEvaluate("-1 + 4 max 2", toBi(1), toBi(1), toBi(1), "-1 + 4 max 2", toBi(3));
+        validParseAndEvaluate("-1 + 4 max 2 * 3", toBi(1), toBi(1), toBi(1), "-1 + 4 max 2 * 3", toBi(6));
     }
 
     private BigInteger toBi(int v) {
