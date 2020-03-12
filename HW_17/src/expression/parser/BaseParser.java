@@ -5,11 +5,11 @@ import java.util.Set;
 
 public class BaseParser {
     protected final Set<Character> LEXEMES;
-    protected final Map<Character, String> WORDS;
+    protected final Map<String, Lexeme> WORDS;
     protected ExpressionSource source;
     private char currentLex;
 
-    public BaseParser(Set<Character> LEXEMES, Map<Character, String> WORDS) {
+    public BaseParser(Set<Character> LEXEMES, Map<String, Lexeme> WORDS) {
         this.LEXEMES = LEXEMES;
         this.WORDS = WORDS;
     }
@@ -27,31 +27,33 @@ public class BaseParser {
     }
 
     protected NextWordParameters getNext() {
-        String next;
-        next = takeWord(WORDS.get(currentLex));
-        next = next == null ? nextWord() : next;
-        return new NextWordParameters(next, source.getPosition() - next.length() - 1, source.getExpression());
+        String next = nextWord();
+        return getNext(next, source.getPosition() - next.length() - 1);
     }
 
-    protected String takeWord(String expect) {
-        if (expect == null) {
-            return null;
-        }
-        StringBuilder word = new StringBuilder();
-        int i = 0;
-        while (i < expect.length() && currentLex == expect.charAt(i++)) {
-            word.append(getCurrentLex());
-            nextChar();
-        }
-        return word.toString();
+    protected NextWordParameters getNext(String word, int position) {
+        return new NextWordParameters(word, position, source.getExpression());
     }
+
+//    protected String takeWord(String expect) {
+//        if (expect == null) {
+//            return null;
+//        }
+//        StringBuilder word = new StringBuilder();
+//        int i = 0;
+//        while (i < expect.length() && currentLex == expect.charAt(i++)) {
+//            word.append(getCurrentLex());
+//            nextChar();
+//        }
+//        return word.toString();
+//    }
 
     protected String nextWord() {
         StringBuilder word = new StringBuilder();
         do {
             word.append(currentLex);
             nextChar();
-        } while (!Character.isWhitespace(currentLex) && currentLex != '\0' && (!LEXEMES.contains(currentLex)));
+        } while (!Character.isWhitespace(currentLex)/* && currentLex != '\0'*/ && (!LEXEMES.contains(currentLex)));
         return word.toString();
     }
 
@@ -94,23 +96,14 @@ public class BaseParser {
         return source.hasNext() || currentLex != '\0';
     }
 
-    protected boolean find(char c) {
-        return LEXEMES.contains(c);
-    }
-
-    protected boolean find(String c) {
+    protected boolean findLexeme(String c) {
         if (c.length() == 0) {
             return true;
+            // end of the expression
         }
         if (c.length() == 1) {
-            return find(c.charAt(0));
+            return LEXEMES.contains(c.charAt(0));
         }
-        return WORDS.containsValue(c);
+        return WORDS.containsKey(c);
     }
-
-    protected void getBack() {
-        source.getBack();
-        nextChar();
-    }
-
 }
