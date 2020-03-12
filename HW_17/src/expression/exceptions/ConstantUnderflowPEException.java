@@ -1,7 +1,9 @@
 package expression.exceptions;
 
+import expression.parser.NextWordParameters;
+
 public class ConstantUnderflowPEException extends ParsingExpressionException {
-    public ConstantUnderflowPEException(final String number, final int position, final String input) {
-        super("Underflow of the constant - \"" + number + "\"", position, input);
+    public ConstantUnderflowPEException(final NextWordParameters number) {
+        super("Underflow of the constant - \"" + number.getWord() + "\"", number.getPosition(), number.getInput());
     }
 }

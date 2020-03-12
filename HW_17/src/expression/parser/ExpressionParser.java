@@ -132,11 +132,18 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
             return new Const<>(parseEType.apply(number));
         } catch (NumberFormatException e) {
             int position = source.getPosition() - number.length() - 1;
-            if (number.charAt(0) == '-') {
-                throw new ConstantUnderflowPEException(number, position, source.getExpression());
+            if (checkDouble(number)) {
+                throw new UnsupportedCastPEException(getNext(number, position));
             }
-            throw new ConstantOverflowPEException(number, position, source.getExpression());
+            if (number.charAt(0) == '-') {
+                throw new ConstantUnderflowPEException(getNext(number, position));
+            }
+            throw new ConstantOverflowPEException(getNext(number, position));
         }
+    }
+
+    private void checkIfDouble(String number) {
+
     }
 
     private ParsingExpressionException missingLexemeOrIllegalSymbolException(NextWordParameters nextWord) {

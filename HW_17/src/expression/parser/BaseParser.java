@@ -46,7 +46,7 @@ public class BaseParser {
 
     protected String takeNumber() {
         StringBuilder num = new StringBuilder();
-        while (Character.isDigit(currentLex)) {
+        while (Character.isDigit(currentLex) || currentLex == '.') {
             num.append(currentLex);
             nextChar();
         }
@@ -67,6 +67,15 @@ public class BaseParser {
 
     protected boolean isDigit() {
         return Character.isDigit(currentLex);
+    }
+
+    protected boolean checkDouble(String number) {
+        for (char c: number.toCharArray()) {
+            if (c == '.') {
+                return true;
+            }
+        }
+        return false;
     }
 
     public char getCurrentLex() {
