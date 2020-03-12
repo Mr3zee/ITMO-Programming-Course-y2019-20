@@ -38,11 +38,11 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
 
     private CommonExpression<T> additiveParse() throws ParsingExpressionException {
         CommonExpression<T> result = multiplicativeParse();
-        while (test('+', '-')) {
-            if (compare('+')) {
+        while (compare('+', '-')) {
+            if (compareAndGetNext('+')) {
                 lastLexeme = Lexeme.PLUS;
                 result = new Add<>(result, multiplicativeParse());
-            } else if (compare('-')) {
+            } else if (compareAndGetNext('-')) {
                 lastLexeme = Lexeme.MINUS;
                 result = new Subtract<>(result, multiplicativeParse());
             }
@@ -56,11 +56,11 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
     private CommonExpression<T> multiplicativeParse() throws ParsingExpressionException {
         CommonExpression<T> result = lowLevelParse();
         skipWhitespaces();
-        while (test('*', '/')) {
-            if (compare('*')) {
+        while (compare('*', '/')) {
+            if (compareAndGetNext('*')) {
                 lastLexeme = Lexeme.MULT;
                 result = new Multiply<>(result, lowLevelParse());
-            } else if (compare('/')) {
+            } else if (compareAndGetNext('/')) {
                 lastLexeme = Lexeme.DIV;
                 result = new Divide<>(result, lowLevelParse());
             }
@@ -71,15 +71,15 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
 
     private CommonExpression<T> lowLevelParse() throws ParsingExpressionException {
         skipWhitespaces();
-        if (compare('(')) {
+        if (compareAndGetNext('(')) {
             lastLexeme = Lexeme.OPAR;
             CommonExpression<T> result = additiveParse();
-            if (compare(')')) {
+            if (compareAndGetNext(')')) {
                 lastLexeme = Lexeme.CPAR;
                 return result;
             }
             throw new NoParenthesisPEException("closing", getNext());
-        } else if (test('x', 'y', 'z')) {
+        } else if (compare('x', 'y', 'z')) {
             char c = getCurrentLex();
             lastLexeme = c == 'x' ? Lexeme.X : c == 'y' ? Lexeme.Y : Lexeme.Z;
             String name = String.valueOf(c);
@@ -88,7 +88,7 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
         } else if (isDigit()) {
             lastLexeme = Lexeme.NUM;
             return parseNumber(takeNumber());
-        } else if (compare('-')) {
+        } else if (compareAndGetNext('-')) {
             if (isDigit()) {
                 lastLexeme = Lexeme.NUM;
                 return parseNumber("-" + takeNumber());
@@ -102,19 +102,18 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
     }
 
     private String getCheckedWord() {
-        int position = source.getPosition() - 1;
         String word = nextWord();
         Lexeme lexeme = WORDS.get(word);
         if (lexeme == null) {
-            throw missingLexemeOrIllegalSymbolException(getNext(word, position));
+            throw missingLexemeOrIllegalSymbolException(getNext(word, source.getPosition() - word.length() - 1));
         }
         lastLexeme = lexeme;
-        checkNextSymbol();
+        checkAfterWordSymbol();
         return word;
     }
 
-    private void checkNextSymbol() {
-        if (!(Character.isWhitespace(getCurrentLex()) || test('-', '(', '\0'))) {
+    private void checkAfterWordSymbol() {
+        if (!(Character.isWhitespace(getCurrentLex()) || compare('-', '(', '\0'))) {
             throw new MissingWhitespacePEException(lastLexeme.getName(), getNext());
         }
     }

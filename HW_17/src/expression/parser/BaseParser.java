@@ -18,7 +18,7 @@ public class BaseParser {
         currentLex = source.hasNext() ? source.next() : source.end();
     }
 
-    protected boolean compare(char expected) {
+    protected boolean compareAndGetNext(char expected) {
         if (currentLex == expected) {
             nextChar();
             return true;
@@ -34,19 +34,6 @@ public class BaseParser {
     protected NextWordParameters getNext(String word, int position) {
         return new NextWordParameters(word, position, source.getExpression());
     }
-
-//    protected String takeWord(String expect) {
-//        if (expect == null) {
-//            return null;
-//        }
-//        StringBuilder word = new StringBuilder();
-//        int i = 0;
-//        while (i < expect.length() && currentLex == expect.charAt(i++)) {
-//            word.append(getCurrentLex());
-//            nextChar();
-//        }
-//        return word.toString();
-//    }
 
     protected String nextWord() {
         StringBuilder word = new StringBuilder();
@@ -74,7 +61,7 @@ public class BaseParser {
         return res;
     }
 
-    protected boolean test(char ... ch) {
+    protected boolean compare(char ... ch) {
         return testWith(currentLex, ch);
     }
 
@@ -87,7 +74,7 @@ public class BaseParser {
     }
 
     protected void skipWhitespaces() {
-        while (test(' ', '\n', '\r', '\t')) {
+        while (compare(' ', '\n', '\r', '\t')) {
             nextChar();
         }
     }
