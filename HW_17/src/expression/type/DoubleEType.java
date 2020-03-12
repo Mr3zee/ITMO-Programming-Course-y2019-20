@@ -55,11 +55,6 @@ public class DoubleEType extends AbstractEType<Double> {
     }
 
     @Override
-    protected Double getZero() {
-        return 0.0;
-    }
-
-    @Override
     protected int primary() {
         return 1637;
     }

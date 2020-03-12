@@ -2,7 +2,7 @@ package expression.type;
 
 import expression.exceptions.*;
 
-public class ShortEType extends AbstractEType<Short> {
+public class ShortEType extends AbstractEType<Short> implements ForbiddenDivisionByZero<Short> {
     public ShortEType(Short value) {
         super(value);
     }
@@ -58,7 +58,7 @@ public class ShortEType extends AbstractEType<Short> {
     }
 
     @Override
-    protected Short getZero() {
+    public Short getZero() {
         return 0;
     }
 

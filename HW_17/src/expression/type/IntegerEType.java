@@ -2,7 +2,7 @@ package expression.type;
 
 import expression.exceptions.*;
 
-public class IntegerEType extends AbstractEType<Integer> {
+public class IntegerEType extends AbstractEType<Integer> implements ForbiddenDivisionByZero<Integer> {
     public IntegerEType(Integer value) {
         super(value);
     }
@@ -89,7 +89,7 @@ public class IntegerEType extends AbstractEType<Integer> {
     }
 
     @Override
-    protected Integer getZero() {
+    public Integer getZero() {
         return 0;
     }
 

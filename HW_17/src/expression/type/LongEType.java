@@ -2,7 +2,7 @@ package expression.type;
 
 import expression.exceptions.*;
 
-public class LongEType extends AbstractEType<Long> {
+public class LongEType extends AbstractEType<Long> implements ForbiddenDivisionByZero<Long> {
     public LongEType(Long value) {
         super(value);
     }
@@ -58,7 +58,7 @@ public class LongEType extends AbstractEType<Long> {
     }
 
     @Override
-    protected Long getZero() {
+    public Long getZero() {
         return 0L;
     }
 

@@ -1,7 +1,5 @@
 package expression.type;
 
-import expression.exceptions.DivisionByZeroEException;
-
 import java.util.Objects;
 
 public abstract class AbstractEType<T extends Number> implements EType<T> {
@@ -94,12 +92,4 @@ public abstract class AbstractEType<T extends Number> implements EType<T> {
     }
 
     protected abstract int primary();
-
-    protected void checkDivisionByZero(T v) {
-        if (v.equals(getZero())) {
-            throw new DivisionByZeroEException(v.toString());
-        }
-    }
-
-    protected abstract T getZero();
 }

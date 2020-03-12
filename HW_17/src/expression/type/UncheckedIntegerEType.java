@@ -2,7 +2,7 @@ package expression.type;
 
 import expression.exceptions.*;
 
-public class UncheckedIntegerEType extends IntegerEType {
+public class UncheckedIntegerEType extends IntegerEType{
     public UncheckedIntegerEType(Long value) {
         super(value.intValue());
     }
@@ -39,11 +39,6 @@ public class UncheckedIntegerEType extends IntegerEType {
 
     public static EType<Integer> parseUncheckedInteger(String v) {
         return new UncheckedIntegerEType(Long.parseLong(v));
-    }
-
-    @Override
-    protected Integer getZero() {
-        return 0;
     }
 
     @Override

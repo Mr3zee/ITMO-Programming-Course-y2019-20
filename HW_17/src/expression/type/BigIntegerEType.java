@@ -4,7 +4,7 @@ import expression.exceptions.*;
 
 import java.math.BigInteger;
 
-public class BigIntegerEType extends AbstractEType<BigInteger> {
+public class BigIntegerEType extends AbstractEType<BigInteger> implements ForbiddenDivisionByZero<BigInteger> {
     public BigIntegerEType(BigInteger value) {
         super(value);
     }
@@ -60,7 +60,7 @@ public class BigIntegerEType extends AbstractEType<BigInteger> {
     }
 
     @Override
-    protected BigInteger getZero() {
+    public BigInteger getZero() {
         return BigInteger.ZERO;
     }
 
