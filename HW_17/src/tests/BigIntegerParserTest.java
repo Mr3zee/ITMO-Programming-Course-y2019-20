@@ -1,3 +1,5 @@
+package tests;
+
 import expression.type.BigIntegerEType;
 import expression.type.EType;
 

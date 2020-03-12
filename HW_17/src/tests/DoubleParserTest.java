@@ -1,3 +1,5 @@
+package tests;
+
 import expression.type.DoubleEType;
 import expression.type.EType;
 

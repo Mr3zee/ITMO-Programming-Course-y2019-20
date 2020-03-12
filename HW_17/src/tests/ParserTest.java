@@ -1,3 +1,5 @@
+package tests;
+
 import expression.CommonExpression;
 import expression.exceptions.*;
 import expression.parser.ExpressionParser;

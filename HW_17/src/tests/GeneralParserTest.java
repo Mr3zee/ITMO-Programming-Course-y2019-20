@@ -1,5 +1,8 @@
+package tests;
+
 import expression.type.EType;
 import expression.type.IntegerEType;
+import tests.ParserTest;
 
 import java.util.function.Function;
 
