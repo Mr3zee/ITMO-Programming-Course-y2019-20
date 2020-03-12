@@ -1,2 +1,2 @@
-javac expression/generic/GenericTest.java
-java -ea expression.generic.GenericTest
+javac expression/generic/GenericCmmUlsTest.java
+java -ea expression.generic.GenericCmmUlsTest

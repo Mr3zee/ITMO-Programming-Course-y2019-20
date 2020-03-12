@@ -35,7 +35,8 @@ public class ShortEType extends AbstractEType<Short> implements ForbiddenDivisio
 
     @Override
     protected Short calcBitCount() {
-        return (short) Integer.bitCount(value());
+        Short v = value();
+        return (short) (Integer.bitCount(v) - (v >= 0 ? 0 : 16));
     }
 
     @Override
