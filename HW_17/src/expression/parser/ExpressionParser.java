@@ -55,10 +55,10 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
         CommonExpression<T> result = multiplicativeParse();
         while (compare("+", "-")) {
             if (compareAndSkip("+")) {
-                lastLexeme = Lexeme.PLUS;
+                lastLexeme = Lexeme.ADD;
                 result = new Add<>(result, multiplicativeParse());
             } else if (compareAndSkip("-")) {
-                lastLexeme = Lexeme.MINUS;
+                lastLexeme = Lexeme.SUB;
                 result = new Subtract<>(result, multiplicativeParse());
             }
         }
@@ -105,7 +105,7 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
                 lastLexeme = Lexeme.NUM;
                 return parseNumber("-" + takeNumber());
             }
-            lastLexeme = Lexeme.MINUS;
+            lastLexeme = Lexeme.SUB;
             return new Negate<>(lowLevelParse());
         } else {
             String word = getCheckedWord();
