@@ -27,13 +27,29 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
             throw new EmptyExpressionPEException();
         }
         lastLexeme = Lexeme.START;
-        CommonExpression<T> result = additiveParse();
+        CommonExpression<T> result = minMaxParse();
         if (hasNext()) {
             throw new NoParenthesisPEException("opening", getExceptionParameters());
         }
         return result;
     }
 
+    private CommonExpression<T> minMaxParse() throws ParsingExpressionException {
+        CommonExpression<T> result = additiveParse();
+        while (compare("min", "max")) {
+            if (compareAndSkip("min")) {
+                lastLexeme = Lexeme.MIN;
+                result = new Minimum<>(result, additiveParse());
+            } else if (compareAndSkip("max")) {
+                lastLexeme = Lexeme.MAX;
+                result = new Maximum<>(result, additiveParse());
+            }
+        }
+        if (compare("\0", ")")) {
+            return result;
+        }
+        throw missingLexemeOrIllegalSymbolException(getExceptionParameters());
+    }
 
     private CommonExpression<T> additiveParse() throws ParsingExpressionException {
         CommonExpression<T> result = multiplicativeParse();
@@ -46,10 +62,7 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
                 result = new Subtract<>(result, multiplicativeParse());
             }
         }
-        if (compare("\0", ")")) {
-            return result;
-        }
-        throw missingLexemeOrIllegalSymbolException(getExceptionParameters());
+        return result;
     }
 
     private CommonExpression<T> multiplicativeParse() throws ParsingExpressionException {
