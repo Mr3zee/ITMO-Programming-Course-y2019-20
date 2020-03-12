@@ -14,6 +14,14 @@ public interface CommonExpression<T extends Number> extends Expression<T>, Tripl
     // Double EType: 1637
     // BigInteger EType: 2969
     // Count: 2797
+    // Minimum: 3463
+    // Maximum: 3469
+
+    // Priorities:
+    // Min / Max : 5
+    // Add / Subtract : 10
+    // Multiply / Divide : 20
+    // Variable / Const / Negate / Count : 40
 
     int getPriority();
 
