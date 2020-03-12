@@ -29,6 +29,8 @@ public class GenericTabulator implements Tabulator {
                 return new TableGenerator<BigInteger>().generateTable(BigIntegerEType::parseBigInteger);
             case "l":
                 return new TableGenerator<Long>().generateTable(LongEType::parseLong);
+            case "s":
+                return new TableGenerator<Short>().generateTable(ShortEType::parseShort);
             default:
                 throw new UnsupportedETypeException(mode);
         }
