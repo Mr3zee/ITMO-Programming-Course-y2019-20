@@ -3,7 +3,7 @@ import org.junit.runners.Suite;
 
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({GeneralParserTest.class, IntegerParserTest.class, DoubleParserTest.class})
+@Suite.SuiteClasses({GeneralParserTest.class, IntegerParserTest.class, DoubleParserTest.class, BigIntegerParserTest.class})
 public class SuiteTestClass {
 
 }
