@@ -1,6 +1,5 @@
 import expression.CommonExpression;
-import expression.exceptions.EvaluatingExpressionException;
-import expression.exceptions.ParsingExpressionException;
+import expression.exceptions.*;
 import expression.parser.ExpressionParser;
 import expression.type.EType;
 import org.junit.*;
@@ -16,7 +15,7 @@ public abstract class ParserTest<T extends Number> {
     public void setUp() {
         parseEType = getParseFunction();
         parser = new ExpressionParser<>(parseEType);
-        System.out.print(Colors.paintCyan(testingTypeName() + "Test of "));
+        System.out.print(Colors.paintCyan("(" + testingTypeName() + ") Test of "));
     }
 
     protected abstract String testingTypeName();
@@ -24,7 +23,7 @@ public abstract class ParserTest<T extends Number> {
     protected abstract Function<String, EType<T>> getParseFunction();
 
     private void printTestName(String name) {
-        System.out.println(Colors.paintCyan(name));
+        System.out.println(Colors.paintYellow(name));
     }
 
     @After
@@ -67,23 +66,29 @@ public abstract class ParserTest<T extends Number> {
     }
 
     @Test
-    public void ParenthesisTest() {
+    public void ParenthesisTests() {
         printTestName("Parenthesis parse");
-        implParenthesisTest();
+        implParenthesisTests();
+    }
+
+    @Test
+    public void RandomTests() {
+        printTestName("RandomTests");
+        implRandomTests();
     }
 
     @Test
     public void ConstantOverflowPEExceptionTests() {
         printTestName("ConstantOverflowPEException");
         currentExceptionName = "Overflow";
-        implConstantOverflowPEException();
+        implConstantOverflowPEExceptionTests();
     }
 
     @Test
     public void ConstantUnderflowPEExceptionTests() {
         printTestName("ConstantUnderflowPEException");
         currentExceptionName = "Underflow";
-        implConstantUnderflowPEException();
+        implConstantUnderflowPEExceptionTests();
     }
 
     @Test
@@ -114,21 +119,21 @@ public abstract class ParserTest<T extends Number> {
     }
 
     @Test
-    public void MultiplyDivideTest() {
+    public void MultiplyDivideTests() {
         printTestName("Multiply and Divide parse");
-        implMultiplyDivideTest();
+        implMultiplyDivideTests();
     }
 
     @Test
-    public void UnaryOperationsTest() {
-        printTestName("Unary parse");
-        implUnaryOperationsTest();
+    public void NegateTests() {
+        printTestName("UnaryOperationsTest");
+        implNegateTests();
     }
 
     @Test
-    public void RandomTests() {
-        printTestName("Random parser tests");
-        implRandomTests();
+    public void CountOperationTests() {
+        printTestName("CountOperationTests");
+        implCountOperationTests();
     }
 
     protected abstract void implIllegalSymbolPEExceptionTests();
@@ -139,9 +144,9 @@ public abstract class ParserTest<T extends Number> {
 
     protected abstract void implEmptyExpressionPEException();
 
-    protected abstract void implConstantOverflowPEException();
+    protected abstract void implConstantOverflowPEExceptionTests();
 
-    protected abstract void implConstantUnderflowPEException();
+    protected abstract void implConstantUnderflowPEExceptionTests();
 
     protected abstract void implDivisionByZeroEExceptionTests();
 
@@ -151,23 +156,30 @@ public abstract class ParserTest<T extends Number> {
 
     protected abstract void implPlusMinusTests();
 
-    protected abstract void implMultiplyDivideTest();
+    protected abstract void implMultiplyDivideTests();
 
     protected abstract void implWhitespacesTest();
 
-    protected abstract void implParenthesisTest();
+    protected abstract void implParenthesisTests();
 
-    protected abstract void implUnaryOperationsTest();
+    protected abstract void implNegateTests();
 
     protected abstract void implRandomTests();
 
-    protected void validEvaluate(final Integer valid, final String input, int x, int y, int z) {
+    protected abstract void implCountOperationTests();
+
+    protected void validParseAndEvaluate(final String expression, final T x, final T y, final T z, final String expected, final T valid) {
+        validParse(expected, expression);
+        validEvaluate(valid, expression, x, y, z);
+    }
+
+    protected void validEvaluate(final T valid, final String input, T x, T y, T z) {
         T found = getExpressionValue(input, x, y, z);
         Assert.assertEquals(valid, found);
         System.out.println("\"" + input + " = " + valid + "\", with args: (" + x + ", " + y + ", " + z + ") - "  + passedMessage());
     }
 
-    protected void invalidEvaluate(final String input, final int x, final int y, final int z) {
+    protected void invalidEvaluate(final String input, final T x, final T y, final T z) {
         try {
             T found = getExpressionValue(input, x, y, z);
             Assert.fail("Evaluating failure expected for \"" + input + "\", found \"" + found + "\"");
@@ -209,7 +221,7 @@ public abstract class ParserTest<T extends Number> {
         return parser.parse(input);
     }
 
-    private T getExpressionValue(String input, int x, int y, int z) {
+    private T getExpressionValue(String input, T x, T y, T z) {
         EType<T> xt = parseEType.apply(String.valueOf(x));
         EType<T> yt = parseEType.apply(String.valueOf(y));
         EType<T> zt = parseEType.apply(String.valueOf(z));

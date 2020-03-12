@@ -32,6 +32,8 @@ public class GeneralParserTest extends ParserTest<Integer> {
         invalidParse("-1a", 2);
         invalidParse("1 ab 2", 2);
         invalidParse("1ab 2", 1);
+        invalidParse("counts 5", 0);
+        invalidParse("caunt 5", 0);
     }
 
     @Override
@@ -58,6 +60,9 @@ public class GeneralParserTest extends ParserTest<Integer> {
         invalidParse("z (1 + 2)", 2);
         invalidParse("()", 1);
         invalidParse("(())", 2);
+        invalidParse("count + 1", 6);
+        invalidParse("count * 1", 6);
+        invalidParse("count /1", 6);
     }
 
     @Override
@@ -91,7 +96,7 @@ public class GeneralParserTest extends ParserTest<Integer> {
     }
 
     @Override
-    protected void implParenthesisTest() {
+    protected void implParenthesisTests() {
         validParse("x", "(x)");
         validParse("x", "(((((x)))))");
         validParse("x - y", "((((((x))))) - (y))");
@@ -101,12 +106,20 @@ public class GeneralParserTest extends ParserTest<Integer> {
     }
 
     @Override
-    protected void implConstantOverflowPEException() {
+    protected void implRandomTests() {
+        validParseAndEvaluate("1 * 2 - 3", 123, 1, 32, "1 * 2 - 3", -1);
+        validParseAndEvaluate("(1 * 2) - 3", 123, 1, 32, "1 * 2 - 3", -1);
+        validParseAndEvaluate("1 * (2 - 4)", 123, 1, 32, "1 * (2 - 4)", -2);
+        validParseAndEvaluate("count count count x + count(y + z)", 31, 1024, 1, "count (count (count x)) + count (y + z)", 3);
+    }
+
+    @Override
+    protected void implConstantOverflowPEExceptionTests() {
         notAvailable();
     }
 
     @Override
-    protected void implConstantUnderflowPEException() {
+    protected void implConstantUnderflowPEExceptionTests() {
         notAvailable();
     }
 
@@ -131,17 +144,17 @@ public class GeneralParserTest extends ParserTest<Integer> {
     }
 
     @Override
-    protected void implMultiplyDivideTest() {
+    protected void implMultiplyDivideTests() {
         notAvailable();
     }
 
     @Override
-    protected void implUnaryOperationsTest() {
+    protected void implNegateTests() {
         notAvailable();
     }
 
     @Override
-    protected void implRandomTests() {
+    protected void implCountOperationTests() {
         notAvailable();
     }
 }

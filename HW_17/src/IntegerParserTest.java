@@ -40,19 +40,24 @@ public class IntegerParserTest extends ParserTest<Integer> {
     }
 
     @Override
-    protected void implParenthesisTest() {
+    protected void implParenthesisTests() {
         notAvailable();
     }
 
     @Override
-    protected void implConstantOverflowPEException() {
+    protected void implRandomTests() {
+        notAvailable();
+    }
+
+    @Override
+    protected void implConstantOverflowPEExceptionTests() {
         invalidParse("2147483649", 0);
         invalidParse(" 2147483649", 1);
         invalidParse("x + 111111111111111111111111111111", 4);
     }
 
     @Override
-    protected void implConstantUnderflowPEException() {
+    protected void implConstantUnderflowPEExceptionTests() {
         invalidParse("-2147483649", 0);
         invalidParse(" -2147483649", 1);
         invalidParse("x + -2147483649", 4);
@@ -86,63 +91,42 @@ public class IntegerParserTest extends ParserTest<Integer> {
 
     @Override
     protected void implPlusMinusTests() {
-        validParse("x + y", "x + y");
-        validEvaluate(2, "x + y", 1, 1, 1);
-        validParse("x + z", "x + z");
-        validEvaluate(2, "x + z", 1, 1, 1);
-        validParse("123 + 23", "123 + 23");
-        validEvaluate(146, "123 + 23", 1, 1, 1);
-        validParse("x - z", "x - z");
-        validEvaluate(0, "x - z", 1, 1, 1);
-        validParse("z - y", "z - y");
-        validEvaluate(-11, "z - y", 1, 13, 2);
-        validParse("6 - 10", "6 - 10");
-        validEvaluate(-4, "6 - 10", 1, 13, 2);
-        validParse("z - y - 1", "z - y - 1");
-        validEvaluate(-12, "z - y - 1", 1, 13, 2);
-        validParse("z + y + 1", "z + y + 1");
-        validEvaluate(16, "z + y + 1", 1, 13, 2);
+        validParseAndEvaluate("x + y", 1, 1, 1, "x + y", 2);
+        validParseAndEvaluate("x + z", 1, 1, 1, "x + z", 2);
+        validParseAndEvaluate("123 + 23", 1, 1, 1, "123 + 23", 146);
+        validParseAndEvaluate("x - z", 1, 1, 1, "x - z", 0);
+        validParseAndEvaluate("z - y", 1, 13, 2, "z - y", -11);
+        validParseAndEvaluate("6 - 10", 1, 13, 2, "6 - 10", -4);
+        validParseAndEvaluate("z - y - 1", 1, 13, 2, "z - y - 1", -12);
+        validParseAndEvaluate("z + y + 1", 1, 13, 2, "z + y + 1", 16);
     }
 
     @Override
-    protected void implMultiplyDivideTest() {
-        validParse("x * y", "x * y");
-        validEvaluate(13, "x * y", 1, 13, 2);
-        validParse("x * z", "x * z");
-        validEvaluate(2, "x * z", 1, 13, 2);
-        validParse("123 * 23", "123 * 23");
-        validEvaluate(2829, "123 * 23", 1, 13, 2);
-        validParse("x / z", "x / z");
-        validEvaluate(0, "x / z", 1, 13, 2);
-        validParse("z / y", "z / y");
-        validEvaluate(1, "z / y", 1, 13, 22);
-        validParse("6 / 10", "6 / 10");
-        validEvaluate(0, "6 / 10", 1, 13, 22);
-        validParse("z / y / 1", "z / y / 1");
-        validEvaluate(2, "z / y / 1", 1, 13, 26);
-        validParse("z * y * 1", "z * y * 1");
-        validEvaluate(338, "z * y * 1", 1, 13, 26);
+    protected void implMultiplyDivideTests() {
+        validParseAndEvaluate("x * y", 1, 13, 2, "x * y", 13);
+        validParseAndEvaluate("x * z", 1, 13, 2, "x * z", 2);
+        validParseAndEvaluate("123 * 23", 1, 1, 1, "123 * 23", 2829);
+        validParseAndEvaluate("x / z", 1, 13, 2, "x / z", 0);
+        validParseAndEvaluate("z / y", 1, 13, 22, "z / y", 1);
+        validParseAndEvaluate("6 / 10", 1, 13, 2, "6 / 10", 0);
+        validParseAndEvaluate("z / y / 1", 1, 13, 26, "z / y / 1", 2);
+        validParseAndEvaluate("z * y * 1", 1, 13, 26, "z * y * 1", 338);
     }
 
     @Override
-    protected void implUnaryOperationsTest() {
-        validParse("-x", "(-x)");
-        validEvaluate(1024, "(-x)", -1024, 1, 32);
-        validParse("-x", "-(x)");
-        validEvaluate(1024, "-(x)", -1024, 1, 32);
-        validParse("-(x - y)", "-(x - y)");
-        validEvaluate(1025, "-(x - y)", -1024, 1, 32);
-        validParse("-(x - y)", "-      (x - y)");
-        validEvaluate(1025, "-      (x - y)", -1024, 1, 32);
+    protected void implNegateTests() {
+        validParseAndEvaluate("(-x)", -1024, 1, 32, "-x",1024);
+        validParseAndEvaluate("-(x)", -1024, 1, 32, "-x",1024);
+        validParseAndEvaluate("-(x - y)", -1024, 1, 32, "-(x - y)",1025);
+        validParseAndEvaluate("-      (x - y)", -1024, 1, 32, "-(x - y)",1025);
     }
 
     @Override
-    protected void implRandomTests() {
-        validParse("1 * 2 - 3", "1 * 2 - 3");
-        validEvaluate(-1, "1 * 2 - 3", 123, 1, 32);
-        validParse("1 * 2 - 3", "(1 * 2) - 3");
-        validEvaluate(-1, "(1 * 2) - 3", 123, 1, 32);
-        validParse("1 * (2 - 4)", "1 * (2 - 4)");
-        validEvaluate(-2, "1 * (2 - 4)", 123, 1, 32);
+    protected void implCountOperationTests() {
+        validParseAndEvaluate("count 11", 1, 1, 1, "count 11", 3);
+        validParseAndEvaluate("count -1", 1, 1, 1, "count -1", 32);
+        validParseAndEvaluate("count x", Integer.MAX_VALUE, 1, 1, "count x", 31);
+        validParseAndEvaluate("count y", 1, Integer.MIN_VALUE, 1, "count y", 1);
+        validParseAndEvaluate("count       z", 1, 1, 0, "count z", 0);
     }
 }
