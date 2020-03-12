@@ -3,7 +3,7 @@ import org.junit.runners.Suite;
 
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ArrayQueueADTTests.class, ArrayQueueModuleTests.class, ArrayQueueTests.class})
+@Suite.SuiteClasses({GeneralParserTest.class, IntegerParserTest.class})
 public class SuiteTestClass {
 
 }
