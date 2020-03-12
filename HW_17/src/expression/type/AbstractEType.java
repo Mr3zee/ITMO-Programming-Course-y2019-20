@@ -35,6 +35,16 @@ public abstract class AbstractEType<T extends Number> implements EType<T> {
     }
 
     @Override
+    public EType<T> min(EType<T> v) {
+        return valueOf(calcMin(v.value()));
+    }
+
+    @Override
+    public EType<T> max(EType<T> v) {
+        return valueOf(calcMax(v.value()));
+    }
+
+    @Override
     public EType<T> bitCount() {
         return valueOf(calcBitCount());
     }
@@ -55,6 +65,10 @@ public abstract class AbstractEType<T extends Number> implements EType<T> {
     protected abstract T calcNegate();
 
     protected abstract T calcBitCount();
+
+    protected abstract T calcMin(T value);
+
+    protected abstract T calcMax(T value);
 
     @Override
     public abstract EType<T> valueOf(T v);

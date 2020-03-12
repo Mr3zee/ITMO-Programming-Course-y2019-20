@@ -18,6 +18,7 @@ public interface EType<T extends Number> {
 
     EType<T> bitCount();
 
-    @Override
-    String toString();
+    EType<T> min(EType<T> v);
+
+    EType<T> max(EType<T> v);
 }

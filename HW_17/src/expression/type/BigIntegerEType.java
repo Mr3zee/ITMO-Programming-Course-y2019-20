@@ -43,6 +43,16 @@ public class BigIntegerEType extends AbstractEType<BigInteger> {
     }
 
     @Override
+    protected BigInteger calcMin(BigInteger value) {
+        return value().min(value);
+    }
+
+    @Override
+    protected BigInteger calcMax(BigInteger value) {
+        return value().max(value);
+    }
+
+    @Override
     public EType<BigInteger> valueOf(BigInteger v) {
         return new BigIntegerEType(v);
     }
