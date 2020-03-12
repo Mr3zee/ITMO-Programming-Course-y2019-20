@@ -36,13 +36,13 @@ public class DoubleEType extends AbstractEType<Double> {
     }
 
     @Override
-    protected Double calcMin(Double value) {
-        return Math.min(value(), value);
+    protected Double calcMin(Double v) {
+        return Math.min(value(), v);
     }
 
     @Override
-    protected Double calcMax(Double value) {
-        return Math.max(value(), value);
+    protected Double calcMax(Double v) {
+        return Math.max(value(), v);
     }
 
     @Override

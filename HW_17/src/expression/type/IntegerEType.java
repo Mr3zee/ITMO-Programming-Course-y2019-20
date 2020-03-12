@@ -72,13 +72,13 @@ public class IntegerEType extends AbstractEType<Integer> {
     }
 
     @Override
-    protected Integer calcMin(Integer value) {
-        return Math.min(value(), value);
+    protected Integer calcMin(Integer v) {
+        return Math.min(value(), v);
     }
 
     @Override
-    protected Integer calcMax(Integer value) {
-        return Math.max(value(), value);
+    protected Integer calcMax(Integer v) {
+        return Math.max(value(), v);
     }
 
     @Override

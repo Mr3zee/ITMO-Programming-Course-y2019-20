@@ -66,9 +66,9 @@ public abstract class AbstractEType<T extends Number> implements EType<T> {
 
     protected abstract T calcBitCount();
 
-    protected abstract T calcMin(T value);
+    protected abstract T calcMin(T v);
 
-    protected abstract T calcMax(T value);
+    protected abstract T calcMax(T v);
 
     @Override
     public abstract EType<T> valueOf(T v);
