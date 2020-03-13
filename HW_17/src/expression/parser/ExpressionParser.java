@@ -14,7 +14,7 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
 
     public ExpressionParser(Function<String, EType<T>> parseEType) {
         super(Set.of ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'x', 'y', 'z', '+', '-', '*', '/', '(', ')', '\0'),
-                Map.of("count", Lexeme.CNT));
+                Map.of("count", Lexeme.CNT, "min", Lexeme.MIN, "max", Lexeme.MAX));
         this.parseEType = parseEType;
     }
 
@@ -114,9 +114,12 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
     }
 
     private String getCheckedWord() {
-        String word = takeWord();
+        if (LEXEMES.contains(getCurrentLex())) {
+            throw missingLexemeOrIllegalSymbolException(getExceptionParameters());
+        }
+        String word = takeUnaryOpWord();
         Lexeme lexeme = WORDS.get(word);
-        if (lexeme == null) {
+        if (lexeme == null || lexeme.getArity() != 1) {
             throw missingLexemeOrIllegalSymbolException(getExceptionParameters(word, source.getPosition() - word.length() - 1));
         }
         lastLexeme = lexeme;

@@ -2,6 +2,7 @@ package expression.parser;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 public class BaseParser {
     protected final Set<Character> LEXEMES;
@@ -18,17 +19,25 @@ public class BaseParser {
         currentLex = source.hasNext() ? source.next() : source.end();
     }
 
-    protected String takeWord() {
+    protected String takeWordUntilLex() {
+        return takeWord(currentLex -> !(Character.isWhitespace(currentLex) || LEXEMES.contains(currentLex)));
+    }
+
+    protected String takeUnaryOpWord() {
+        return takeWord(currentLex -> !(Character.isWhitespace(currentLex) || compare("\0", "(", "-")));
+    }
+
+    protected String takeWord(Function<Character, Boolean> function) {
         StringBuilder word = new StringBuilder();
         do {
             word.append(currentLex);
             nextChar();
-        } while (!Character.isWhitespace(currentLex) && (!LEXEMES.contains(currentLex)));
+        } while (function.apply(currentLex));
         return word.toString();
     }
 
     protected ExceptionParameters getExceptionParameters() {
-        String next = takeWord();
+        String next = takeWordUntilLex();
         return getExceptionParameters(next, source.getPosition() - next.length() - 1);
     }
 

@@ -65,6 +65,10 @@ public class GeneralParserTest extends ParserTest<Integer> {
         invalidParse("count + 1", 6);
         invalidParse("count * 1", 6);
         invalidParse("count /1", 6);
+        invalidParse("1 min min 2", 6);
+        invalidParse("1 min max 2", 6);
+        invalidParse("1 max min 2", 6);
+        invalidParse("1 max max 2", 6);
     }
 
     @Override
