@@ -52,6 +52,9 @@ public class IntegerEType extends UncheckedIntegerEType {
     }
 
     private static void checkMultiplyOverflow(Integer multiplier, Integer factor) throws OverflowEEException, UnderflowEEException {
+        if (multiplier == 0) {
+            return; 
+        }
         int valMax = Integer.MAX_VALUE / multiplier;
         if ((multiplier > 0 && factor > 0 && valMax < factor) ||
                 (multiplier < 0 && factor < 0 && valMax > factor)) {

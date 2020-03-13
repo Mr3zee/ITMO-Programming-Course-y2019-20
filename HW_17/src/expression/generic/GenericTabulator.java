@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.function.Function;
 
 public class GenericTabulator implements Tabulator {
+
     private String expression;
     private int x1;
     private int dx;
@@ -51,8 +52,7 @@ public class GenericTabulator implements Tabulator {
                         EType<T> zk = parseEType.apply(String.valueOf(z1 + k));
                         try {
                             result[i][j][k] = parsedExpression.evaluate(xi, yj, zk).value();
-                        } catch (EvaluatingExpressionException e) {
-                            result[i][j][k] = null;
+                        } catch (EvaluatingExpressionException ignored) {
                         }
                     }
                 }
