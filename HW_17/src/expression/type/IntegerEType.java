@@ -2,7 +2,7 @@ package expression.type;
 
 import expression.exceptions.*;
 
-public class IntegerEType extends AbstractEType<Integer> implements ForbiddenDivisionByZero<Integer> {
+public class IntegerEType extends UncheckedIntegerEType {
     public IntegerEType(Integer value) {
         super(value);
     }
@@ -65,21 +65,6 @@ public class IntegerEType extends AbstractEType<Integer> implements ForbiddenDiv
     }
 
     @Override
-    protected Integer calcBitCount() {
-        return Integer.bitCount(value());
-    }
-
-    @Override
-    protected Integer calcMin(Integer v) {
-        return Math.min(value(), v);
-    }
-
-    @Override
-    protected Integer calcMax(Integer v) {
-        return Math.max(value(), v);
-    }
-
-    @Override
     public EType<Integer> valueOf(Integer v) {
         return new IntegerEType(v);
     }
@@ -91,10 +76,5 @@ public class IntegerEType extends AbstractEType<Integer> implements ForbiddenDiv
     @Override
     protected int primary() {
         return 2153;
-    }
-
-    @Override
-    public Integer getZero() {
-        return 0;
     }
 }
