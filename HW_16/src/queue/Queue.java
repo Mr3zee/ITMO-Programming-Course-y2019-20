@@ -54,7 +54,7 @@ public interface Queue {
     Object[] toArray();
 
     // Pre: predicate != null
-    // Post:  R = {queue[j] | (j ∈ i1 .. ik, 0 <= i1 < i2 < .. < ik < n) &&
+    // Post:  R != null && R = {queue[j] | (j ∈ i1 .. ik, 0 <= i1 < i2 < .. < ik < n) &&
     //        (∀ j: predicate.test(queue[j]) = true) && (∀ p ∈ [0; n - 1] && p != j : predicate.test(queue[p]) = false)} &&
     //        (∀ i ∈ [0; n - 1]: queue[i]' = queue[i])
     Queue filter(final Predicate<Object> predicate);

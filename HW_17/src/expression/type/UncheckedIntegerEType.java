@@ -4,7 +4,7 @@ import expression.exceptions.*;
 
 public class UncheckedIntegerEType extends AbstractEType<Integer> implements ForbiddenDivisionByZero<Integer> {
     public UncheckedIntegerEType(Integer value) {
-        super(value.intValue());
+        super(value);
     }
 
     @Override
