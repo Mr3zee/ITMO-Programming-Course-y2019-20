@@ -2,8 +2,8 @@ package expression.type;
 
 import expression.exceptions.*;
 
-public class CheckedIntegerEType extends AbstractIntegerEType {
-    public CheckedIntegerEType(Integer value) {
+public class IntegerEType extends AbstractEType<Integer> implements ForbiddenDivisionByZero<Integer> {
+    public IntegerEType(Integer value) {
         super(value);
     }
 
@@ -65,16 +65,36 @@ public class CheckedIntegerEType extends AbstractIntegerEType {
     }
 
     @Override
+    protected Integer calcBitCount() {
+        return Integer.bitCount(value());
+    }
+
+    @Override
+    protected Integer calcMin(Integer v) {
+        return Math.min(value(), v);
+    }
+
+    @Override
+    protected Integer calcMax(Integer v) {
+        return Math.max(value(), v);
+    }
+
+    @Override
     public EType<Integer> valueOf(Integer v) {
-        return new CheckedIntegerEType(v);
+        return new IntegerEType(v);
     }
 
     public static EType<Integer> parseCheckedInteger(String v) {
-        return new CheckedIntegerEType(Integer.parseInt(v));
+        return new IntegerEType(Integer.parseInt(v));
     }
 
     @Override
     protected int primary() {
         return 2153;
+    }
+
+    @Override
+    public Integer getZero() {
+        return 0;
     }
 }

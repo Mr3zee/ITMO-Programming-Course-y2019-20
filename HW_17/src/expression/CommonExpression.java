@@ -9,6 +9,9 @@ public interface CommonExpression<T extends Number> extends Expression<T>, Tripl
     // Subtract: 2777
     // Unary ops: 2467
     // Negate: 2027
+    // Count: 2797
+    // Minimum: 3463
+    // Maximum: 3469
     // Abstract EType: 2399
     // Integer EType: 2153
     // Double EType: 1637
@@ -16,9 +19,6 @@ public interface CommonExpression<T extends Number> extends Expression<T>, Tripl
     // Unchecked Integer EType: 2213
     // Long EType: 2551
     // Short EType: 2861
-    // Count: 2797
-    // Minimum: 3463
-    // Maximum: 3469
 
     // Priorities:
     // Min / Max : 5

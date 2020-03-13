@@ -2,7 +2,7 @@ package expression.type;
 
 import expression.exceptions.*;
 
-public class UncheckedIntegerEType extends AbstractIntegerEType {
+public class UncheckedIntegerEType extends IntegerEType {
     public UncheckedIntegerEType(Long value) {
         super(value.intValue());
     }
