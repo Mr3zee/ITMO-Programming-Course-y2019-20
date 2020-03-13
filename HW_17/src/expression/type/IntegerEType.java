@@ -8,23 +8,23 @@ public class IntegerEType extends UncheckedIntegerEType {
     }
 
     protected Integer calcAdd(Integer augend) throws OverflowEEException, UnderflowEEException {
-        checkAddOverflow(augend, value());
+        checkAddOverflow(value(), augend);
         return super.calcAdd(augend);
     }
 
     protected Integer calcSubtract(Integer subtrahend) throws OverflowEEException, UnderflowEEException {
-        checkSubtractOverflow(subtrahend, value());
+        checkSubtractOverflow(value(), subtrahend);
         return super.calcSubtract(subtrahend);
     }
 
     protected Integer calcMultiply(Integer factor) throws OverflowEEException, UnderflowEEException {
-        checkMultiplyOverflow(factor, value());
+        checkMultiplyOverflow(value(), factor);
         return super.calcMultiply(factor);
     }
 
     protected Integer calcDivide(Integer divider) throws DivisionByZeroEException, OverflowEEException {
         checkDivisionByZero(divider);
-        checkDivideOverflow(divider, value());
+        checkDivideOverflow(value(), divider);
         return super.calcDivide(divider);
     }
 
@@ -33,7 +33,7 @@ public class IntegerEType extends UncheckedIntegerEType {
         return super.calcNegate();
     }
 
-    private static void checkAddOverflow(Integer augend, Integer addend) throws OverflowEEException, UnderflowEEException {
+    private static void checkAddOverflow(Integer addend, Integer augend) throws OverflowEEException, UnderflowEEException {
         if (addend > 0 && Integer.MAX_VALUE - addend < augend) {
             throw new OverflowEEException("Add", addend, augend);
         }
@@ -42,7 +42,7 @@ public class IntegerEType extends UncheckedIntegerEType {
         }
     }
 
-    private static void checkSubtractOverflow(Integer subtrahend, Integer minuend) throws OverflowEEException, UnderflowEEException {
+    private static void checkSubtractOverflow(Integer minuend, Integer subtrahend) throws OverflowEEException, UnderflowEEException {
         if ((minuend > 0 && minuend - Integer.MAX_VALUE > subtrahend) || (minuend == 0 && subtrahend == Integer.MIN_VALUE)) {
             throw new OverflowEEException("Subtract", minuend, subtrahend);
         }
@@ -51,7 +51,7 @@ public class IntegerEType extends UncheckedIntegerEType {
         }
     }
 
-    private static void checkMultiplyOverflow(Integer factor, Integer multiplier) throws OverflowEEException, UnderflowEEException {
+    private static void checkMultiplyOverflow(Integer multiplier, Integer factor) throws OverflowEEException, UnderflowEEException {
         if ((multiplier > 0 && factor > 0 && (Integer.MAX_VALUE / multiplier) < factor) ||
                 (multiplier < 0 && factor < 0 && (Integer.MAX_VALUE / multiplier) > factor)) {
             throw new OverflowEEException("Multiply", multiplier, factor);
@@ -62,7 +62,7 @@ public class IntegerEType extends UncheckedIntegerEType {
         }
     }
 
-    private static void checkDivideOverflow(Integer divider, Integer dividend) throws OverflowEEException {
+    private static void checkDivideOverflow(Integer dividend, Integer divider) throws OverflowEEException {
         if (dividend == Integer.MIN_VALUE && divider == -1) {
             throw new OverflowEEException("Divide", dividend, divider);
         }
