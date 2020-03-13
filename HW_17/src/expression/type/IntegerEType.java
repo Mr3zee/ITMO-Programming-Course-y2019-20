@@ -84,7 +84,7 @@ public class IntegerEType extends AbstractEType<Integer> implements ForbiddenDiv
         return new IntegerEType(v);
     }
 
-    public static EType<Integer> parseCheckedInteger(String v) {
+    public static EType<Integer> parseInteger(String v) {
         return new IntegerEType(Integer.parseInt(v));
     }
 
