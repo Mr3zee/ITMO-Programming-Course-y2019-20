@@ -52,12 +52,14 @@ public class IntegerEType extends UncheckedIntegerEType {
     }
 
     private static void checkMultiplyOverflow(Integer multiplier, Integer factor) throws OverflowEEException, UnderflowEEException {
-        if ((multiplier > 0 && factor > 0 && (Integer.MAX_VALUE / multiplier) < factor) ||
-                (multiplier < 0 && factor < 0 && (Integer.MAX_VALUE / multiplier) > factor)) {
+        int valMax = Integer.MAX_VALUE / multiplier;
+        if ((multiplier > 0 && factor > 0 && valMax < factor) ||
+                (multiplier < 0 && factor < 0 && valMax > factor)) {
             throw new OverflowEEException("Multiply", multiplier, factor);
         }
-        if ((multiplier > 0 && factor < 0 && (Integer.MIN_VALUE / multiplier) > factor) ||
-                (multiplier != -1 && multiplier < 0 && factor > 0 && (Integer.MIN_VALUE / multiplier) < factor)) {
+        int valMin = Integer.MIN_VALUE / multiplier;
+        if ((multiplier > 0 && factor < 0 && valMin > factor) ||
+                (multiplier != -1 && multiplier < 0 && factor > 0 && valMin < factor)) {
             throw new UnderflowEEException("Multiply", multiplier, factor);
         }
     }
