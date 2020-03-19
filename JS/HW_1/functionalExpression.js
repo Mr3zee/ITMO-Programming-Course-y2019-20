@@ -6,61 +6,70 @@
 //     }
 // }
 
-let binaryOperation = operation => (first, second) => (x, y, z) => operation(first(x, y, z), second(x, y, z));
-let add = binaryOperation((a, b) => a + b);
-let subtract = binaryOperation((a, b) => a - b);
-let multiply = binaryOperation((a, b) => a * b);
-let divide = binaryOperation((a, b) => a / b);
+const binaryOperation = operation => (first, second) => (x, y, z) => operation(first(x, y, z), second(x, y, z));
+const add = binaryOperation((a, b) => a + b);
+const subtract = binaryOperation((a, b) => a - b);
+const multiply = binaryOperation((a, b) => a * b);
+const divide = binaryOperation((a, b) => a / b);
 
-let unaryOperation = operation => arg => (x, y, z) => operation(arg(x, y, z));
-let negate = unaryOperation(a => -a);
-let sin = unaryOperation(a => Math.sin(a));
-let cos = unaryOperation(a => Math.cos(a));
+const unaryOperation = operation => arg => (x, y, z) => operation(arg(x, y, z));
+const negate = unaryOperation(a => -a);
+const sin = unaryOperation(a => Math.sin(a));
+const cos = unaryOperation(a => Math.cos(a));
+const cube = unaryOperation(a => a * a * a);
+const cuberoot = unaryOperation(a => Math.cbrt(a));
 
-let variable = name => (x, y, z) => name === "x" ? x : name === "y" ? y : z;
-let cnst = val => (x, y, z) => val;
+const variable = name => (x, y, z) => name === "x" ? x : name === "y" ? y : z;
+const cnst = val => (x, y, z) => val;
 
 const pi = cnst(Math.PI);
 const e = cnst(Math.E);
+const x = variable("x");
+const y = variable("y");
+const z = variable("z");
 
-let binary = {
+const binary = {
     "+" : add,
     "-": subtract,
     "*": multiply,
     "/": divide,
 };
 
-let unary = {
+const unary = {
     "sin" : sin,
     "cos" : cos,
-    "negate" : negate
+    "negate" : negate,
+    "cube" : cube,
+    "cuberoot" : cuberoot
 }
 
-let variablesAndConsts = {
-    "x" : variable("x"),
-    "y" : variable("y"),
-    "z" : variable("z"),
+const variablesAndConsts = {
+    "x" : x,
+    "y" : y,
+    "z" : z,
     "e" : e,
     "pi" : pi
 };
 
+const whitespaces = [' ', '\n', '\t', '\r'];
+
 let pos;
 let source;
-let init = expression => {
+const init = expression => {
     pos = 0;
     source = expression;
 }
 
-let hasNext = () => pos < source.length;
-let isWhitespace = () => source.charAt(pos) === ' ';
+const hasNext = () => pos < source.length;
+const isWhitespace = () => whitespaces.includes(source.charAt(pos));
 
-let skipWhitespaces = () => {
+const skipWhitespaces = () => {
     while (isWhitespace() && hasNext()) {
         pos++;
     }
 }
 
-let takeLex = () => {
+const takeLex = () => {
     let ans = "";
     while(!isWhitespace() && hasNext()) {
         ans += source.charAt(pos++);
@@ -68,9 +77,9 @@ let takeLex = () => {
     return ans;
 }
 
-let parseLex = lex => lex in variablesAndConsts ? variablesAndConsts[lex] : cnst(parseInt(lex));
+const parseLex = lex => lex in variablesAndConsts ? variablesAndConsts[lex] : cnst(parseInt(lex));
 
-let parse = expression => {
+const parse = expression => {
     init(expression);
     let stack = [];
     skipWhitespaces();
