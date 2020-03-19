@@ -6,7 +6,7 @@ import expression.type.EType;
 import java.math.BigInteger;
 import java.util.function.Function;
 
-public class BigIntegerParserTest extends ParserTest<BigInteger> {
+public class BigIntegerMyParserTest extends MyParserTest<BigInteger> {
     final BigInteger ZERO = BigInteger.ZERO;
     final BigInteger ONE = BigInteger.ONE;
     final BigInteger TWO = new BigInteger("2");

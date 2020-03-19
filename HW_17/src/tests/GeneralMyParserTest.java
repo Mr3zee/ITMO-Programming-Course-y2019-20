@@ -5,7 +5,7 @@ import expression.type.IntegerEType;
 
 import java.util.function.Function;
 
-public class GeneralParserTest extends ParserTest<Integer> {
+public class GeneralMyParserTest extends MyParserTest<Integer> {
     @Override
     protected String testingTypeName() {
         return "General";

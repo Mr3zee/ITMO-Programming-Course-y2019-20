@@ -1,6 +1,6 @@
 package expression;
 
-public interface CommonExpression<T extends Number> extends Expression<T>, TripleExpression<T> {
+public interface CommonExpression<T extends Number> extends Expression<T>, ExpressionTriple<T> {
     // Primary numbers used for hashCode():
     // Binary ops: 3527
     // Add: 3557

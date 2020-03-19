@@ -8,7 +8,7 @@ import org.junit.*;
 
 import java.util.function.Function;
 
-public abstract class ParserTest<T extends Number> {
+public abstract class MyParserTest<T extends Number> {
     private ExpressionParser<T> parser;
     private Function<String, EType<T>> parseEType;
     private String currentExceptionName;

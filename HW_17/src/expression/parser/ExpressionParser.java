@@ -8,7 +8,7 @@ import expression.type.*;
 import java.util.*;
 import java.util.function.Function;
 
-public class ExpressionParser<T extends Number> extends BaseParser implements Parser<T> {
+public class ExpressionParser<T extends Number> extends BaseParser implements MyParser<T> {
     private final Function<String, EType<T>> parseEType;
     private Lexeme lastLexeme;
 

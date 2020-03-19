@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({GeneralParserTest.class, IntegerParserTest.class, DoubleParserTest.class, BigIntegerParserTest.class})
+@Suite.SuiteClasses({GeneralMyParserTest.class, IntegerMyParserTest.class, DoubleMyParserTest.class, BigIntegerMyParserTest.class})
 public class SuiteTestClass {
 
 }

@@ -5,7 +5,7 @@ import expression.type.EType;
 
 import java.util.function.Function;
 
-public class DoubleParserTest extends ParserTest<Double> {
+public class DoubleMyParserTest extends MyParserTest<Double> {
     @Override
     protected String testingTypeName() {
         return "Double";
