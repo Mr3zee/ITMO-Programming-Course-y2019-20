@@ -51,40 +51,12 @@ const variablesAndConsts = {
     "pi" : pi
 };
 
-const whitespaces = [' ', '\n', '\t', '\r'];
-
-let pos;
-let source;
-const init = expression => {
-    pos = 0;
-    source = expression;
-}
-
-const hasNext = () => pos < source.length;
-const isWhitespace = () => whitespaces.includes(source.charAt(pos));
-
-const skipWhitespaces = () => {
-    while (isWhitespace() && hasNext()) {
-        pos++;
-    }
-}
-
-const takeLex = () => {
-    let ans = "";
-    while(!isWhitespace() && hasNext()) {
-        ans += source.charAt(pos++);
-    }
-    return ans;
-}
-
 const parseLex = lex => lex in variablesAndConsts ? variablesAndConsts[lex] : cnst(parseInt(lex));
 
 const parse = expression => {
-    init(expression);
     let stack = [];
-    skipWhitespaces();
-    while (hasNext()) {
-        let lex = takeLex();
+    expression.trim().split(/\s+/).forEach(lex => {
+        // let lex = takeLex();
         if (lex in binary) {
             let second = stack.pop();
             stack.push(binary[lex](stack.pop(), second));
@@ -93,9 +65,8 @@ const parse = expression => {
         } else {
             stack.push(parseLex(lex));
         }
-        skipWhitespaces();
-    }
+    });
     return stack.pop();
 }
 
-// println(parse("x x 2 - * x * y +")(5, 4, 3));
+// println(parse(' 10         ')(0, 0, 0));
