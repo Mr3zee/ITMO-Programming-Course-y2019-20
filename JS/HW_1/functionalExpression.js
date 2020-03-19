@@ -20,6 +20,9 @@ let cos = unaryOperation(a => Math.cos(a));
 let variable = name => (x, y, z) => name === "x" ? x : name === "y" ? y : z;
 let cnst = val => (x, y, z) => val;
 
+const pi = cnst(Math.PI);
+const e = cnst(Math.E);
+
 let binary = {
     "+" : add,
     "-": subtract,
@@ -37,8 +40,8 @@ let variablesAndConsts = {
     "x" : variable("x"),
     "y" : variable("y"),
     "z" : variable("z"),
-    "e" : cnst(Math.E),
-    "pi" : cnst(Math.PI)
+    "e" : e,
+    "pi" : pi
 };
 
 let pos;
