@@ -56,7 +56,6 @@ const parseLex = lex => lex in variablesAndConsts ? variablesAndConsts[lex] : cn
 const parse = expression => {
     let stack = [];
     expression.trim().split(/\s+/).forEach(lex => {
-        // let lex = takeLex();
         if (lex in binary) {
             let second = stack.pop();
             stack.push(binary[lex](stack.pop(), second));
