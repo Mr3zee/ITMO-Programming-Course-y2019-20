@@ -1,33 +1,28 @@
 "use strict";
 
-const standardFunction = operation => (...args) => (...vars) => operation(...(args.map(a => a(...vars))));
+const standardFunction = arity => operation => (...args) => (...vars) => operation(...(args.map(a => a(...vars)).splice(0, arity)));
 
-const add = standardFunction((a, b) => a + b);
-const subtract = standardFunction((a, b) => a - b);
-const multiply = standardFunction((a, b) => a * b);
-const divide = standardFunction((a, b) => a / b);
-const negate = standardFunction(a => -a);
-const sin = standardFunction(Math.sin);
-const cos = standardFunction(Math.cos);
-const cube = standardFunction(a => a * a * a);
-const cuberoot = standardFunction(Math.cbrt);
-const avg = arity => standardFunction((...args) => {
-    let ans = 0;
-    for (let i = 0; i < arity; i++) {
-        ans += args[i];
-    }
-    return ans / arity;
-});
-const avg5 = avg(5);
-const med = arity => standardFunction((...args) => {
-    args = args.splice(0, arity);
+const add = standardFunction(2)((a, b) => a + b);
+const subtract = standardFunction(2)((a, b) => a - b);
+const multiply = standardFunction(2)((a, b) => a * b);
+const divide = standardFunction(2)((a, b) => a / b);
+const negate = standardFunction(2)(a => -a);
+const sin = standardFunction(1)(Math.sin);
+const cos = standardFunction(1)(Math.cos);
+const cube = standardFunction(1)(a => a * a * a);
+const cuberoot = standardFunction(1)(Math.cbrt);
+
+const avg = arity => standardFunction(arity)((...args) => args.reduce((a, b) => a + b, 0) / args.length);
+const med = arity => standardFunction(arity)((...args) => {
     args.sort((a, b) => a - b);
     return args[Math.floor(args.length / 2)];
 });
+
+const avg5 = avg(5);
 const med3 = med(3);
 
 const variable = name => (...args) => name === "x" ? args[0] : name === "y" ? args[1] : args[2];
-const cnst = val => (x, y, z) => val;
+const cnst = val => (...args) => val;
 
 const pi = cnst(Math.PI);
 const e = cnst(Math.E);
@@ -47,7 +42,7 @@ const operations = {
     "cuberoot" : [cuberoot, 1],
     "avg5" : [avg5, 5],
     "med3" : [med3, 3]
-}
+};
 
 const variablesAndConsts = {
     "x" : x,
@@ -77,3 +72,4 @@ const parse = expression => {
 //         console.log(value);
 //     }
 // };
+
