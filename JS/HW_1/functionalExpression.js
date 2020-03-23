@@ -61,6 +61,13 @@ const variablesAndConsts = {
 
 const parseLex = lex => variablesAndConsts[lex] || cnst(parseInt(lex));
 
+const foldLeft = (f, stack) => (...args) => {
+    for (const lex of args) {
+        f(lex, stack);
+    }
+    return stack;
+};
+
 function parse(expression) {
     let stack = [];
     // :NOTE: Свертка
@@ -81,5 +88,5 @@ function parse(expression) {
 //     }
 // };
 //
-// let a = med3(variable('x'), variable('y'), variable('z'));
+// let a = parse("1 3 +");
 // println(a(12, 2, 3, 4));

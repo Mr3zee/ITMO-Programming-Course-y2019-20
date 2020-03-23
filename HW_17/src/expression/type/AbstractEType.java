@@ -3,7 +3,7 @@ package expression.type;
 import java.util.Objects;
 
 public abstract class AbstractEType<T extends Number> implements EType<T> {
-    private T value;
+    private final T value;
 
     public AbstractEType(T value) {
         this.value = value;
