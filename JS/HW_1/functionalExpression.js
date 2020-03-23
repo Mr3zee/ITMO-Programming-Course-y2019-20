@@ -61,16 +61,8 @@ const variablesAndConsts = {
 
 const parseLex = lex => variablesAndConsts[lex] || cnst(parseInt(lex));
 
-const foldLeft = (f, stack) => (...args) => {
-    for (const lex of args) {
-        f(lex, stack);
-    }
-    return stack;
-};
-
 function parse(expression) {
     let stack = [];
-    // :NOTE: Свертка
     expression.trim().split(/\s+/).forEach(lex => {
         if (lex in operations) {
             let currOp = operations[lex];
@@ -87,6 +79,3 @@ function parse(expression) {
 //         console.log(value);
 //     }
 // };
-//
-// let a = parse("1 3 +");
-// println(a(12, 2, 3, 4));
