@@ -1,19 +1,20 @@
 "use strict";
 
-const standardFunction = arity => operation => (...args) => (...vars) => operation(...(args.map(a => a(...vars)).splice(0, arity)));
+const standardFunction = operation => (...args) => (...vars) => operation(...(args.map(a => a(...vars))));
 
-const add = standardFunction(2)((a, b) => a + b);
-const subtract = standardFunction(2)((a, b) => a - b);
-const multiply = standardFunction(2)((a, b) => a * b);
-const divide = standardFunction(2)((a, b) => a / b);
-const negate = standardFunction(2)(a => -a);
-const sin = standardFunction(1)(Math.sin);
-const cos = standardFunction(1)(Math.cos);
-const cube = standardFunction(1)(a => a * a * a);
-const cuberoot = standardFunction(1)(Math.cbrt);
+const add = standardFunction((a, b) => a + b);
+const subtract = standardFunction((a, b) => a - b);
+const multiply = standardFunction((a, b) => a * b);
+const divide = standardFunction((a, b) => a / b);
+const negate = standardFunction(a => -a);
+const sin = standardFunction(Math.sin);
+const cos = standardFunction(Math.cos);
+const cube = standardFunction(a => a * a * a);
+const cuberoot = standardFunction(Math.cbrt);
 
-const avg = arity => standardFunction(arity)((...args) => args.reduce((a, b) => a + b, 0) / args.length);
-const med = arity => standardFunction(arity)((...args) => {
+const avg = arity => standardFunction((...args) => args.splice(0, arity).reduce((a, b) => a + b, 0) / arity);
+const med = arity => standardFunction((...args) => {
+    args = args.splice(0, arity);
     args.sort((a, b) => a - b);
     return args[Math.floor(args.length / 2)];
 });
@@ -21,7 +22,13 @@ const med = arity => standardFunction(arity)((...args) => {
 const avg5 = avg(5);
 const med3 = med(3);
 
-const variable = name => (...args) => name === "x" ? args[0] : name === "y" ? args[1] : args[2];
+const variable = name => (...args) => args[vars[name] || 0];
+const vars = {
+    "x" : 0,
+    "y" : 1,
+    "z" : 2
+};
+
 const cnst = val => (...args) => val;
 
 const pi = cnst(Math.PI);
@@ -52,12 +59,13 @@ const variablesAndConsts = {
     "pi" : pi
 };
 
-const parseLex = lex => lex in variablesAndConsts ? variablesAndConsts[lex] : cnst(parseInt(lex));
+const parseLex = lex => variablesAndConsts[lex] || cnst(parseInt(lex));
 
-const parse = expression => {
+function parse(expression) {
     let stack = [];
+    // :NOTE: Свертка
     expression.trim().split(/\s+/).forEach(lex => {
-        if  (lex in operations) {
+        if (lex in operations) {
             let currOp = operations[lex];
             stack.push(currOp[0](...stack.splice(stack.length - currOp[1], currOp[1])));
         } else {
@@ -65,11 +73,13 @@ const parse = expression => {
         }
     });
     return stack.pop();
-};
+}
 
 // let println = function () {
 //     for (let value of arguments) {
 //         console.log(value);
 //     }
 // };
-
+//
+// let a = med3(variable('x'), variable('y'), variable('z'));
+// println(a(12, 2, 3, 4));
