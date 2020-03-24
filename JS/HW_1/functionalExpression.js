@@ -62,20 +62,18 @@ const lexemes = {
 
 const foldParse = f => regExp => expression => expression.trim().split(regExp).reduce((a, b) => f(a, b), []).pop();
 
-const postFixParse = foldParse((stack, lex) => {
-    let a = lexemes[lex] || cnst(+lex);
-    stack.push(a.arity === undefined ? a : a(...stack.splice(-a.arity)));
+const postFixParse = foldParse((stack, arg) => {
+    const lexeme = lexemes[arg] || cnst(+arg);
+    stack.push(lexeme.arity === undefined ? lexeme : lexeme(...stack.splice(-lexeme.arity)));
     return stack;
 });
 
 const parse = expression => postFixParse(/\s+/)(expression);
 
-let println = function () {
-    for (let value of arguments) {
-        console.log(value);
-    }
-};
-
-println(parse("1 x +")(1));
-
-// println(cnst(2).arity);
+// let println = function () {
+//     for (let value of arguments) {
+//         console.log(value);
+//     }
+// };
+//
+// println(parse("1 x +")(1));
