@@ -85,7 +85,7 @@ public class ExpressionParser<T extends Number> extends BaseParser implements My
         skipWhitespaces();
         if (compareAndSkip("(")) {
             lastLexeme = Lexeme.OPAR;
-            CommonExpression<T> result = additiveParse();
+            CommonExpression<T> result = minMaxParse();
             if (compareAndSkip(")")) {
                 lastLexeme = Lexeme.CPAR;
                 return result;
@@ -135,11 +135,10 @@ public class ExpressionParser<T extends Number> extends BaseParser implements My
 
     private CommonExpression<T> expressionWrapper(String word) {
         CommonExpression<T> nextExpression = lowLevelParse();
-        switch (word) {
-            case "count":
-                return new Count<>(nextExpression);
-        }
-        return null;
+        return switch (word) {
+            case "count" -> new Count<>(nextExpression);
+            default -> null;
+        };
     }
 
     private CommonExpression<T> parseNumber(final String number) throws ParsingExpressionException {
