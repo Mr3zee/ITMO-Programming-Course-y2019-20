@@ -59,23 +59,29 @@ const variablesAndConsts = {
     "pi" : pi
 };
 
-const parseLex = lex => variablesAndConsts[lex] || cnst(parseInt(lex));
-
-function parse(expression) {
+const foldParse = f => regExp => expression => {
     let stack = [];
-    expression.trim().split(/\s+/).forEach(lex => {
-        if (lex in operations) {
-            let currOp = operations[lex];
-            stack.push(currOp[0](...stack.splice(stack.length - currOp[1], currOp[1])));
-        } else {
-            stack.push(parseLex(lex));
-        }
-    });
+    expression.trim().split(regExp).forEach(f(stack));
     return stack.pop();
-}
+};
+
+const parseLex = lex => variablesAndConsts[lex] || cnst(+lex);
+
+const postFixParse = foldParse(stack => lex => {
+    if (lex in operations) {
+        let currOp = operations[lex];
+        stack.push(currOp[0](...stack.splice(stack.length - currOp[1], currOp[1])));
+    } else {
+        stack.push(parseLex(lex));
+    }
+});
+
+const parse = expression => postFixParse(/\s+/)(expression);
 
 // let println = function () {
 //     for (let value of arguments) {
 //         console.log(value);
 //     }
 // };
+//
+// println(parse("1 x +")(1));
