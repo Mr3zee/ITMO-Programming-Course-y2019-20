@@ -75,5 +75,3 @@ const parse = expression => postFixParse(/\s+/)(expression);
 //         console.log(value);
 //     }
 // };
-//
-// println(parse("1 x +")(1));

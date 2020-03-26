@@ -1,6 +1,6 @@
 "use strict";
 
-function StandardFunction(operation, arity, operand) {
+function StandardFunction(operation, arity, operand, diff) {
     const f = function (...args) {
         this.toString = function () {
             return args.reduce((a, b) => a + " " + b) + " " + operand;
@@ -8,23 +8,33 @@ function StandardFunction(operation, arity, operand) {
         this.evaluate = function (...vars) {
             return operation(...args.map(a => a.evaluate(...vars)));
         }
-        this.diff = function (name) {
-            args = args.reduce((a, b) => {
-                a.push(b.diff(name));
-                return a;
-            }, []);
-            return this;
+        this.diff = function (differential) {
+            return diff(args, differential, this.constructor);
         }
     }
     f.arity = arity;
     return f;
 }
 
-const Add = StandardFunction((a, b) => a + b, 2, '+');
-const Subtract = StandardFunction((a, b) => a - b, 2, '-');
-const Multiply = StandardFunction((a, b) => a * b, 2, '*');
+const diffAddSub = function(args, differential, Constructor) {
+    args = args.reduce((a, b) => {a.push(b.diff(differential)); return a}, []);
+    return new Constructor(...args);
+}
+
+const diffMultiply = function (args, differential) {
+    const product = args.reduce((a, b) => new Multiply(a, b));
+    args = args.reduce((a, b) => {
+        a.push(b === ZERO ? ZERO : new Divide(new Multiply(b.diff(differential), product), b));
+        return a;
+    }, []);
+    return new Add(...args);
+}
+
+const Add = StandardFunction((a, b) => a + b, 2, '+', diffAddSub);
+const Subtract = StandardFunction((a, b) => a - b, 2, '-', diffAddSub);
+const Multiply = StandardFunction((a, b) => a * b, 2, '*', diffMultiply);
 const Divide = StandardFunction((a, b) => a / b, 2, '/');
-const Negate = StandardFunction(a => -a, 1, 'negate');
+const Negate = StandardFunction(a => -a, 1, 'negate', diffAddSub);
 
 function Const(val) {
     this.toString = function () {
@@ -45,8 +55,8 @@ function Variable(name) {
     this.evaluate = function (...args) {
         return args[vars[name] || 0];
     }
-    this.diff = function (name) {
-        return new Const(1);
+    this.diff = function (differential) {
+        return differential === name ? new Const(1) : new Const(0);
     }
 }
 
@@ -58,6 +68,7 @@ const vars = {
 const X = new Variable("x");
 const Y = new Variable("y");
 const Z = new Variable("z");
+const ZERO = new Const(0);
 
 const lexemes = {
     "+" : Add,
@@ -86,14 +97,8 @@ let println = function () {
     }
 };
 
-let expr = new Subtract(
-    new Multiply(
-        new Const(2),
-        new Variable("x")
-    ),
-    new Const(3)
-);
-
-println(expr.diff("x").toString());
+let a = new Multiply(X, X);
+a = a.diff("x");
+println(a.toString());
 
 
