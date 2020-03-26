@@ -54,17 +54,16 @@ const diffAddSub = function(args, differential, Constructor) {
     return new Constructor(...args);
 }
 
-const diffMultiply = function (args, differential) {
-    const f = args.length === 2 ? args.shift() : new Multiply(...args.slice(-1)), g = args.pop();
-    const fg = new Multiply(f.diff(differential), g), gf = new Multiply(g.diff(differential), f);
-    return new Add(fg, gf);
+const diffMultiplyDivide = function(resultFunction) {
+    return (args, differential, Constructor) => {
+        const f = args.length === 2 ? args.shift() : new Constructor(...args.slice(-1)), g = args.pop();
+        const fg = new Multiply(f.diff(differential), g), gf = new Multiply(g.diff(differential), f);
+        return resultFunction(fg, gf, f, g);
+    }
 }
 
-const diffDivide = function (args, differential) {
-    const f = args.length === 2 ? args.shift() : new Divide(...args.slice(-1)), g = args.pop();
-    const fg = new Multiply(f.diff(differential), g), gf = new Multiply(g.diff(differential), f);
-    return new Divide(new Subtract(fg, gf), new Multiply(g, g));
-}
+const diffMultiply = diffMultiplyDivide((fg, gf) => new Add(fg, gf));
+const diffDivide = diffMultiplyDivide((fg, gf, f, g) => new Divide(new Subtract(fg, gf), new Multiply(g, g)));
 
 const Add = StandardFunction((a, b) => a + b, 2, '+', diffAddSub);
 const Subtract = StandardFunction((a, b) => a - b, 2, '-', diffAddSub);
@@ -99,8 +98,8 @@ let println = function () {
     }
 };
 
-let a = new Multiply(new Const(2), X);
+let a = new Divide(new Const(2), X);
 a = a.diff("x");
-println(a.evaluate(21));
+println(a.evaluate(2));
 
 
