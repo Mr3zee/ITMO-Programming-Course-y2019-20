@@ -1,0 +1,1 @@
+C:\Users\809542\Desktop\korneev\paradigms-2020\javascript\TestJS.cmd easy
