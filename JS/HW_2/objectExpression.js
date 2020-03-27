@@ -17,14 +17,14 @@ function Variable(name) {
         return name;
     }
     this.evaluate = function (...args) {
-        return args[vars[name] || 0];
+        return args[Vars[name] || 0];
     }
     this.diff = function (differential) {
         return differential === name ? new Const(1) : new Const(0);
     }
 }
 
-const vars = {
+const Vars = {
     "x": 0,
     "y": 1,
     "z": 2
@@ -32,7 +32,7 @@ const vars = {
 const X = new Variable("x");
 const Y = new Variable("y");
 const Z = new Variable("z");
-const e = new Const(Math.E);
+const E = new Const(Math.E);
 
 function StandardFunction(operation, arity, operand, diff) {
     const f = function (...args) {
@@ -73,7 +73,7 @@ const diffDivide = diffMultiplyDivide((fg, gf, f, g) => new Divide(new Subtract(
 
 const diffPower = function (args, differential) {
     const f = args.length === 2 ? args[1] : new Power(...args.slice(1));
-    const g = new Log(e, args[0]);
+    const g = new Log(E, args[0]);
     const fg = new Multiply(f, g);
     const gf = new Power(args[0], f);
     return new Multiply(gf, fg.diff(differential));
@@ -101,7 +101,7 @@ const diffUnaryFunctions = function (makeFirst) {
 }
 
 const diffLn = diffUnaryFunctions((arg) => new Divide(new Const(1), arg[0]));
-const diffExp = diffUnaryFunctions((arg) => new Power(e, arg[0]));
+const diffExp = diffUnaryFunctions((arg) => new Power(E, arg[0]));
 const diffCosh = diffUnaryFunctions((arg) => new Sinh(...arg));
 const diffSinh = diffUnaryFunctions((arg) => new Cosh(...arg));
 
@@ -110,7 +110,7 @@ const Exponent = StandardFunction(a => Math.pow(Math.E, a), 1, 'exp', diffExp);
 const Sinh = StandardFunction(Math.sinh, 1, 'sinh', diffSinh);
 const Cosh = StandardFunction(Math.cosh, 1, 'cosh', diffCosh);
 
-const lexemes = {
+const Lexemes = {
     "+": Add,
     "-": Subtract,
     "*": Multiply,
@@ -125,15 +125,15 @@ const lexemes = {
     "z": Z,
 };
 
-const foldParse = f => regExp => expression => expression.trim().split(regExp).reduce((a, b) => f(a, b), []).pop();
+const foldParseObject = f => regExp => expression => expression.trim().split(regExp).reduce((a, b) => f(a, b), []).pop();
 
-const postFixParse = foldParse((stack, arg) => {
-    const lexeme = lexemes[arg] || new Const(+arg);
+const postFixParseObject = foldParseObject((stack, arg) => {
+    const lexeme = Lexemes[arg] || new Const(+arg);
     stack.push(lexeme.arity === undefined ? lexeme : new lexeme(...stack.splice(-lexeme.arity)));
     return stack;
 });
 
-const parse = expression => postFixParse(/\s+/)(expression);
+const parseObject = expression => postFixParseObject(/\s+/)(expression);
 
 // let println = function () {
 //     for (let value of arguments) {
