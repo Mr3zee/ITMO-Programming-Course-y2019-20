@@ -150,6 +150,7 @@ const postFixParse = foldParse((stack, arg) => {
 const parse = expression => postFixParse(/\s+/)(expression);
 
 
+
 // let println = function () {
 //     for (let value of arguments) {
 //         console.log(value);
