@@ -1,24 +1,23 @@
 "use strict";
 
-const standardFunction = (operation, arity) => {
+const standardFunction = function(operation, arity) {
     const func = (...args) => (...vars) => operation(...(args.map(a => a(...vars))));
-    func.arity = arity;
+    func.arity = arity === undefined ? operation.length : arity;
     return func;
 }
 
-const add = standardFunction((a, b) => a + b, 2);
-const subtract = standardFunction((a, b) => a - b, 2);
-const multiply = standardFunction((a, b) => a * b, 2);
-const divide = standardFunction((a, b) => a / b, 2);
-const negate = standardFunction(a => -a, 1);
-const sin = standardFunction(Math.sin, 1);
-const cos = standardFunction(Math.cos, 1);
-const cube = standardFunction(a => a * a * a, 1);
-const cuberoot = standardFunction(Math.cbrt, 1);
+const add = standardFunction((a, b) => a + b);
+const subtract = standardFunction((a, b) => a - b);
+const multiply = standardFunction((a, b) => a * b);
+const divide = standardFunction((a, b) => a / b);
+const negate = standardFunction(a => -a);
+const sin = standardFunction(Math.sin);
+const cos = standardFunction(Math.cos);
+const cube = standardFunction(a => a * a * a);
+const cuberoot = standardFunction(Math.cbrt);
 
-const avg = arity => standardFunction((...args) => args.splice(0, arity).reduce((a, b) => a + b, 0) / arity, arity);
+const avg = arity => standardFunction((...args) => args.reduce((a, b) => a + b, 0) / arity, arity);
 const med = arity => standardFunction((...args) => {
-    args = args.splice(0, arity);
     args.sort((a, b) => a - b);
     return args[Math.floor(args.length / 2)];
 }, arity);
