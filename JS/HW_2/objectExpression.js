@@ -50,13 +50,16 @@ const ZERO = new Const(0);
 const X = new Variable("x");
 const Y = new Variable("y");
 const Z = new Variable("z");
-const e = new Const(Math.E);
+const E = new Const(Math.E);
+const epsilon = 1e-7;
+const Epsilon = new Const(epsilon);
+const DoubleEpsilon = new Const(2 * epsilon);
 
 const consts = {
     "x": X,
     "y": Y,
     "z": Z,
-    "e": e
+    "e": E
 }
 const operations = {};
 
@@ -89,81 +92,44 @@ function StandardFunction(operation, operand, diff, arity) {
     f.prototype = Object.create(BaseOperation.prototype);
     f.prototype.operation = operation;
     f.prototype.operand = operand;
-    f.prototype.diffRule = diff;
+    f.prototype.diffRule = diff === undefined ? diffStandard : diff;
     f.prototype.constructor = f;
     operations[operand] = f;
     f.arity = arity === undefined ? operation.length : arity;
     return f;
 }
 
-const diffAddSub = function (differential, ...args) {
-    return new this.constructor(...Array.from(args, a => a.diff(differential)));
+const diffAddSub = function (differential) {
+    return new this.constructor(...Array.from(this.args, a => a.diff(differential)));
 }
 
-const diffMultiplyDivide = function (resultFunction) {
-    return (differential, ...args) => {
-        const f = args.length === 2 ? args[0] : new this.constructor(...args.slice(-1));
-        const g = args[args.length - 1];
-        const fg = new Multiply(f.diff(differential), g);
-        const gf = new Multiply(g.diff(differential), f);
-        return resultFunction(fg, gf, f, g);
-    }
-}
+const changeVar = (a, Constructor, differential) => a.name === differential ? new Constructor(a, Epsilon) : changeArgs(a, Constructor, differential);
 
-const diffMultiply = diffMultiplyDivide((fg, gf) => new Add(fg, gf));
-const diffDivide = diffMultiplyDivide((fg, gf, f, g) => new Divide(new Subtract(fg, gf), new Multiply(g, g)));
+const changeArgs = (func, Constructor, differential) => func.args === undefined ? func :
+    new func.constructor(...Array.from(func.args, a => changeVar(a, Constructor, differential)));
 
-const diffPower = function (differential, ...args) {
-    const f = args.length === 2 ? args[1] : new Power(...args.slice(1));
-    const g = new Log(e, args[0]);
-    const fg = new Multiply(f, g);
-    const gf = new Power(args[0], f);
-    return new Multiply(gf, fg.diff(differential));
-}
-
-const diffLog = function (differential, ...args) {
-    const f = new Divide(...args.map(a => new Ln(a)).reverse());
-    return f.diff(differential);
+const diffStandard = function (differential) {
+    const f = changeArgs(this, Add, differential);
+    const g = changeArgs(this, Subtract, differential);
+    return new Divide(new Subtract(f, g), DoubleEpsilon);
 }
 
 const Add = StandardFunction((a, b) => a + b, '+', diffAddSub);
 const Subtract = StandardFunction((a, b) => a - b, '-', diffAddSub);
-const Multiply = StandardFunction((a, b) => a * b, '*', diffMultiply);
-const Divide = StandardFunction((a, b) => a / b, '/', diffDivide);
-const Negate = StandardFunction(a => -a, 'negate', diffAddSub);
-const Power = StandardFunction(Math.pow, 'pow', diffPower);
-const Log = StandardFunction((a, b) => Math.log(Math.abs(b)) / Math.log(Math.abs(a)), 'log', diffLog);
+const Multiply = StandardFunction((a, b) => a * b, '*');
+const Divide = StandardFunction((a, b) => a / b, '/');
+const Negate = StandardFunction(a => -a, 'negate');
+const Power = StandardFunction(Math.pow, 'pow');
+const Log = StandardFunction((a, b) => Math.log(Math.abs(b)) / Math.log(Math.abs(a)), 'log');
 
-const diffUnaryFunctions = function (makeFirst) {
-    return (differential, arg) => {
-        const f = makeFirst(arg);
-        const g = arg.diff(differential);
-        return new Multiply(f, g);
-    }
-}
-
-const diffLn = diffUnaryFunctions((arg) => new Divide(ONE, arg));
-const diffExp = diffUnaryFunctions((arg) => new Power(e, arg));
-const diffCosh = diffUnaryFunctions((arg) => new Sinh(arg));
-const diffSinh = diffUnaryFunctions((arg) => new Cosh(arg));
-
-const Ln = StandardFunction(a => Math.log(Math.abs(a)), 'ln', diffLn);
-const Exp = StandardFunction(a => Math.pow(Math.E, a), 'exp', diffExp);
-const Sinh = StandardFunction(Math.sinh, 'sinh', diffSinh);
-const Cosh = StandardFunction(Math.cosh, 'cosh', diffCosh);
-
-const diffSumexp = function (differential, ...args) {
-    const f = args.length === 1 ? new Exp(args[0]) : new Add(...args.map((a) => new Exp(a)));
-    return f.diff(differential);
-}
-const diffSoftmax = function (differential, ...args) {
-    const f = new Divide(new Exp(args[0]), new Sumexp(...args.map((a) => new Exp(a))));
-    return f.diff(differential);
-}
+const Ln = StandardFunction(a => Math.log(Math.abs(a)), 'ln');
+const Exp = StandardFunction(a => Math.pow(Math.E, a), 'exp');
+const Sinh = StandardFunction(Math.sinh, 'sinh');
+const Cosh = StandardFunction(Math.cosh, 'cosh');
 
 Math.sumexp = (...args) => args.reduce((a, b) => a + Math.pow(Math.E, b), 0);
-const Sumexp = StandardFunction(Math.sumexp, 'sumexp', diffSumexp);
-const Softmax = StandardFunction((...args) => Math.pow(Math.E, args[0]) / Math.sumexp(...args), 'softmax', diffSoftmax);
+const Sumexp = StandardFunction(Math.sumexp, 'sumexp');
+const Softmax = StandardFunction((...args) => Math.pow(Math.E, args[0]) / Math.sumexp(...args), 'softmax');
 
 const leftFoldParse = f => regExp => expression => expression.trim().split(regExp).reduce((a, b) => f(a, b), []).pop();
 
@@ -175,6 +141,7 @@ const postFixParse = leftFoldParse((stack, arg) => {
 
 const parse = expression => postFixParse(/\s+/)(expression);
 
+// ------------------- Prefix -------------------
 
 const isWhitespace = function (ch) {
     return /\s+/.test(ch);
@@ -337,3 +304,15 @@ const parsePostfix = parseTools.parsePostfix;
 //         console.log(value);
 //     }
 // };
+//
+// let c = new Multiply(X, X);
+// let dz = new Multiply(new Const(5), new Multiply(Z, new Multiply(Z, Z)));
+// let dx = new Multiply(new Const(5), new Multiply(X, new Multiply(X, X)));
+// let f = new Multiply(Y, new Const(8));
+// // let a = new Subtract(new Add(c, d), f);
+// // let a = new Subtract(new Add(X, d), Y);
+// let bx = dx.diff('x');
+// let bz = dz.diff('z');
+// println(bx.evaluate(2, 2, 2));
+// println(bz.evaluate(2, 2, 2));
+// println(X.name);
