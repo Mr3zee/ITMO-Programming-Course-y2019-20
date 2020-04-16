@@ -8,14 +8,17 @@ Const.prototype = {
     evaluate: function () {
         return this.val;
     },
+    diff: function () {
+        return ZERO;
+    },
     toString: function () {
         return this.val.toString();
     },
     prefix: function () {
         return this.toString();
     },
-    diff: function () {
-        return ZERO;
+    postfix : function () {
+        return this.toString();
     }
 }
 
@@ -25,17 +28,20 @@ function Variable(name) {
 }
 
 Variable.prototype = {
+    evaluate: function (...args) {
+        return args[this.index];
+    },
+    diff: function (differential) {
+        return differential === this.name ? ONE : ZERO;
+    },
     toString: function () {
         return this.name.toString();
     },
     prefix: function () {
         return this.toString();
     },
-    evaluate: function (...args) {
-        return args[this.index];
-    },
-    diff: function (differential) {
-        return differential === this.name ? ONE : ZERO;
+    postfix : function () {
+        return this.toString();
     }
 }
 
@@ -77,11 +83,14 @@ BaseOperation.prototype = {
     diff: function (differential) {
         return this.diffRule(differential, ...this.args);
     },
+    joinArgs: function(f) {
+        return `${[...this.args.map(f)].join(" ")}`;
+    },
     prefix: function () {
-        if (this.args.length === 0) {
-            return `(${this.operand} )`;
-        }
-        return `(${[this.operand, ...this.args.map(a => a.prefix())].join(" ")})`;
+        return `(${this.operand} ${this.joinArgs(a => a.prefix())})`;
+    },
+    postfix: function () {
+        return `(${this.joinArgs(a => a.postfix())} ${this.operand})`;
     }
 }
 
@@ -131,6 +140,9 @@ Math.sumexp = (...args) => args.reduce((a, b) => a + Math.pow(Math.E, b), 0);
 const Sumexp = StandardFunction(Math.sumexp, 'sumexp');
 const Softmax = StandardFunction((...args) => Math.pow(Math.E, args[0]) / Math.sumexp(...args), 'softmax');
 
+
+// ------------------- Parse -------------------
+
 const leftFoldParse = f => regExp => expression => expression.trim().split(regExp).reduce((a, b) => f(a, b), []).pop();
 
 const postFixParse = leftFoldParse((stack, arg) => {
@@ -141,178 +153,107 @@ const postFixParse = leftFoldParse((stack, arg) => {
 
 const parse = expression => postFixParse(/\s+/)(expression);
 
-// ------------------- Prefix -------------------
+// ------------------- Prefix/Postfix -------------------
 
-const isWhitespace = function (ch) {
-    return /\s+/.test(ch);
-}
-
-const Source = function (expression) {
-    this.expression = expression;
-    this.current = expression.charAt(0);
-    this.pos = 1;
-}
-Source.prototype = {
-    getPosition: function () {
-        return this.pos;
-    },
-    getExpression: function () {
-        return this.expression;
-    },
-    nextChar: function () {
-        this.current = this.expression.charAt(this.pos++);
-    },
-    hasNext: function () {
-        return this.pos <= this.expression.length;
-    },
-    compare: function (test) {
-        return this.current === test;
-    },
-    skipWhitespaces: function () {
-        while (isWhitespace(this.current)) {
-            this.nextChar();
-        }
-    },
-    nextWord: function () {
-        let result = "";
-        while (this.hasNext() && !(isWhitespace(this.current) || this.current === ')' || this.current === '(')) {
-            result += this.current;
-            this.nextChar();
-        }
-        return result;
-    },
-    takeFrom: function (ch) {
-        let i = this.pos - 1;
-        while(this.expression.charAt(i) !== ch) {
-            i--;
-        }
-        return this.expression.substr(i, this.pos - i);
-    }
-}
-
-const ExpressionError = function (found, input, message) {
+const ExpressionError = function (found, pos, input, message) {
     this.found = found;
     this.input = input;
-    this.message = message + ` || Found "${found}" || Input: ${input}`;
+    this.pos = pos;
+    this.message = message + ` || Found "${found}" || Position: ${pos} || Input: ${input}`;
 }
 
-const StandardError = function (message, name) {
-    let f = function (found, input) {
-        return ExpressionError.call(this, found, input, message);
+const StandardError = function (message) {
+    let f = function (found, pos, input) {
+        return ExpressionError.call(this, found, pos, input, message);
     }
     f.prototype = Object.create(Error.prototype);
     f.prototype.constructor = ExpressionError;
-    f.prototype.name = name;
     return f;
 }
 
-const InvalidArgumentsError = StandardError("Invalid arguments/number of arguments", "InvalidArgumentsError");
-const ParenthesisError = StandardError("Expected opening/closing parenthesis", "ParenthesisError");
-const InvalidLexemeError = StandardError("Found unexpected token", "InvalidLexemeError");
-const InvalidOperatorError = StandardError("Invalid Operator form", "InvalidOperatorError");
+const InvalidNumberOfArgumentsError = expected => StandardError(`Invalid number of arguments || Expected ${expected}`);
+const InvalidArgumentError = StandardError("Invalid function argument");
+const ParenthesisError = expected => StandardError(`Expected ${expected} parenthesis`);
+const InvalidLexemeError = StandardError("Found unexpected token");
+const InvalidOperatorError = StandardError("Invalid Operator form");
 
-const parseTools = (() => {
-    let source;
-    let parsingRule;
-    function throwError(error, found) {
-        throw new error(found.toString(), source.getExpression());
+const expressionParser = (() => {
+    let input;
+    let position;
+
+    function throwError(ErrorType, found, pos) {
+        throw new ErrorType(found, pos === undefined ? position : pos, input);
     }
-    function takeOperation() {
-        return source.takeFrom('(');
-    }
-    function parseArguments() {
-        const args = [];
-        source.skipWhitespaces();
-        while (!source.compare(")")) {
-            args.push(parseExpression());
-            source.skipWhitespaces();
-        }
-        return args;
-    }
-    function checkOperation(args, pos) {
-        if (args[pos].arity === undefined) {
-            throwError(InvalidOperatorError, takeOperation());
-        }
-        for (let i = 0; i < args.length; i++) {
-            if (i !== pos && args[i].arity !== undefined) {
-                throwError(InvalidArgumentsError, takeOperation());
-            }
-        }
-    }
+
     function parseNumber(num) {
         if (isNaN(num) || num.length === 0) {
             throwError(InvalidLexemeError, num);
         }
         return new Const(+num);
     }
-    function parseExpression() {
-        source.skipWhitespaces();
-        if (source.compare("(")) {
-            source.nextChar();
-            const args = parseArguments();
-            const result = parsingRule(args);
-            source.skipWhitespaces();
-            if (source.compare(")")) {
-                source.nextChar();
-                return result;
+
+    function parseLexeme(lexeme) {
+        return operations[lexeme] || consts[lexeme] || parseNumber(lexeme);
+    }
+
+    const parseExpression = (regExp, operationIndex) => expression => {
+        input = expression;
+        position = 1;
+        const parenthesisStack = [];
+        const arr = expression.replace(/\(/g, ' ( ').replace(/\)/g, ' ) ').trim().split(regExp);
+        const result = arr.reduce((queue, lexeme) => {
+            if (lexeme === '(') {
+                parenthesisStack.push(queue.length);
+            } else if (lexeme === ')') {
+                if (parenthesisStack.length === 0) {
+                    throwError(ParenthesisError("opening"), ')');
+                }
+                const args = queue.splice(parenthesisStack.pop());
+                const index = operationIndex(args);
+                const Operation = args[index];
+                if (Operation.arity === undefined) {
+                    throwError(InvalidOperatorError, Operation, position - args.length);
+                }
+                args.splice(index, 1);
+                if (args.length !== Operation.arity && Operation.arity !== 0) {
+                    throwError(InvalidNumberOfArgumentsError(Operation.arity), args.map(a => a.prefix()).toString(), position - args.length + index);
+                }
+                queue.push(new Operation(...args.map((a, index) =>
+                        a.arity !== undefined ? throwError(InvalidArgumentError, a.prototype.operand, position - args.length + index) : a
+                )));
+            } else {
+                queue.push(parseLexeme(lexeme));
             }
-            throwError(ParenthesisError, source.nextWord());
+            position++;
+            return queue;
+        }, []);
+        if (parenthesisStack.length !== 0) {
+            throwError(ParenthesisError("closing"), "");
         }
-        const lex = source.nextWord();
-        return operations[lex] || consts[lex] || parseNumber(lex);
+        if (result.length !== 1) {
+            throwError(ParenthesisError("opening and closing"), "");
+        }
+        return result.pop();
     }
-    const parseTemplate = function (expression) {
-        source = new Source(expression.trim());
-        const result = parseExpression();
-        source.skipWhitespaces();
-        if (source.hasNext()) {
-            throwError(ParenthesisError, source.nextWord());
-        }
-        return result;
-    };
-    function insertArguments(Operation, args) {
-        if (Operation.arity !== args.length && Operation.arity !== 0) {
-            throwError(InvalidArgumentsError, takeOperation());
-        }
-        return new Operation(...args);
-    }
-    const parsePrefix = (expression) => {
-        parsingRule = (args) => {
-            checkOperation(args, 0);
-            return insertArguments(args.shift(), args);
-        }
-        return parseTemplate(expression);
-    }
-    const parsePostfix = (expression) => {
-        parsingRule = (args) => {
-            checkOperation(args, args.length - 1);
-            return insertArguments(args.pop(), args);
-        }
-        return parseTemplate(expression);
-    }
+
+    const parsePrefix = parseExpression(/\s+/, () => 0);
+    const parsePostfix = parseExpression(/\s+/, (args) => args.length - 1);
+
     return {
         parsePrefix: parsePrefix,
         parsePostfix: parsePostfix
     }
 })();
 
-const parsePrefix = parseTools.parsePrefix;
-const parsePostfix = parseTools.parsePostfix;
+const parsePostfix = expressionParser.parsePostfix;
+const parsePrefix= expressionParser.parsePrefix;
 
-// let println = function () {
-//     for (let value of arguments) {
-//         console.log(value);
-//     }
-// };
-//
-// let c = new Multiply(X, X);
-// let dz = new Multiply(new Const(5), new Multiply(Z, new Multiply(Z, Z)));
-// let dx = new Multiply(new Const(5), new Multiply(X, new Multiply(X, X)));
-// let f = new Multiply(Y, new Const(8));
-// // let a = new Subtract(new Add(c, d), f);
-// // let a = new Subtract(new Add(X, d), Y);
-// let bx = dx.diff('x');
-// let bz = dz.diff('z');
-// println(bx.evaluate(2, 2, 2));
-// println(bz.evaluate(2, 2, 2));
-// println(X.name);
+let println = function () {
+    for (let value of arguments) {
+        console.log(value);
+    }
+};
+
+let c = "(sumexp /)";
+let b = parsePrefix(c);
+println(b.prefix());
