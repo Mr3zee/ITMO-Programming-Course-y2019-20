@@ -196,7 +196,7 @@ const expressionParser = (() => {
         return operations[lexeme] || consts[lexeme] || parseNumber(lexeme);
     }
 
-    const parseExpression = (regExp, operationIndex) => expression => {
+    const parseExpression = (regExp, operationIndex, errorMessageFunction) => expression => {
         input = expression;
         position = 1;
         const parenthesisStack = [];
@@ -216,7 +216,7 @@ const expressionParser = (() => {
                 }
                 args.splice(index, 1);
                 if (args.length !== Operation.arity && Operation.arity !== 0) {
-                    throwError(InvalidNumberOfArgumentsError(Operation.arity), args.map(a => a.prefix()).toString(), position - args.length + index);
+                    throwError(InvalidNumberOfArgumentsError(Operation.arity), args.map(errorMessageFunction), position - args.length + index);
                 }
                 queue.push(new Operation(...args.map((a, index) =>
                         a.arity !== undefined ? throwError(InvalidArgumentError, a.prototype.operand, position - args.length + index) : a
@@ -236,8 +236,8 @@ const expressionParser = (() => {
         return result.pop();
     }
 
-    const parsePrefix = parseExpression(/\s+/, () => 0);
-    const parsePostfix = parseExpression(/\s+/, (args) => args.length - 1);
+    const parsePrefix = parseExpression(/\s+/, () => 0, a => a.prefix());
+    const parsePostfix = parseExpression(/\s+/, (args) => args.length - 1, a => a.postfix());
 
     return {
         parsePrefix: parsePrefix,
@@ -248,12 +248,12 @@ const expressionParser = (() => {
 const parsePostfix = expressionParser.parsePostfix;
 const parsePrefix= expressionParser.parsePrefix;
 
-let println = function () {
-    for (let value of arguments) {
-        console.log(value);
-    }
-};
-
-let c = "(sumexp /)";
-let b = parsePrefix(c);
-println(b.prefix());
+// let println = function () {
+//     for (let value of arguments) {
+//         console.log(value);
+//     }
+// };
+//
+// let c = "((3 4 -) 2 3 +)";
+// let b = parsePostfix(c);
+// println(b.prefix());
