@@ -1,1 +1,5 @@
-(defn a [x] (+ 1 x))
+(defn doV [f] (fn [& args] (apply mapv f args)))
+(def v+ (doV +))
+(def v- (doV -))
+(def v* (doV *))
+(defn scalar [& args] (apply + (apply v* args)))
