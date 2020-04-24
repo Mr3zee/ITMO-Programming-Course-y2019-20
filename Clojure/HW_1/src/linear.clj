@@ -32,9 +32,21 @@
 (def c* (doOp m*))
 (def cd (doOp md))
 ; tensor
+
+(defn checkTensor [args] (if (every? number? args)
+                           true (if (every? vector? args)
+                              (if (apply sameLength args)
+                                (every? checkTensor (apply mapv vector args)) false) false)))
+(defn compareT [args] (or (number? (first args)) (apply sameLength args)))
+(defn doTen [f & args]
+  {:pre [(compareT args)]}
+  (if (vector? (first args))
+    (apply mapv (partial doTen f) args)
+    (apply f args)))
 (defn tensorOp [f & args]
-  {:pre [(apply allVectors args) (apply sameLength args)]}
-  (if (vector? (first (first args))) (apply mapv (partial tensorOp f) args) (apply (doOp f) args)))
+  {:pre [(checkTensor (first args))]}
+  (apply doTen f args))
+
 (def t+ (partial tensorOp +))
 (def t- (partial tensorOp -))
 (def t* (partial tensorOp *))
