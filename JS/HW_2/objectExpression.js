@@ -208,7 +208,7 @@ const StandardError = function (found, pos, input, message) {
     this.found = found;
     this.input = input;
     this.pos = pos;
-    this.message = message + ` || Found "${found}" || Position: ${pos} || Input: ${input}`;
+    this.message = `${message} || Found "${found}" || Position: ${pos} || Input: "${input}"`;
 }
 
 const expressionError = function (message) {
@@ -224,35 +224,32 @@ const InvalidNumberOfArgumentsError = expected => expressionError(`Invalid numbe
 const InvalidArgumentError = expressionError("Invalid function argument");
 const ParenthesisError = expected => expressionError(`Expected ${expected} parenthesis`);
 const UnexpectedSymbolError = expressionError("Found unexpected token");
+const InvalidOperandFormError = expressionError("Expected operand");
+const EmptyExpressionError = expressionError("Expression is empty");
 
-const Source = function (input, specSymbolsRegExp) {
+const Source = function (input, specOps) {
     this.input = input;
     this.pos = 0;
-    this.cur = input.charAt(0);
-    this.regExp = new RegExp(specSymbolsRegExp.source + '|' + '\\s+');
+    this.cur = input[0];
+    this.specOps = new Set(specOps);
 }
 
 Source.prototype = {
-    isWhitespace: function () {
-        return /\s+/.test(this.cur);
-    },
-    isSpecSymbol: function () {
-        return this.regExp.test(this.cur);
-    },
+    ws: new Set([' ', '\n', '\t', '\r']),
     hasNext: function () {
         return this.pos < this.input.length;
     },
     next: function () {
-        this.cur = this.input.charAt(++this.pos);
+        this.cur = this.input[++this.pos];
     },
     skipWhitespaces: function () {
-        while (this.isWhitespace()) {
+        while (this.ws.has(this.cur)) {
             this.next();
         }
     },
     takeWord: function () {
         let retval = {pos: this.pos, word: ""};
-        while (this.hasNext() && !this.isSpecSymbol()) {
+        while (this.hasNext() && !(this.ws.has(this.cur) || this.specOps.has(this.cur))) {
             retval.word += this.cur;
             this.next();
         }
@@ -265,15 +262,29 @@ const expressionParser = (() => {
     let source;
     let operationRule;
 
-    function skip() { source.next(); source.skipWhitespaces();}
+    function skip() {
+        source.next();
+        source.skipWhitespaces();
+    }
 
     function throwError(ErrorType, found, position) {
         throw new ErrorType(found, position !== undefined ? position : source.pos, source.input);
     }
 
-    function parseOperation(acc) {
-        const index = operationRule(acc);
-        return acc.splice(index, 1).pop().word;
+    function parseParenthesis() {
+        const retval = functionParser();
+        checkParenthesis();
+        return retval;
+    }
+
+    function parseArgument() {
+        const lexeme = source.takeWord();
+        lexeme.word = operations[lexeme.word] || parseLow(lexeme);
+        return lexeme;
+    }
+
+    function parseLow(lex) {
+        return consts[lex.word] || parseNumber(lex);
     }
 
     function parseNumber(found) {
@@ -284,33 +295,28 @@ const expressionParser = (() => {
         return new Const(+num);
     }
 
-    function parseConst(lex) {
-        return consts[lex.word] || parseNumber(lex);
-    }
-
-    function parseLexeme() {
-        const lexeme = source.takeWord();
-        lexeme.word = operations[lexeme.word] || parseConst(lexeme);
-        return lexeme;
+    function takeOperation(acc, positions) {
+        const retval = operationRule(acc);
+        return retval.arity !== undefined ? retval : throwError(InvalidOperandFormError, retval, operationRule(positions));
     }
 
     function functionParser() {
         skip();
-        let acc = [];
+        let acc = [], positions = [], pos = source.pos, foundOperation;
         while (source.hasNext() && source.cur !== ')') {
-            acc.push(source.cur === '(' ? (() => {
-                const retval = functionParser(), pos = source.pos;
-                checkParenthesis();
-                return {word: retval, pos: pos};
-            })() : parseLexeme());
+            const found = source.cur === '(' ? (() => {
+                const pos = source.pos;
+                return {word: parseParenthesis(), pos: pos};
+            })(): parseArgument();
+            if (found.word.length === 0) {
+                foundOperation = foundOperation ? throwError(InvalidArgumentError, found.word.prototype.operand, found.pos) : true;
+            }
+            acc.push(found.word);
+            positions.push(found.pos);
         }
-        const Constructor = parseOperation(acc);
-        return (Constructor.arity !== 0 && acc.length !== Constructor.arity) ?
-            throwError(InvalidNumberOfArgumentsError(Constructor.arity), acc.length) :
-            new Constructor(...acc.map(a => {
-                const lexeme = a.word;
-                return lexeme.length === undefined ? lexeme : throwError(InvalidArgumentError, lexeme, lexeme.prototype.operand);
-            }));
+        const Constructor = acc.length ? takeOperation(acc, positions) : throwError(InvalidOperandFormError, "", pos);
+        return (Constructor.arity === 0 || acc.length === Constructor.arity) ? new Constructor(...acc) :
+            throwError(InvalidNumberOfArgumentsError(Constructor.arity), acc.length, pos);
     }
 
     function checkParenthesis() {
@@ -323,22 +329,20 @@ const expressionParser = (() => {
     function parse(rule) {
         return (expression) => {
             operationRule = rule;
-            source = new Source(expression.trim(), /[()]/);
-            let retval = source.cur === '(' ? (() => {
-                const a = functionParser();
-                checkParenthesis();
-                return a;
-            })() : parseConst(source.takeWord());
+            source = new Source(expression, ['(', ')']);
+            source.skipWhitespaces();
+            const retval = source.hasNext() ?
+                source.cur === '(' ? parseParenthesis() : parseLow(source.takeWord()) :
+                throwError(EmptyExpressionError, "", 0);
             if (source.hasNext()) {
-                const found = source.takeWord();
-                throwError(UnexpectedSymbolError, found.word, found.pos);
+                throwError(UnexpectedSymbolError, source.cur, source.pos);
             }
             return retval;
         }
     }
 
-    const parsePostfix = parse((acc) => acc.length - 1);
-    const parsePrefix = parse(() => 0);
+    const parsePostfix = parse((acc) => acc.pop());
+    const parsePrefix = parse((acc) => acc.shift());
     return {
         parsePostfix: parsePostfix,
         parsePrefix: parsePrefix
@@ -354,6 +358,6 @@ const parsePostfix = expressionParser.parsePostfix;
 //     }
 // };
 //
-// let a = "(3 2 +)";
-// let b = parsePostfix(a);
-// println(b.postfix());
+// let a = "(+ 1 (- 3 4 5))";
+// let b = parsePrefix(a);
+// println(b.prefix());
