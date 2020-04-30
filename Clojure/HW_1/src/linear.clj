@@ -11,7 +11,7 @@
 (def v* (doOp *))
 (def vd (doOp /))
 (defn scalar [& args] (apply + (apply v* args)))
-(defn v*s [vec & args] (mapv #(* (apply * args) %1) vec))
+(defn v*s [vec & args] (let [prod (apply * args)] (mapv #(* prod %1) vec)))
 (defn det2 [a b i1 i2]
   {:pre [(= (count a) (count b))]
    :post [true]}
@@ -22,7 +22,7 @@
 (def m- (doOp v-))
 (def m* (doOp v*))
 (def md (doOp vd))
-(defn m*s [mat & args] (mapv #(v*s %1 (apply * args)) mat))
+(defn m*s [mat & args] (let [prod (apply * args)] (mapv #(v*s %1 prod) mat)))
 (defn m*v [mat vec] (mapv (partial scalar vec) mat))
 (defn transpose [mat] (apply mapv vector mat))
 (defn m*m [& args] (reduce #(transpose ((fn [x y] (mapv (partial m*v x) (transpose y))) %1 %2)) args))
