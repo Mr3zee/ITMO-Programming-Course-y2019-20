@@ -268,7 +268,14 @@ const expressionParser = (() => {
     }
 
     function throwError(ErrorType, found, position) {
-        throw new ErrorType(found, position !== undefined ? position : source.pos, source.input);
+        throw new ErrorType(found.toString() || "", position !== undefined ? position : source.pos, source.input);
+    }
+
+    function checkParenthesis() {
+        if (source.cur !== ')') {
+            throwError(ParenthesisError('closing'), source.cur);
+        }
+        skip();
     }
 
     function parseParenthesis() {
@@ -304,10 +311,7 @@ const expressionParser = (() => {
         skip();
         let acc = [], positions = [], pos = source.pos, foundOperation;
         while (source.hasNext() && source.cur !== ')') {
-            const found = source.cur === '(' ? (() => {
-                const pos = source.pos;
-                return {word: parseParenthesis(), pos: pos};
-            })(): parseArgument();
+            const found = source.cur === '(' ? {pos: source.pos, word: parseParenthesis()} : parseArgument();
             if (found.word.length === 0) {
                 foundOperation = foundOperation ? throwError(InvalidArgumentError, found.word.prototype.operand, found.pos) : true;
             }
@@ -317,13 +321,6 @@ const expressionParser = (() => {
         const Constructor = acc.length ? takeOperation(acc, positions) : throwError(InvalidOperandFormError, "", pos);
         return (Constructor.arity === 0 || acc.length === Constructor.arity) ? new Constructor(...acc) :
             throwError(InvalidNumberOfArgumentsError(Constructor.arity), acc.length, pos);
-    }
-
-    function checkParenthesis() {
-        if (source.cur !== ')') {
-            throwError(ParenthesisError('closing'), source.cur);
-        }
-        skip();
     }
 
     function parse(rule) {
@@ -358,6 +355,6 @@ const parsePostfix = expressionParser.parsePostfix;
 //     }
 // };
 //
-// let a = "(+ 1 (- 3 4 5))";
+// let a = "(+)"
 // let b = parsePrefix(a);
-// println(b.prefix());
+// println(0 || "hello");
