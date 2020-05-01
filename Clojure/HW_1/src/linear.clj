@@ -33,10 +33,11 @@
 (def cd (doOp md))
 ; tensor
 
-(defn checkTensor [args] (if (every? number? args)
-                           true (if (every? vector? args)
-                              (if (apply sameLength args)
-                                (every? checkTensor (apply mapv vector args)) false) false)))
+(defn checkTensor [args] (or (every? number? args)
+                            (and
+                              (every? vector? args)
+                              (apply sameLength args)
+                              (every? checkTensor (apply mapv vector args)))))
 (defn compareT [args] (or (number? (first args)) (apply sameLength args)))
 (defn doTen [f & args]
   {:pre [(compareT args)]}
