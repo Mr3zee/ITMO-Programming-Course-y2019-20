@@ -28,7 +28,6 @@
 (def med (partial basic-op math-med))
 (def pw (partial basic-op math-pow))
 (def lg (partial basic-op math-log))
-; todo hw_8 js name class Error
 
 ; parse
 (def lexemes {"+" add "-" subtract "*" multiply "/" divide "negate" negate
