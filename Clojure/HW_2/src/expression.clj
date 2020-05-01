@@ -6,9 +6,10 @@
 (def z (variable "z"))
 
 ; math
-(defn div [& args] (cond
-                     (== 1 (count args)) (/ 1.0 (apply double args))
-                     :else (reduce #(/ (double %1) %2) args)))
+(defn div
+  ([x] (/ 1.0 x))
+  ([x y] (/ (double x) (double y)))
+  ([x y & args] (/ (div x y) (reduce div args))))
 (def math-ln #(Math/log (Math/abs %1)))
 (def math-avg #(let [c (count %&)] (div (apply + %&) c)))
 (def math-med #(let [k (div (count %&) 2)] (nth (sort %&) k)))
