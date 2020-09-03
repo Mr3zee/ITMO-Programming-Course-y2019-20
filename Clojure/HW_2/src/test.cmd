@@ -1,1 +1,0 @@
-powershell -command clj expression.clj

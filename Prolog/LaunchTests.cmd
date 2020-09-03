@@ -1,1 +1,0 @@
-C:\Users\809542\Desktop\korneev\paradigms-2020\prolog\TestProlog.cmd prtest.tree.PrologTreeFloorTest hard
