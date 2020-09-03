@@ -2,6 +2,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import search.SearchEngine;
 
 import java.util.Arrays;
@@ -21,7 +22,6 @@ public class Testing {
 
     @Before
     public void setUp() {
-        engine = new SearchEngine();
         System.out.println(color("Testing", ANSI_CYAN));
     }
 
@@ -46,27 +46,27 @@ public class Testing {
         validSearchIter(0, 100, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
         validSearchIter(10, -100, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
         System.out.println(color("Recursive", ANSI_CYAN));
-        validSearchRecur(9, 0, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
-        validSearchRecur(8, 1, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
-        validSearchRecur(7, 2, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
-        validSearchRecur(6, 3, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
-        validSearchRecur(5, 4, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
-        validSearchRecur(4, 5, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
-        validSearchRecur(3, 6, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
-        validSearchRecur(2, 7, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
-        validSearchRecur(1, 8, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
-        validSearchRecur(0, 9, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
+        validSearchRecur(10, 0, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
+        validSearchRecur(9, 1, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
+        validSearchRecur(8, 2, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
+        validSearchRecur(7, 3, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
+        validSearchRecur(6, 4, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
+        validSearchRecur(5, 5, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
+        validSearchRecur(4, 6, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
+        validSearchRecur(3, 7, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
+        validSearchRecur(2, 8, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
+        validSearchRecur(1, 9, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
         validSearchRecur(0, 100, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
         validSearchRecur(10, -100, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
     }
 
     private void validSearchIter(int expected, int value, int ... arr) {
-        Assert.assertEquals(expected, engine.lowerBound(value, arr));
+        Assert.assertEquals(expected, SearchEngine.lowerBound(value, arr));
         message(expected, value, arr);
     }
 
     private void validSearchRecur(int expected, int value, int ... arr) {
-        Assert.assertEquals(expected, engine.upperBound(value, arr));
+        Assert.assertEquals(expected, SearchEngine.upperBound(value, arr));
         message(expected, value, arr);
     }
 
