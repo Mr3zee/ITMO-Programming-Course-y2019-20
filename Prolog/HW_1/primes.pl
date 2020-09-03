@@ -24,3 +24,5 @@ prime_palindrome(N, K) :- prime(N), to_kth(N, K, R), palindrome(R).
 to_kth(0, K, []) :- !.
 to_kth(N, K, [H | T]) :- H is mod(N, K), N1 is div(N, K), to_kth(N1, K, T).
 palindrome(N) :- reverse(N, N).
+
+✅❌
