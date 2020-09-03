@@ -39,7 +39,6 @@ public abstract class BinaryOperations implements CommonExpression {
         boolean firstHigherPriority = this.getPriority() > firstExp.getPriority();
         boolean secondHigherPriority = this.getPriority() > secondExp.getPriority() ||
                 (this.getPriority() == secondExp.getPriority() && (this.dependsOnOrder() || secondExp.dependsOnOrder()));
-        //(secondHigherPriority ? ")" : "")
         return (firstHigherPriority ? "(" : "") + firstExp.toMiniString() + (firstHigherPriority ? ")" : "")
                 + getOperand() +
                 (secondHigherPriority ? "(" : "") + secondExp.toMiniString() + (secondHigherPriority ? ")" : "");
