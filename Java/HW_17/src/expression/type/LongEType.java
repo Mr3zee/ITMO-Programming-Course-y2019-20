@@ -1,6 +1,6 @@
 package expression.type;
 
-import expression.exceptions.*;
+import expression.exceptions.DivisionByZeroEException;
 
 public class LongEType extends AbstractEType<Long> implements ForbiddenDivisionByZero<Long> {
     public LongEType(Long value) {

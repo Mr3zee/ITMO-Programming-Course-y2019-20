@@ -1,6 +1,6 @@
 package expression.type;
 
-import expression.exceptions.*;
+import expression.exceptions.DivisionByZeroEException;
 
 public class UncheckedIntegerEType extends AbstractEType<Integer> implements ForbiddenDivisionByZero<Integer> {
     public UncheckedIntegerEType(Integer value) {

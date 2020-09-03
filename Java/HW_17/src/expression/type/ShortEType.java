@@ -1,6 +1,6 @@
 package expression.type;
 
-import expression.exceptions.*;
+import expression.exceptions.DivisionByZeroEException;
 
 public class ShortEType extends AbstractEType<Short> implements ForbiddenDivisionByZero<Short> {
     public ShortEType(Short value) {

@@ -1,6 +1,6 @@
 package expression.parser;
 
-import expression.ExpressionTriple;
+import expression.expression_tools.ExpressionTriple;
 import expression.exceptions.ParsingExpressionException;
 
 public interface MyParser<T extends Number> {

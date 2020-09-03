@@ -1,6 +1,6 @@
 package expression.exceptions;
 
-import expression.parser_tools.FoundNextInfo;
+import expression.parser.FoundNextInfo;
 
 public class MissingWhitespacePEException extends ParsingExpressionException {
     public MissingWhitespacePEException(String name, FoundNextInfo next) {

@@ -1,6 +1,6 @@
 package expression.exceptions;
 
-import expression.parser_tools.FoundNextInfo;
+import expression.parser.FoundNextInfo;
 
 public class MissingLexemePEException extends ParsingExpressionException {
     public MissingLexemePEException(final String lastLex, final FoundNextInfo found) {

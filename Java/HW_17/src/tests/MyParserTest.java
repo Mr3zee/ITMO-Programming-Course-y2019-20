@@ -1,6 +1,6 @@
 package tests;
 
-import expression.CommonExpression;
+import expression.expression_tools.CommonExpression;
 import expression.exceptions.*;
 import expression.parser.ExpressionParser;
 import expression.type.EType;

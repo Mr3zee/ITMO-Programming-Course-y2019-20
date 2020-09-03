@@ -1,6 +1,6 @@
 package expression.type;
 
-import expression.exceptions.*;
+import expression.exceptions.DivisionByZeroEException;
 
 public interface ForbiddenDivisionByZero<T extends Number> {
     default void checkDivisionByZero(T v) {

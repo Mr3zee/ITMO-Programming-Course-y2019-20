@@ -1,6 +1,6 @@
 package expression.exceptions;
 
-import expression.parser_tools.FoundNextInfo;
+import expression.parser.FoundNextInfo;
 
 public class InvalidOperatorFormPEException extends ParsingExpressionException {
     public InvalidOperatorFormPEException(final String name, final FoundNextInfo found) {

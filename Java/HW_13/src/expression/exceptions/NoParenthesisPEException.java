@@ -1,6 +1,6 @@
 package expression.exceptions;
 
-import expression.parser_tools.FoundNextInfo;
+import expression.parser.FoundNextInfo;
 
 public class NoParenthesisPEException extends ParsingExpressionException {
     public NoParenthesisPEException(final String expected, final FoundNextInfo found) {
