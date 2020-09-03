@@ -8,3 +8,5 @@
 *.xml
 *.icls
 *.cmd
+**/lib/**
+*.nrepl-port
